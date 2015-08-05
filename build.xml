@@ -71,7 +71,7 @@
 
  <target name="prepare"
          unless="prepare.done"
-         depends="clean"
+         depends="clean,composer"
          description="Prepare for build">
   <mkdir dir="${basedir}/build/api"/>
   <mkdir dir="${basedir}/build/coverage"/>
@@ -235,6 +235,17 @@
   </exec>
 
   <property name="phpunit.done" value="true"/>
+ </target>
+
+ <target name="composer" description="Installing composer dependencies">
+  <exec executable="composer" failonerror="true">
+   <arg value="install" />
+   <arg value="--dev" />
+   <arg value="--prefer-dist" />
+   <arg value="--no-progress" />
+
+<!--   <env key="SYMFONY_ENV" value="test"/>  -->
+  </exec>
  </target>
 
  <target name="phpunit-no-coverage"
