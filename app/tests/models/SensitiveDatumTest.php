@@ -32,20 +32,36 @@ class SensitiveDatumTest extends TestCase {
     {
         parent::setUp();
         $this->sensitiveDatum = App::make('SensitiveDatum');
-
+        $this->sensitiveDatum->setRole(Role::find(1));
     }
-    
+
     public function testSensitiveDatumIsInstanciableThroughIoc()
     {
         $this->assertInstanceOf('\\SensitiveDatum', $this->sensitiveDatum);
     }
-    
+
     public function testSensitiveDatumEncryptsDataWhenEncryptCalled()
     {
         $this->sensitiveDatum->value = "test";
-        $this->assertEquals('test', $this->sensitiveDatum->value);
-        
         $this->sensitiveDatum->encrypt();
-        $this->assertNotEquals('test', $this->sensitiveDatum);
+        $this->assertRegexp('/BEGIN PGP MESSAGE/', $this->sensitiveDatum->value);
+    }
+
+    public function testSensitiveDatumReturnsPlainDataWhenDecryptedWithCorrectPassword()
+    {
+        $this->sensitiveDatum->value = "test";
+        $this->sensitiveDatum->encrypt();
+        $this->sensitiveDatum->decrypt('test');
+        $this->assertEquals('test', $this->sensitiveDatum->value);
+    }
+
+    /**
+     * @expectedException Exception
+     */
+    public function testSensitiveDatumThrowsExceptionWhenDecryptedWithIncorrectPassword()
+    {
+        $this->sensitiveDatum->value = "test";
+        $this->sensitiveDatum->encrypt();
+        $this->sensitiveDatum->decrypt('wrongPassword');
     }
 }
