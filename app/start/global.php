@@ -95,7 +95,7 @@ Form::macro('errorMsg', function($validator, $field) {
 App::error(function(Exception $exception, $code)
 {
     Log::error($exception);
-    
+
     $message = $exception->getMessage();
     return Response::json([
         'code' => $code,
