@@ -1,3 +1,0 @@
-[submodule "workbench/barnetik/laravel-ldap-auth"]
-	path = workbench/barnetik/laravel-ldap-auth
-	url = https://github.com/BarnetikKoop/laravel-simple-ldap.git
