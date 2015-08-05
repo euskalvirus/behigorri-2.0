@@ -19,11 +19,13 @@ class SensitiveDatum extends \Eloquent
     public static function boot()
     {
         parent::boot();
+
         SensitiveDatum::saving(function(SensitiveDatum $sensitiveDatum) {
             if (!$sensitiveDatum->isEncrypted()) {
                 $sensitiveDatum->encrypt();
             }
         });
+
         SensitiveDatum::registerModelEvent('restoring', function(SensitiveDatum $sensitiveDatum) {
             $sensitiveDatum->encrypted = true;
         });
