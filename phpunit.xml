@@ -18,6 +18,7 @@
         </testsuite>
     </testsuites>
 <logging>
-  <log type="coverage-clover" target="build/coverage/coverage.xml"/>
+    <log type="coverage-clover" target="build/coverage/coverage.xml"/>
+    <log type="junit" target="build/logs/junit.xml" logIncompleteSkipped="false"/>
 </logging>
 </phpunit>
