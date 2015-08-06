@@ -1,5 +1,5 @@
 <phpdox xmlns="http://xml.phpdox.net/config">
- <project name="behigorri" source="app" workdir="build/phpdox">
+    <project name="behigorri" source="../app" workdir="build/phpdox">
   <collector publiconly="false">
    <include mask="*.php" />
   </collector>
