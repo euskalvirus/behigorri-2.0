@@ -18,7 +18,7 @@ class GpgInit extends Command {
 	 *
 	 * @var string
 	 */
-	protected $description = 'Command description.';
+	protected $description = 'Generates initial gpg key for admin role.';
 
 	/**
 	 * Create a new command instance.
@@ -36,8 +36,13 @@ class GpgInit extends Command {
 	 * @return mixed
 	 */
 	public function fire()
-	{
-        $keyRingPath = storage_path() . '/keys/admin';
+    {
+        $name = $this->ask('Role name?[admin] ');
+        if (!$name) {
+            $name = 'admin';
+        }
+
+        $keyRingPath = storage_path() . '/keys/' . $name;
         if (!file_exists($keyRingPath)) {
             $created = mkdir($keyRingPath, 0700, true);
             if (!$created) {
@@ -51,10 +56,10 @@ class GpgInit extends Command {
         
         exec('gpg --homedir ' . $keyRingPath . ' --gen-key');
       
-        $this->addFingerprint($keyRingPath);
+        $this->addFingerprint($keyRingPath, $name);
     }
     
-    private function addFingerPrint($keyRingPath) 
+    private function addFingerPrint($keyRingPath, $roleName) 
     {
         $output = [];
         exec('gpg --fingerprint --homedir ' . $keyRingPath, $output);
@@ -64,8 +69,7 @@ class GpgInit extends Command {
             if ($result === 1) {
                 $fingerprint = str_replace(' ', '', $matches['fingerprint']);
                 $role = new Role();
-                $role->guid = 500;
-                $role->name = 'admin';
+                $role->name = $roleName;
                 $role->gpg_fingerprint = $fingerprint;
                 $role->save();
             }

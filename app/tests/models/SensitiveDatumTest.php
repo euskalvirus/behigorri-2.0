@@ -24,7 +24,7 @@
  * @author alayn
  */
 class SensitiveDatumTest extends TestCase {
-    const FINGERPRINT = 'A71E3BAC76B55FC9CD21EE337F6019EDFCB507A8'; //test
+    const FINGERPRINT = 'EC33E90A9155151A556BF4B05C417002DD571173'; //test
     const FINGERPRINT_2 = '8D13E0CE76FE320F1A0B47E47351A00890A0B5EC'; //testing
 
     protected $sensitiveDatum;
@@ -32,7 +32,16 @@ class SensitiveDatumTest extends TestCase {
     {
         parent::setUp();
         $this->sensitiveDatum = App::make('SensitiveDatum');
-        $this->sensitiveDatum->setRole(Role::find(1));
+        $role = $this->getRole();
+        $this->sensitiveDatum->setRole($role);
+    }
+
+    public function getRole()
+    {
+        $role = App::make('Role');
+        $role->name = 'test';
+        $role->gpg_fingerprint = self::FINGERPRINT;
+        return $role;
     }
 
     public function testSensitiveDatumIsInstanciableThroughIoc()
