@@ -26,6 +26,11 @@
 <filter>
 <whitelist>
     <directory suffix=".php">app</directory>
+    <exclude>
+        <directory>app/config</directory>
+        <directory>app/database</directory>
+        <directory>app/storage</directory>
+    </exclude>
 </whitelist>
 </filter>
 </phpunit>

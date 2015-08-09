@@ -23,7 +23,8 @@
  *
  * @author alayn
  */
-class SensitiveDatumTest extends TestCase {
+class SensitiveDatumTest extends TestCase
+{
     const FINGERPRINT = 'EC33E90A9155151A556BF4B05C417002DD571173'; //test
     const FINGERPRINT_2 = '8D13E0CE76FE320F1A0B47E47351A00890A0B5EC'; //testing
 
@@ -52,8 +53,18 @@ class SensitiveDatumTest extends TestCase {
     public function testSensitiveDatumEncryptsDataWhenEncryptCalled()
     {
         $this->sensitiveDatum->value = "test";
+        $this->assertFalse($this->sensitiveDatum->isEncrypted());
+
         $this->sensitiveDatum->encrypt();
         $this->assertRegexp('/BEGIN PGP MESSAGE/', $this->sensitiveDatum->value);
+        $this->assertTrue($this->sensitiveDatum->isEncrypted());
+    }
+
+    public function testValueIsHiddenWhenDataEncrypted()
+    {
+        $this->sensitiveDatum->value = "test";
+        $this->sensitiveDatum->encrypt();
+        $this->assertFalse(isset($this->sensitiveDatum->toArray()['value']));
     }
 
     public function testSensitiveDatumReturnsPlainDataWhenDecryptedWithCorrectPassword()
@@ -62,6 +73,14 @@ class SensitiveDatumTest extends TestCase {
         $this->sensitiveDatum->encrypt();
         $this->sensitiveDatum->decrypt('test');
         $this->assertEquals('test', $this->sensitiveDatum->value);
+    }
+
+    public function testValueIsNotHiddenWhenDataIsDecrypted()
+    {
+        $this->sensitiveDatum->value = "test";
+        $this->sensitiveDatum->encrypt();
+        $this->sensitiveDatum->decrypt('test');
+        $this->assertArrayHasKey('value', $this->sensitiveDatum->toArray());
     }
 
     /**
