@@ -1,17 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers;
 
-use Behigorri\Entities\User;
-use Validator;
+use Behigorri\Entities\User as User;
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\ThrottlesLogins;
-use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
-use App\Http\Requests\Request;
-//use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityManager;
+use Illuminate\Http\Request;
 
-class AuthController extends Controller
+class AuthControler extends Controller
 {
     /*
     |--------------------------------------------------------------------------
@@ -25,20 +20,27 @@ class AuthController extends Controller
     */
 
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
+    protected $request;
 
-    protected $redirectTo = '/';
-    protected $em;
     /**
      * Create a new authentication controller instance.
      *
      * @return void
      */
-    public function __construct(EntityManager $em)
+    public function __construct()
     {
-        $this->middleware('guest', ['except' => 'getLogout']);
-        $this->em = $em;
     }
 
+    public function register(Request $request)
+    {
+        $rules = [
+            'name' => 'required|max:255',
+            'email' => 'required|email|max:255|unique:User',
+            'password' => 'required|confirmed|min:6'
+        ];
+        dd($this->validate($request, $rules));
+        var_dump($this->validate($request, $rules));
+    }
     /**
      * Get a validator for an incoming registration request.
      *
@@ -62,13 +64,12 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
-        $user = new User();
-        $user->setName($data['name']);
-        $user->setEmail($data['email']);
-        $user->setPassword(bcrypt($data['password']));
-        $this->em->persist($user);
-        $this->em->flush();
-        
-        return $user;
+        return User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => bcrypt($data['password']),
+        ]);
     }
+    
+
 }

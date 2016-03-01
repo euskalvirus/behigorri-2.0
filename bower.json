@@ -1,0 +1,22 @@
+{
+  "name": "Behigorri Password Manager",
+  "description": "Password Manager",
+  "main": "",
+  "authors": [
+    "Alain Zabaleta <azabaleta@barnetik.com>"
+  ],
+  "license": "MIT",
+  "moduleType": [],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^2.2.0"
+  }
+}
