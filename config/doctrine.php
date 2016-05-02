@@ -66,16 +66,16 @@ return [
         // 'default' => 'mysql',
         
         // Override your laravel values here if desired.
-        /*
-         * 'mysql' => [
-         * 'driver' => 'mysqli',
-         * 'host' => env('DB_HOST', 'localhost'),
-         * 'dbname' => env('DB_DATABASE', 'forge'),
-         * 'user' => env('DB_USERNAME', 'forge'),
-         * 'password' => env('DB_PASSWORD', ''),
-         * 'prefix' => ''
-         * ],
-         */
+        
+          'mysql' => [
+          'driver' => 'pdo_mysql',
+          'host' => env('DB_HOST', 'localhost'),
+          'dbname' => env('DB_DATABASE', 'forge'),
+          'user' => env('DB_USERNAME', 'forge'),
+          'password' => env('DB_PASSWORD', ''),
+          'prefix' => ''
+          ],
+         
         
         // Some preset configurations to map laravel sqlite configs to doctrine
         'sqlite' => [
@@ -221,9 +221,9 @@ return [
         'SUBSTRING_INDEX' => 'DoctrineExtensions\Query\Mysql\SubstringIndex'
     ],
     
-    'auth' => []
-    // 'authenticator' => 'Atrauzzi\LaravelDoctrine\DoctrineAuthenticator',
-    // 'model' => 'App\Models\User',
-    
+    'auth' => [
+        'authenticator' => 'Atrauzzi\LaravelDoctrine\DoctrineAuthenticator',
+         'model' => 'Behigorri\Entities\User',
+    ]
 ]
 ;

@@ -1,20 +1,22 @@
 <?php
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\admin;
 
 use Behigorri\Entities\User;
+use Behigorri\Entities\Group;
 use Auth;
-use SebastianBergmann\Environment\Console;
-use Behigorri\Repositories\UserRepository;
+use App\Http\Controllers\Controller;
 use Doctrine\ORM\EntityManager;
 
-class IndexController extends Controller
+class GroupAdministrationController extends Controller
 {
     protected $repository;
+    
     public function __construct(EntityManager $em)
     {
         $this->repository = $em->getRepository('Behigorri\Entities\User');
     }
-    public function index()
+    
+    public function groupAdministration()
     {
         $loggedUser = Auth::user();
         if($loggedUser->getGod())
@@ -32,4 +34,5 @@ class IndexController extends Controller
             ]);
         }
     }
+    
 }
