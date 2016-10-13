@@ -1,0 +1,48 @@
+@extends('layouts.master')
+@section('title',  $title)
+@section('content')
+ @include('god.godMenu')
+    <br>
+    <br>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="panel panel-default">
+                    <div class="panel-heading">EDIT GROUP</div>
+                    <div class="panel-body">
+
+   			 			<form action="/admin/group/update" method="post">
+   			 				 <div class="form-group">
+							    <label for="ID">ID</label>
+							    <input type="TEXT" class="form-control" name="id" readonly value={{$group->getId()}}>
+							  </div>
+
+						  <div class="form-group">
+						    <label for="NAME">GROUP NAME</label>
+						    <input type="TEXT" class="form-control" name="name" value={{$group->getName()}} placeholder="Name">
+						  </div>
+
+
+                            @if ($users!=null)
+					  			<div class="form-group">
+					                <label for="GROUP">USERS</label>
+					                <select  multiple="multiple" name="updatedUsers[]">
+					                   @foreach ($users as $id => $groupUser) :
+					                       @if ($groupUser['active'])
+					                           	<option selected="selected" value={{$id}}>{{$groupUser['name']}}</option>                           
+					                       @else:
+					                           <option value={{$id}}>{{$groupUser['name']}}</option>
+					                       @endif
+					                   @endforeach
+					                </select>
+					           </div>
+					  		@endif
+					  		<button type="submit" class="btn btn-default">Submit</button>
+  							<a href="/admin/group"><button type="button" class="btn btn-default">Return</button></a>
+						</form>
+                	</div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
