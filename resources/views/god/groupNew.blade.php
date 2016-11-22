@@ -30,7 +30,8 @@
 					            </select>
                             </div>
                             <div>
-                                {!! Form::submit('send',['class' => 'btn btn-primary']) !!}
+                                {!! Form::submit('SUBMIT',['class' => 'btn  btn-success']) !!}
+                                <a href="/admin/group"><button type="button" class="btn btn-danger">RETURN</button></a>
                             </div>
                         {!! Form::close() !!}
                     </div>

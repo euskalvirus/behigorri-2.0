@@ -1,3 +1,3 @@
 <body>
-    Activate your registration in this link: {{$user->getName()}}
+    Activate your registration in this link: {{$activationCode}}
 </body>

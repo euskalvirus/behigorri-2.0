@@ -9,14 +9,10 @@
                 <div class="panel-body">
                     @if (count($errors) > 0)
                        <div class="alert alert-danger">
-							Email or Password not correct!
+
                        </div>
                     @endif
-                    @if (isset($error) && $error="not activated")
-                       <div class="alert alert-danger">
-							User account still not activated, check your email for activation!
-                       </div>
-                    @endif
+                    <div>{{$user}}   {{$data}} </div><p><p>
                     {!! Form::open(['route' => 'postLogin', 'class' => 'form']) !!}
                         <div class="form-group">
                             <label>Email</label>

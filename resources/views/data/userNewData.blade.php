@@ -8,7 +8,7 @@
 <div class="col-xs-6">
     <h1 class="row"></h1>
     
-    <form action="\data\save" method="post">
+    <form action="/data/save" method="post">
         <div class="form-group">
             <label for="NAME">NAME</label>
             <input type="TEXT" class="form-control" name="name" placeholder="Name">
@@ -26,8 +26,8 @@
             </select>
         </div>
         <div class="form-group">
-            <button type="submit" class="btn btn-default">Submit</button>
-            <a href="\"><button type="button" class="btn btn-default">Return</button></a>
+            <button type="submit" class="btn  btn-success">SUBMIT</button>
+            <a href="/"><button type="button" class="btn btn-danger">RETURN</button></a>
         </div>
         
     </form>

@@ -7,7 +7,7 @@
 	@include('god.godMenu')
 
 @endif
-	<br>
+<br>
     <br>
     <div class="row">
         <div class="col-xs-12">
@@ -20,13 +20,12 @@
     
                            </div>
                         @endif
-    <form action="/data/update" method="post">
   <div class="form-group">
     {!!Form::hidden('id', $data->getId(), array('id' => 'invisible_id'))!!}
   </div>
   <div class="form-group">
     <label for="NAME">NAME</label>
-    <input type="TEXT" class="form-control" name="name" value={{$data->getName()}} placeholder="Name">
+    <input type="TEXT" class="form-control" name="name" readonly value={{$data->getName()}} placeholder="Name">
   </div>
   <div class="form-group">
     <label for="OWNER">OWNER</label>
@@ -35,26 +34,25 @@
   @if(!$data->getIsFile())
   	<div class="form-group">
     	<label for="TEXT">TEXT</label>
-    	<textarea class="form-control" style="overflow:auto;resize:none" name="text" rows="10" placeholder="Text" >{{$text}}</textarea>
+    	<textarea class="form-control" readonly style="overflow:auto;resize:none" name="text" rows="10" placeholder="Text" >{{$text}}</textarea>
   	</div>
   @endif
   	
   @if ($groups!=null)
   		<div class="form-group">
                 <label for="GROUP">GROUP</label>
-                <select  multiple="multiple" name="groups[]">
+                <select  multiple="multiple" readonly name="groups[]">
                    @foreach ($groups as $id => $group) :
                        @if ($group['active'])
-                           	<option selected="selected" value={{$id}}>{{$group['name']}}</option>                           
-                       @else:
-                           <option value={{$id}}>{{$group['name']}}</option>
+                           	<option  disabled value={{$id}}>{{$group['name']}}</option>                           
                        @endif
                    @endforeach
                 </select>
            </div>
   @endif
-  <button type="submit" class="btn  btn-success">SUBMIT</button>
+  @if ($user->getId() == $data->getUser()->getId())
+  	<a href="/data/edit/{{$data->getId()}}"><button type="button" class="btn  btn-success">EDIT</button></a>
+  @endif
   <a href="/"><button type="button" class="btn btn-danger">RETURN</button></a>
-</form>
     
 @endsection
