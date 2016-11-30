@@ -63,6 +63,12 @@ class SensitiveData
      * @ORM\Column(type="string", length=300, nullable=true)
      */
     private $updatedAt;
+    
+    /**
+     * @var boolean
+     * @ORM\Column(type="boolean", options = {"default":0}, nullable=false)
+     */
+    private $isFile;
 
     /**
      * Get id
@@ -236,5 +242,30 @@ class SensitiveData
     public function getGroups()
     {
         return $this->groups;
+    }
+    
+    /**
+     * Set userActive
+     *
+     * @param boolean $isFile
+     *
+     * @return User
+     */
+    public function setIsFile($isFile)
+    {
+    	$this->isFile = $isFile;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get userActive
+     *
+     * @return boolean
+     */
+    public function getIsFile()
+    {
+    	//var_dump((bool)$this->userActive);exit;
+    	return $this->isFile;
     }
 }

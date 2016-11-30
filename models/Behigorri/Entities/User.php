@@ -86,12 +86,30 @@ class User implements AuthenticatableContract, CanResetPasswordContract, Authori
     * @ORM\Column(type="string", length=355, nullable=true)
     */
    private $token;
+   
+   /**
+    * @var boolean
+    * @ORM\Column(type="boolean", options = {"default":0}, nullable=false)
+    */
+   private $userActive;
 
     /**
     * @var boolean
     * @ORM\Column(type="boolean", options = {"default":0}, nullable=false)
     */
-    private $god=0;
+    private $god;
+    
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=355, nullable=true)
+     */
+    private $salt;
+    
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=355, nullable=true)
+     */
+    private $activationCode;
 
     /**
      * Get id
@@ -390,6 +408,86 @@ class User implements AuthenticatableContract, CanResetPasswordContract, Authori
         return $this->god;
     }
 
+    
+    /**
+     * Set token
+     *
+     * @param string $salt
+     *
+     * @return User
+     */
+    public function setSalt($salt)
+    {
+    	$this->salt = $salt;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get token
+     *
+     * @return string
+     */
+    public function getSalt()
+    {
+    	return $this->salt;
+    }
+    
+    /**
+     * Set userActive
+     *
+     * @param boolean $userActive
+     *
+     * @return User
+     */
+    public function setUserActive($userActive)
+    {
+    	$this->userActive = $userActive;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get userActive
+     *
+     * @return boolean
+     */
+    public function getUserActive()
+    {
+    	//var_dump((bool)$this->userActive);exit;
+    	return $this->userActive;
+    }
+    
+    /**
+     * Set token
+     *
+     * @param string $activationCode
+     *
+     * @return User
+     */
+    public function setActivationCode($activationCode)
+    {
+    	$this->activationCode = $activationCode;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get token
+     *
+     * @return string
+     */
+    public function getActivationCode()
+    {
+    	return $this->activationCode;
+    }
+    
+    
+    
+    
+    
+    
+
     public function getUniqueSensitiveData()
     {
         $sensitiveDatas = [];
@@ -414,7 +512,7 @@ class User implements AuthenticatableContract, CanResetPasswordContract, Authori
         return $sensitiveDatas;
     }
     
-    public function canBeEditSenstiveData($id)
+    public function canBeViewSenstiveData($id)
     {
         foreach ($this->getUniqueSensitiveData()as $data)
         {

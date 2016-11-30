@@ -3,6 +3,7 @@ namespace Behigorri\Entities;
 
 use Doctrine\ORM\Mapping AS ORM;
 use Behigorri\Traits\TimestampCreation as TimestampCreation;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity

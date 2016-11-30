@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "eb8f3308cebbc8a2a6e2263ce100b54f",
-    "content-hash": "6473539285b5e513d797b6b748358654",
+    "hash": "b34cf5cfe7e4838eb68c7cb681ab2eb3",
+    "content-hash": "16ee03b2d057d096a902f5701c639c7a",
     "packages": [
         {
             "name": "atrauzzi/laravel-doctrine",
@@ -57,6 +57,7 @@
                 "laravel",
                 "orm"
             ],
+            "abandoned": "laravel-doctrine/orm",
             "time": "2015-09-24 15:09:21"
         },
         {
@@ -1147,6 +1148,7 @@
                     "email": "taylorotwell@gmail.com"
                 }
             ],
+            "abandoned": "laravelcollective/html",
             "time": "2015-01-01 16:31:18"
         },
         {
@@ -1787,6 +1789,43 @@
                 "service proxies"
             ],
             "time": "2015-08-09 04:28:19"
+        },
+        {
+            "name": "paragonie/halite",
+            "version": "v1.5.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/paragonie/halite.git",
+                "reference": "650e7946073e3f862f99bf7a38d99d69676eb2da"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/paragonie/halite/zipball/650e7946073e3f862f99bf7a38d99d69676eb2da",
+                "reference": "650e7946073e3f862f99bf7a38d99d69676eb2da",
+                "shasum": ""
+            },
+            "require": {
+                "ext-libsodium": "^1.0.2",
+                "php": "^5.6.0 || ^7.0.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ParagonIE\\Halite\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL3"
+            ],
+            "authors": [
+                {
+                    "name": "Paragon Initiative Enterprises",
+                    "email": "info@paragonie.com"
+                }
+            ],
+            "description": "High-level cryptography interface powered by libsodium",
+            "time": "2016-07-29 16:34:26"
         },
         {
             "name": "paragonie/random_compat",
