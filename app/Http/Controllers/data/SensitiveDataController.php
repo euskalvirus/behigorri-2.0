@@ -3,6 +3,7 @@ namespace App\Http\Controllers\data;
 
 use Behigorri\Entities\SensitiveData;
 use Behigorri\Entities\User;
+use Behigorri\Entities\Tag;
 use Behigorri\Entities\Group;
 use Doctrine\ORM\EntityManager;
 use App\Http\Controllers\Controller;
@@ -65,7 +66,7 @@ class SensitiveDataController extends Controller
             }
             $sensitiveDataText = '';
             $this->setPaths($id);
-            if (file_exists($this->path)) {
+            if (file_exists($this->path) && !$data->getIsFile()) {
                 $sensitiveDataText = file_get_contents($this->filePath);
                 $keyFactoryFile  = fopen(storage_path() . '/' . 'encryption.key', "w") or die("Unable to open file!");
                 fwrite($keyFactoryFile  , $loggedUser->getSalt());
@@ -83,16 +84,18 @@ class SensitiveDataController extends Controller
                		'title' => 'WELLCOME SIMPLE USER',
               		'data' => $data,
                		'groups' => $filteredGroups,
-               		'text'=> $decrypted
-               ]);
+               		'text'=> $decrypted,
+            		'tags' => $this->getTagsStrings($data->getTags())
+    				]);
             }else{
             	return view('data.userDataEdit')->with([
             			'user' => $loggedUser,
             			'title' => 'WELLCOME SIMPLE USER',
             			'data' => $data,
             			'groups' => $filteredGroups,
-            			'text'=> "isfile"
-            			]);
+            			'text'=> "isfile",
+            			'tags' => $this->getTagsStrings($data->getTags())
+    				]);
             }
         } else 
         {
@@ -115,6 +118,7 @@ class SensitiveDataController extends Controller
     
     protected function sensitiveDataSave(Request $request)
     {
+    		//var_dump($request->input('tags'));exit;
 	        $loggedUser = Auth::user();
 	        $data = new SensitiveData();
 	        $data->setName($request->input('name'));
@@ -148,6 +152,9 @@ class SensitiveDataController extends Controller
 	        fwrite($sensitiveDataText , $ciphertext);
 	        fclose($sensitiveDataText );
 	        unlink(storage_path() . '/' . 'encryption.key');
+	        $dataWithTags = $this->splitAndCreateTags($request->input('tags'),$data);
+	        $this->em->persist($dataWithTags);
+	        $this->em->flush();
         
         return redirect('/');
         //return redirect()->back();
@@ -193,6 +200,7 @@ class SensitiveDataController extends Controller
 	            $group= $this->em->find("Behigorri\Entities\Group", $groupId);
 	            $data->addGroup($group);
 	        }
+	        $data = $this->updateTags($request->input('tags'),$data);
 	        $this->em->persist($data);
 	        $this->em->flush();
 	        if(!$data->getIsFile())
@@ -300,7 +308,9 @@ class SensitiveDataController extends Controller
     	fclose($outputFile);
     	unlink($this->path . '/' . $fileName);
     	
-    	
+    	$dataWithTags = $this->splitAndCreateTags($request->input('tags'),$data);
+    	$this->em->persist($dataWithTags);
+    	$this->em->flush();
     	return redirect('/');
     	//return redirect()->back();
 
@@ -347,7 +357,8 @@ class SensitiveDataController extends Controller
     						'title' => 'WELLCOME SIMPLE USER',
     						'data' => $data,
     						'groups' => '',
-    						'text'=> $decrypted
+    						'text'=> $decrypted,
+            				'tags' => $this->getTagsStrings($data->getTags())
     				]);
     			}
     		}	
@@ -358,7 +369,61 @@ class SensitiveDataController extends Controller
     	
     }
     
+    protected function splitAndCreateTags($tagsString, $data)
+    {
+    	$tags = explode(',', $tagsString);
+    	return $this->filterTags($tags,$data);
+    }
     
+    protected function filterTags($tags,$data)
+    {
+    	$tagRep = $this->em->getRepository('Behigorri\Entities\Tag');
+    	foreach ($tags as $tag){
+    		if(!$this->tagExist($tag, $tagRep)){
+    			$newTag = new Tag();
+    			$newTag->setName($tag);
+    			$this->em->persist($newTag);
+    			$this->em->flush();
+    			$data->addTag($newTag);
+    		}else {
+    			$tag = $tagRep->findBy(['name' => $tag]);
+    			$data->addTag($tag[0]);
+    		}
+    	}
+    	return $data;
+    }
+    
+    protected function tagExist($tag, $tagRep)
+    {
+    	$search = $tagRep->findBy(['name' => $tag]);
+    	if(empty($search)){
+    		return false;
+    	} else {
+    		return true;
+    	}
+    }
+    
+    protected function getTagsStrings($tags){
+    	$tagsString = "";
+    	foreach ($tags as $tag){
+    		$tagsString = $tagsString . $tag->getName() . ',';
+    	}
+    	return $tagsString;
+    }
+    
+    protected function updateTags($tagsString, $data)
+    {
+    	$splitedTags = explode(',', $tagsString);
+    	foreach ($data->getTags() as $tag)
+    	{
+    		if(!in_array($tag->getName(),$splitedTags)){
+    			$data->removeTag($tag);
+    		} 
+    		unset($splitedTags[array_search($tag->getName(), $splitedTags)]);
+    		
+    	}
+    	return $this->filterTags($splitedTags,$data);
+    }
     
     
 

@@ -25,11 +25,11 @@
   </div>
   <div class="form-group">
     <label for="NAME">NAME</label>
-    <input type="TEXT" class="form-control" name="name" readonly value={{$data->getName()}} placeholder="Name">
+    <input type="TEXT" class="form-control" name="name" readonly value="{{$data->getName()}}" placeholder="Name">
   </div>
   <div class="form-group">
     <label for="OWNER">OWNER</label>
-    <input type="TEXT" class="form-control" name="owner" readonly value={{$data->getUser()->getName()}}>
+    <input type="TEXT" class="form-control" name="owner" readonly value="{{$data->getUser()->getName()}}">
   </div>
   @if(!$data->getIsFile())
   	<div class="form-group">
@@ -50,6 +50,12 @@
                 </select>
            </div>
   @endif
+  
+  <div class="form-group">
+        	<label for="TAGS">TAGS</label>
+            <input type="text" name="tags" class="form-control"
+                    data-role="tagsinput" value="{{$tags}}" readonly disabled/>
+    	</div>
   @if ($user->getId() == $data->getUser()->getId())
   	<a href="/data/edit/{{$data->getId()}}"><button type="button" class="btn  btn-success">EDIT</button></a>
   @endif

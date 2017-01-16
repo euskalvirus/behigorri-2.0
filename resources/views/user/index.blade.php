@@ -13,7 +13,7 @@
     <table class="table">
     	<tr>
     		<th>NAME</th>
-    		<th>ACCION</th>
+    		<th>ACTION</th>
 
     	</tr>
         @foreach ($datas as $data)

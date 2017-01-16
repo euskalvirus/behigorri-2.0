@@ -26,16 +26,16 @@
   </div>
   <div class="form-group">
     <label for="NAME">NAME</label>
-    <input type="TEXT" class="form-control" name="name" value={{$data->getName()}} placeholder="Name">
+    <input type="TEXT" class="form-control" name="name"  value="{{$data->getName()}}">
   </div>
   <div class="form-group">
     <label for="OWNER">OWNER</label>
-    <input type="TEXT" class="form-control" name="owner" readonly value={{$data->getUser()->getName()}}>
+    <input type="TEXT" class="form-control" name="owner" value="{{$data->getUser()->getName()}}" readonly >
   </div>
   @if(!$data->getIsFile())
   	<div class="form-group">
     	<label for="TEXT">TEXT</label>
-    	<textarea class="form-control" style="overflow:auto;resize:none" name="text" rows="10" placeholder="Text" >{{$text}}</textarea>
+    	<textarea class="form-control" style="overflow:auto;resize:none" name="text" rows="10" >{{$text}}</textarea>
   	</div>
   @endif
   	
@@ -53,6 +53,12 @@
                 </select>
            </div>
   @endif
+  
+  <div class="form-group">
+        	<label for="TAGS">TAGS</label>
+            <input type="text" name="tags" class="form-control"
+                    data-role="tagsinput" value="{{$tags}}" />
+    	</div>
   <button type="submit" class="btn  btn-success">SUBMIT</button>
   <a href="/"><button type="button" class="btn btn-danger">RETURN</button></a>
 </form>

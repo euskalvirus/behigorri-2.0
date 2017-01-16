@@ -8,6 +8,11 @@
     <a href="data/new"><button type="button" class="btn btn-default">NEW</button></a>
     <a href="data/newFile"><button type="button" class="btn btn-default">NEW FILE</button></a>
     <table class="table">
+    <tr>
+    		<th>NAME</th>
+    		<th>ACTION</th>
+
+    	</tr>
     @if ($user->getSalt()!=Null)
         @foreach ($datas as $data)
         <tr>

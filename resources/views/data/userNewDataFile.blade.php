@@ -2,11 +2,26 @@
 @section('title',  $title)
 @section('content')
 
-<div class="title">{{ $title }}</div> 
-<div>Buenas tardes {{ $user->getEmail() }} <a href="/auth/logout">Salir</a></div>
-<div class="row">
-<div class="col-xs-6">
-    <h1 class="row"></h1>
+@if(!$user->getGod())
+    @include('user.userMenu')
+@else
+	@include('god.godMenu')
+
+@endif
+
+	<br>
+    <br>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="panel panel-default">
+                    <div class="panel-heading">USER DATA</div>
+                    <div class="panel-body">
+                        @if (count($errors) > 0)
+                           <div class="alert alert-danger">
+    
+                           </div>
+                        @endif
 	<form  class="upload-form" action="/data/saveFile" method="post"  enctype="multipart/form-data">
 		<div class="form-group">
 			<input class="upload-file" type="file" name="dataFile" >
@@ -15,12 +30,14 @@
             <label for="GROUP">GROUP</label>
             <select multiple="multiple" name="groups[]">
                @foreach ($groups as $group)
-                   <option value={{$group->getId()}}>{{$group->getName()}}</option>
+                   <option value="{{$group->getId()}}">{{$group->getName()}}</option>
                @endforeach
             </select>
     	</div>
     	<div class="form-group">
-    		
+        	<label for="TAGS">TAGS</label>
+            <input type="text" name="tags" class="form-control"
+                    data-role="tagsinput" />
     	</div>
 	</form>
 	<button  class="btn  btn-success" onclick="submit1()">VERIFY</button>

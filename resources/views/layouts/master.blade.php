@@ -4,6 +4,17 @@
         <script src="{{ asset('js/app.js') }}"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
         <script src="{{ asset('js/prueba.js') }}"></script>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.css" />
+		<script src="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.min.js"></script>
+
+		<style type="text/css">
+			.bootstrap-tagsinput {
+    			width: 100%;
+			}
+			.label {
+    			line-height: 2 !important;
+			}
+		</style>
         
     </head>
     <body ng-controller="pruebacontroller">
