@@ -7,13 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 use Behigorri\Traits\TimestampCreation;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Behigorri\Repositories\BehigorriRepository")
  * @ORM\Table(
  *   name="SensitiveData",
  *   options={
 *       "collate"="utf8_general_ci", "charset"="utf8"
 *    }
  * )
+ *
  */
 class SensitiveData
 {
@@ -36,19 +37,19 @@ class SensitiveData
      * @ORM\JoinColumn(name="ownerId", referencedColumnName="id")
      */
     private $user;
-    
+
     /**
      * @ORM\ManyToMany(targetEntity="Tag", inversedBy="sensitiveDatas")
      * @ORM\JoinTable(name="SensitiveDataTag")
      */
     private $tags;
-    
+
     /**
      * @ORM\ManyToMany(targetEntity="Group", inversedBy="sensitiveDatas")
      * @ORM\JoinTable(name="SensitiveDataGroup")
      */
     private $groups;
-    
+
     public function __construct() {
         $this->tags = new ArrayCollection();
         $this->groups = new ArrayCollection();
@@ -58,12 +59,12 @@ class SensitiveData
      * @ORM\Column(type="string", length=300, nullable=true)
      */
     private $createdAt;
-    
+
     /**
      * @ORM\Column(type="string", length=300, nullable=true)
      */
     private $updatedAt;
-    
+
     /**
      * @var boolean
      * @ORM\Column(type="boolean", options = {"default":0}, nullable=false)
@@ -243,7 +244,7 @@ class SensitiveData
     {
         return $this->groups;
     }
-    
+
     /**
      * Set userActive
      *
@@ -254,10 +255,10 @@ class SensitiveData
     public function setIsFile($isFile)
     {
     	$this->isFile = $isFile;
-    
+
     	return $this;
     }
-    
+
     /**
      * Get userActive
      *

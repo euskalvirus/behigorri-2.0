@@ -12,6 +12,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  *   options={
 *      "collate"="utf8_general_ci", "charset"="utf8"
 *   })
+*@ORM\Entity(repositoryClass="Behigorri\Repositories\BehigorriRepository")
  */
 class Group
 {
@@ -23,7 +24,7 @@ class Group
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
-    
+
     /**
      * @ORM\Column(type="string", length=255, nullable=false)
      */
@@ -33,18 +34,18 @@ class Group
      * @ORM\Column(type="string", length=300, nullable=true)
      */
     private $description;
-    
+
     // ...
     /**
      * @ORM\ManyToMany(targetEntity="User", mappedBy="groups")
      */
     private $users;
-    
+
     /**
      * @ORM\ManyToMany(targetEntity="SensitiveData", mappedBy="groups")
      */
     private $sensitiveDatas;
-    
+
     public function __construct() {
         $this->users = new ArrayCollection();
         $this->sensitiveDatas = new ArrayCollection();
@@ -54,7 +55,7 @@ class Group
      * @ORM\Column(type="string", length=300, nullable=true)
      */
     private $createdAt;
-    
+
     /**
      * @ORM\Column(type="string", length=300, nullable=true)
      */

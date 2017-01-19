@@ -13,13 +13,13 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
 /**
 *
-* @ORM\Entity(repositoryClass="Behigorri\Repositories\UserRepository")
-* @ORM\Table(
+** @ORM\Table(
 *   name="User",
 *   options={
 *     "collate"="utf8_general_ci", "charset"="utf8"
 *   }
 * )
+* @ORM\Entity(repositoryClass="Behigorri\Repositories\BehigorriRepository")
 */
 class User implements AuthenticatableContract, CanResetPasswordContract, AuthorizableContract
 {
@@ -34,7 +34,7 @@ class User implements AuthenticatableContract, CanResetPasswordContract, Authori
     * @var  int
     */
    private $id;
-   
+
    /**
     * @ORM\Column(type="string", nullable=true)
     * @var string
@@ -53,7 +53,7 @@ class User implements AuthenticatableContract, CanResetPasswordContract, Authori
     * @var string
     */
    private $password;
-   
+
    /**
     * @ORM\OneToMany(targetEntity="SensitiveData", mappedBy="user")
     */
@@ -64,7 +64,7 @@ class User implements AuthenticatableContract, CanResetPasswordContract, Authori
     * @ORM\JoinTable(name="UserGroup")
     */
    private $groups;
-   
+
    public function __construct() {
        $this->sensitiveDatas = new ArrayCollection();
        $this->groups = new ArrayCollection();
@@ -74,19 +74,19 @@ class User implements AuthenticatableContract, CanResetPasswordContract, Authori
     * @ORM\Column(type="string", length=300, nullable=true)
     */
    private $createdAt;
-   
+
    /**
     * @ORM\Column(type="string", length=300, nullable=true)
     */
    private $updatedAt;
-   
+
 
    /**
     * @var string
     * @ORM\Column(type="string", length=355, nullable=true)
     */
    private $token;
-   
+
    /**
     * @var boolean
     * @ORM\Column(type="boolean", options = {"default":0}, nullable=false)
@@ -98,13 +98,13 @@ class User implements AuthenticatableContract, CanResetPasswordContract, Authori
     * @ORM\Column(type="boolean", options = {"default":0}, nullable=false)
     */
     private $god;
-    
+
     /**
      * @var string
      * @ORM\Column(type="string", length=355, nullable=true)
      */
     private $salt;
-    
+
     /**
      * @var string
      * @ORM\Column(type="string", length=355, nullable=true)
@@ -308,12 +308,12 @@ class User implements AuthenticatableContract, CanResetPasswordContract, Authori
     {
         return $this->groups;
     }
-    
+
     public function getAuthIdentifierName()
     {
         return 'id';
     }
-    
+
     public function getAuthIdentifier()
     {
         return $this->id;
@@ -328,7 +328,7 @@ class User implements AuthenticatableContract, CanResetPasswordContract, Authori
     {
         return $this->password;
     }
-    
+
     /**
      * Get the token value for the "remember me" session.
      *
@@ -338,7 +338,7 @@ class User implements AuthenticatableContract, CanResetPasswordContract, Authori
     {
         return $this->token;
     }
-    
+
     /**
      * Set the token value for the "remember me" session.
      *
@@ -349,7 +349,7 @@ class User implements AuthenticatableContract, CanResetPasswordContract, Authori
     {
         $this->token = $value;
     }
-    
+
     /**
      * Get the column name for the "remember me" token.
      *
@@ -408,7 +408,7 @@ class User implements AuthenticatableContract, CanResetPasswordContract, Authori
         return $this->god;
     }
 
-    
+
     /**
      * Set token
      *
@@ -419,10 +419,10 @@ class User implements AuthenticatableContract, CanResetPasswordContract, Authori
     public function setSalt($salt)
     {
     	$this->salt = $salt;
-    
+
     	return $this;
     }
-    
+
     /**
      * Get token
      *
@@ -432,7 +432,7 @@ class User implements AuthenticatableContract, CanResetPasswordContract, Authori
     {
     	return $this->salt;
     }
-    
+
     /**
      * Set userActive
      *
@@ -443,10 +443,10 @@ class User implements AuthenticatableContract, CanResetPasswordContract, Authori
     public function setUserActive($userActive)
     {
     	$this->userActive = $userActive;
-    
+
     	return $this;
     }
-    
+
     /**
      * Get userActive
      *
@@ -457,7 +457,7 @@ class User implements AuthenticatableContract, CanResetPasswordContract, Authori
     	//var_dump((bool)$this->userActive);exit;
     	return $this->userActive;
     }
-    
+
     /**
      * Set token
      *
@@ -468,10 +468,10 @@ class User implements AuthenticatableContract, CanResetPasswordContract, Authori
     public function setActivationCode($activationCode)
     {
     	$this->activationCode = $activationCode;
-    
+
     	return $this;
     }
-    
+
     /**
      * Get token
      *
@@ -481,12 +481,12 @@ class User implements AuthenticatableContract, CanResetPasswordContract, Authori
     {
     	return $this->activationCode;
     }
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
 
     public function getUniqueSensitiveData()
     {
@@ -500,7 +500,7 @@ class User implements AuthenticatableContract, CanResetPasswordContract, Authori
                 }
             }
         }
-        
+
 
         foreach ($this->getSensitiveDatas() as $data)
         {
@@ -508,10 +508,10 @@ class User implements AuthenticatableContract, CanResetPasswordContract, Authori
                 $sensitiveDatas[$data->getId()] = $data;
             }
         }
-        
+
         return $sensitiveDatas;
     }
-    
+
     public function canBeViewSenstiveData($id)
     {
         foreach ($this->getUniqueSensitiveData()as $data)
@@ -522,10 +522,10 @@ class User implements AuthenticatableContract, CanResetPasswordContract, Authori
                 return true;
             }
         }
-        
+
         return false;
     }
-    
+
     public function jsonSerialize()
     {
         return get_object_vars($this);

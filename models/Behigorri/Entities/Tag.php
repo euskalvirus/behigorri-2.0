@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping AS ORM;
 *     "collate"="utf8_general_ci", "charset"="utf8"
 *   }
 * )
+*@ORM\Entity(repositoryClass="Behigorri\Repositories\BehigorriRepository")
 */
 class Tag
 {
@@ -41,7 +42,7 @@ class Tag
      * @ORM\Column(type="string", length=300, nullable=true)
      */
     private $createdAt;
-    
+
     /**
      * @ORM\Column(type="string", length=300, nullable=true)
      */
