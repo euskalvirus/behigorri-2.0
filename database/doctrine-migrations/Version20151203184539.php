@@ -34,7 +34,7 @@ class Version20151203184539 extends AbstractMigration
         $this->addSql('ALTER TABLE SensitiveDataGroup ADD CONSTRAINT FK_72ED6F7FFE54D947 FOREIGN KEY (group_id) REFERENCES `Group` (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE User ADD token VARCHAR(355) DEFAULT NULL, ADD god TINYINT(1) DEFAULT \'0\' NOT NULL');
         $this->addSql('ALTER TABLE User ADD salt VARCHAR(355) DEFAULT NULL, ADD userActive TINYINT(1) DEFAULT \'0\' NOT NULL');
-        
+        $this->addSql('INSERT INTO User (name,email, password, createdAt, updatedAt,god,userActive) VALUES ("admin","admin@admin.com", "$2a$04$eUClLowFkXBaMsn4n0m/yOv07nsu4pStf2gQgS4bPOotMA2ehiW7C",'. date("Y-m-d H:i:s") .'","'. date("Y-m-d H:i:s") .'",true,true)');
         
     }
 
