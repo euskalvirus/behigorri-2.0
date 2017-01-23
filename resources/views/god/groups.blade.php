@@ -3,17 +3,21 @@
 @section('content')
 @include('god.godMenu')
 <div class="row">
-<div class="col-xs-12">
-    <h1 class="row">LISTA DE GRUPOS:</h1>
+<div class="col-xs-12"><br><br>
+<div>
+    <h1 >GROUPS LIST:</h1>
     <a href="group/new"><button type="button" class="btn btn-default">NEW</button></a>
-    <table class="table">
-    <tr>
-         <form method="post" action="/admin/group/search" accept-charset="UTF-8" style="display:inline">
+     <form method="post" action="/admin/group/search" accept-charset="UTF-8" style="display:inline">
            <input type="text" name="search" placeholder="Search..">
            <input type="submit" value="Submit">
          </form>
+</div><br>  
+    <table class="table">
+    <tr>
+    		<th>NAME</th>
+    		<th>ACTION</th>
 
-       </tr>
+    	</tr>
         @foreach ($datas as $data)
         <tr>
        

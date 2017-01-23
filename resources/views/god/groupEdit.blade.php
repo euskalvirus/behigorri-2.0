@@ -18,7 +18,7 @@
 
 						  <div class="form-group">
 						    <label for="NAME">GROUP NAME</label>
-						    <input type="TEXT" class="form-control" name="name" value={{$group->getName()}} placeholder="Name">
+						    <input type="TEXT" class="form-control" name="name" value={{$group->getName()}} placeholder="Name" required>
 						  </div>
 
 

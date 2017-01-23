@@ -18,9 +18,11 @@
                     <div class="panel-heading">USER DATA</div>
                     <div class="panel-body">
                         @if (count($errors) > 0)
-                           <div class="alert alert-danger">
-    
-                           </div>
+                        	@foreach ($errors->all() as $error)
+                           		<div class="alert alert-danger">
+    								<li>{{$error}}</li>
+                          		</div>
+                           @endforeach
                         @endif
 	<form  class="upload-form" action="/data/saveFile" method="post"  enctype="multipart/form-data">
 		<div class="form-group">

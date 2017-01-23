@@ -3,19 +3,21 @@
 @section('content')
 @include('god.godMenu')
 <div class="row">
-<div class="col-xs-12">
-    <h1 class="row">LISTA DE USUARIOS:</h1>
+<div class="col-xs-12"><br><br>
+<div>
+    <h1>USERS LIST:</h1>
     <a href="user/new"><button type="button" class="btn btn-default">NEW</button></a>
-    <tr>
-       <tr>
          <form method="post" action="/admin/user/search" accept-charset="UTF-8" style="display:inline">
            <input type="text" name="search" placeholder="Search..">
            <input type="submit" value="Submit">
          </form>
-
-       </tr>
-    </tr>
+</div><br>
     <table class="table">
+    <tr>
+    		<th>NAME</th>
+    		<th>ACTION</th>
+
+    	</tr>
         @foreach ($datas as $data)
         <tr>
             <td>{{ $data->getName() }}</td>

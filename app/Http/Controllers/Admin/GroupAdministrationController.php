@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 use Behigorri\Entities\User;
 use Behigorri\Entities\Group;
 use Auth;
+use Validator;
 use App\Http\Controllers\Controller;
 use Doctrine\ORM\EntityManager;
 use Illuminate\Http\Request;
@@ -64,6 +65,13 @@ class GroupAdministrationController extends Controller
     
     public function groupSave(Request $request)
     {
+    	$validator = $this->validator($request->all());
+    	
+    	if ($validator->fails()) {
+    		$this->throwValidationException(
+    				$request, $validator
+    				);
+    	}
     	$loggedUser = Auth::user();
     	$group = new Group();
     	$group->setName($request->input('name'));
@@ -88,6 +96,12 @@ class GroupAdministrationController extends Controller
     	return redirect('/admin/group');
     	//return redirect()->back();
     	
+    }
+    protected function validator(array $data)
+    {
+    	return Validator::make($data, [
+    			'name' => 'required|max:255|unique:Group'
+    	]);
     }
     
     protected function groupDelete($id)

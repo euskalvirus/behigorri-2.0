@@ -11,27 +11,29 @@
                     <div class="panel-heading">NEW USER</div>
                     <div class="panel-body">
                         @if (count($errors) > 0)
-                           <div class="alert alert-danger">
-    
-                           </div>
+                        	@foreach ($errors->all() as $error)
+                           		<div class="alert alert-danger">
+    								<li>{{$error}}</li>
+                          		</div>
+                           @endforeach
                         @endif
                         
                         {!! Form::open(['route' => 'doRegistration', 'class' => 'form']) !!}
                             <div class="form-group">
                                 <label>name</label>
-                                {!! Form::input('text', 'name', '', ['class'=> 'form-control']) !!}
+                                {!! Form::input('text', 'name', '', ['class'=> 'form-control', 'required' => 'required']) !!}
                             </div>
                             <div class="form-group">
                                 <label>Email</label>
-                                {!! Form::email('email', '', ['class'=> 'form-control']) !!}
+                                {!! Form::email('email', '', ['class'=> 'form-control', 'required' => 'required']) !!}
                             </div>
                             <div class="form-group">
                                 <label>Password</label>
-                                {!! Form::password('password', ['class'=> 'form-control']) !!}
+                                {!! Form::password('password', ['class'=> 'form-control', 'required' => 'required']) !!}
                             </div>
                             <div class="form-group">
                                 <label>Password confirmation</label>
-                                {!! Form::password('password_confirmation', ['class'=> 'form-control']) !!}
+                                {!! Form::password('password_confirmation', ['class'=> 'form-control', 'required' => 'required']) !!}
                             </div>
                             <div>
                                 {!! Form::submit('SUBMIT',['class' => 'btn  btn-success']) !!}

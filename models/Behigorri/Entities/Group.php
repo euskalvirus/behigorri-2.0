@@ -26,7 +26,7 @@ class Group
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", unique=true, length=255, nullable=false)
      */
     private $name;
 

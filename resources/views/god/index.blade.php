@@ -4,18 +4,19 @@
 @include('god.godMenu')
 <br>
     <br>
-    <h1 class="row">LISTA DE FICHEROS:</h1>
-    <a href="data/new"><button type="button" class="btn btn-default">NEW</button></a>
-    <a href="data/newFile"><button type="button" class="btn btn-default">NEW FILE</button></a>
-    <br><br>
-    <form method="post" action="/data/search" accept-charset="UTF-8" style="display:inline">
+    <div>
+    	<h1 >FILE LIST:</h1>
+    	<a href="data/new"><button type="button" class="btn btn-default">NEW</button></a>
+    	<a href="data/newFile"><button type="button" class="btn btn-default">NEW FILE</button></a>
+    	<form method="post" action="/data/search" accept-charset="UTF-8" style="display:inline">
            <input type="text" name="search" placeholder="Search..">
            <input type="submit" value="Submit">
-    </form>
-    TAG SEARCH:  
-    @foreach ($tags as $tag)
+    	</form>
+    	TAG SEARCH:  
+    	@foreach ($tags as $tag)
     		<a href="/data/searchTag/{{$tag->getName()}}">{{$tag->getName()}}</a>, 
-    @endforeach
+    	@endforeach
+    </div><br>
     <table class="table">
     <tr>
     		<th>NAME</th>

@@ -11,15 +11,17 @@
                     <div class="panel-heading">NEW GROUP</div>
                     <div class="panel-body">
                         @if (count($errors) > 0)
-                           <div class="alert alert-danger">
-    
-                           </div>
+                        	@foreach ($errors->all() as $error)
+                           		<div class="alert alert-danger">
+    								<li>{{$error}}</li>
+                          		</div>
+                           @endforeach
                         @endif
                         
                         {!! Form::open(['route' => 'saveGroup', 'class' => 'form']) !!}
                             <div class="form-group">
                                 <label>name</label>
-                                {!! Form::input('text', 'name', '', ['class'=> 'form-control']) !!}
+                                {!! Form::input('text', 'name', '', ['class'=> 'form-control', 'required' => 'required']) !!}
                             </div>
                             <div class="form-group">
                                 <label for="USER">USERS</label>
