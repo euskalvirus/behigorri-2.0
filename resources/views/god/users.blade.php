@@ -6,16 +6,25 @@
 <div class="col-xs-12">
     <h1 class="row">LISTA DE USUARIOS:</h1>
     <a href="user/new"><button type="button" class="btn btn-default">NEW</button></a>
+    <tr>
+       <tr>
+         <form method="post" action="/admin/user/search" accept-charset="UTF-8" style="display:inline">
+           <input type="text" name="search" placeholder="Search..">
+           <input type="submit" value="Submit">
+         </form>
+
+       </tr>
+    </tr>
     <table class="table">
         @foreach ($datas as $data)
         <tr>
-            <td>{{ $data->name }}</td>
+            <td>{{ $data->getName() }}</td>
             <td>
-                <a href="user/edit/{{$data->id}}"><button type="button" class="btn  btn-success">
+                <a href="user/edit/{{$data->getId()}}"><button type="button" class="btn  btn-success">
                     EDIT</button></a>
 
-                <form method="GET" action="user/delete/{{$data->id}}"accept-charset="UTF-8" style="display:inline">
-                	@if($data->id==$user->getId())
+                <form method="GET" action="user/delete/{{$data->getId()}}"accept-charset="UTF-8" style="display:inline">
+                	@if($data->getId()==$user->getId())
 		    			<button class="btn btn-danger" disabled  type="button">
 		        			DELETE
 		    			</button>
@@ -25,7 +34,7 @@
 		    			</button>
 		    		@endif
 				</form>   
-                <a href="user/view/{{$data->id}}"><button type="button" class="btn btn-primary"
+                <a href="user/view/{{$data->getId()}}"><button type="button" class="btn btn-primary"
                    formaction="exit">VIEW</button></a>
             </td>
             </tr>

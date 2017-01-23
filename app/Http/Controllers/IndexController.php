@@ -13,8 +13,10 @@ use Illuminate\Support\Collection as Collection;
 class IndexController extends Controller
 {
     protected $repository;
+    protected $em;
     public function __construct(EntityManager $em)
     {
+    	$this->em = $em;
         $this->repository = $em->getRepository('Behigorri\Entities\User');
     }
     public function index()
@@ -22,12 +24,14 @@ class IndexController extends Controller
         $loggedUser = Auth::user();
         $Sensitivedatas = $loggedUser->getUniqueSensitiveData();
         $datas = $this->paginate($Sensitivedatas,15);
+        $dataTags = $this->repository->getTags($datas);
         if($loggedUser->getGod())
         {
             return view('god.index')->with([
                 'user' => $loggedUser,
                 'title' => 'BEHIGORRI PASSWORD MANAGER',
-                'datas' => $datas
+                'datas' => $datas,
+            	'tags' => $dataTags	
             ]);
         } else {
         	
@@ -37,7 +41,8 @@ class IndexController extends Controller
 	            return view('user.index')->with([
 	                'user' => $loggedUser,
 	                'title' => 'WELLCOME SIMPLE USER',
-	                'datas' => $datas
+	                'datas' => $datas,
+            		'tags' => $dataTags	
 	            ]);
         	} else {
         		//var_dump($loggedUser->getUserActive());exit;

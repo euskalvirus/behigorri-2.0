@@ -7,6 +7,15 @@
     <h1 class="row">LISTA DE FICHEROS:</h1>
     <a href="data/new"><button type="button" class="btn btn-default">NEW</button></a>
     <a href="data/newFile"><button type="button" class="btn btn-default">NEW FILE</button></a>
+    <br><br>
+    <form method="post" action="/data/search" accept-charset="UTF-8" style="display:inline">
+           <input type="text" name="search" placeholder="Search..">
+           <input type="submit" value="Submit">
+    </form>
+    TAG SEARCH:  
+    @foreach ($tags as $tag)
+    		<a href="/data/searchTag/{{$tag->getName()}}">{{$tag->getName()}}</a>, 
+    @endforeach
     <table class="table">
     <tr>
     		<th>NAME</th>
@@ -14,15 +23,7 @@
 
     	</tr>
     @if ($user->getSalt()!=Null)
-    <tr>
-       <tr>
-         <form method="post" action="data/search" accept-charset="UTF-8" style="display:inline">
-           <input type="text" name="search" placeholder="Search..">
-           <input type="submit" value="Submit">
-         </form>
-
-       </tr>
-    </tr>
+    	
         @foreach ($datas as $data)
         <tr>
             <td>{{ $data->getName() }}</td>
@@ -43,7 +44,9 @@
             </tr>
         @endforeach
         </table>
-        {!!$datas->render()!!}
+        @if ($datas)
+        	{!!$datas->render()!!}
+        @endIf
       @else
       	<a href="admin/generateSalt"><button type="button" class="btn btn-success"
                    formaction="show">GENERATE SALT</button></a>

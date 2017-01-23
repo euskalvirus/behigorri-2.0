@@ -3,27 +3,45 @@ namespace Behigorri\Repositories;
 
 use Doctrine\ORM\EntityRepository;
 
-class BehigorriRepository
+class BehigorriRepository extends EntityRepository
 {
 
-      public function findBySearch($criteria)
+      public function search($criteria)
       {
         if($criteria){
           $sqb = $this->createQueryBuilder('c');
-          foreach ($criteria as $word) {
-            $splitedWords = explode(' ', $criteria[$word]);
+          foreach ($criteria as $id => $word) {
+          	//var_dump($word ."  ". $id);exit;
+            $splitedWords = explode(' ', $criteria[$id]);
             foreach ($splitedWords as $word) {
-                $filteredWord=(filter_var(stripslashes(trim($word)), FILTER_SANITIZE_STRING));
-                $where= $where . 'name like :word' . $id . ' or ';
-                $ors[] = $sqb->expr()->orx('c. = ' .
-                $sqb->expr()->literal(mysql_real_escape_string($filteredWord)));
+            	$filteredWord=(filter_var(stripslashes(trim($word)), FILTER_SANITIZE_STRING));
+            	$ors[] = $sqb->expr()->orx('c.name like ' .  $sqb->expr()->literal('%' . $filteredWord . '%'));
             }
-             $sqb->andWhere(join(' OR ', $ors));
+            $sqb->andWhere(join(' OR ', $ors));
+            
           }
 
         }
-        return $sqb;
+        //var_dump($where);exit;
+        //$result = $sqb->getQuery()->getResult();
+        //var_dump($sqb->getQuery());exit;
+        return $sqb->getQuery()->getResult();
+        
 
+      }
+      
+      public function getTags($datas)
+      {
+      	$dataTags =[];
+      	foreach ($datas as $data)
+      	{
+      		foreach ($data->getTags() as $tag)
+      			if(!isset($dataTags[$tag->getId()]))
+      			{
+      				$dataTags[$tag->getId()] = $tag;
+      			}
+      	}
+      	return $dataTags;
       }
 
 

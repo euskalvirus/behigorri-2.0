@@ -21,7 +21,7 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 * )
 * @ORM\Entity(repositoryClass="Behigorri\Repositories\BehigorriRepository")
 */
-class User implements AuthenticatableContract, CanResetPasswordContract, AuthorizableContract
+class User implements AuthenticatableContract, CanResetPasswordContract, AuthorizableContract 
 {
 
    use Authenticatable, Authorizable, CanResetPassword;
@@ -483,11 +483,6 @@ class User implements AuthenticatableContract, CanResetPasswordContract, Authori
     }
 
 
-
-
-
-
-
     public function getUniqueSensitiveData()
     {
         $sensitiveDatas = [];
@@ -529,5 +524,18 @@ class User implements AuthenticatableContract, CanResetPasswordContract, Authori
     public function jsonSerialize()
     {
         return get_object_vars($this);
+    }
+    
+    public function getSensitiveDataByTag($tag)
+    {
+    	$datas = $this->getUniqueSensitiveData();
+    	foreach ($datas as $id => $data)
+    	{
+    		if(!$data->containsTag($tag))
+    		{
+    			unset($datas[$id]);
+    		}
+    	}
+    	return $datas;
     }
 }

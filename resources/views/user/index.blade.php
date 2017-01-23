@@ -10,6 +10,14 @@
     <a href="data/new"><button type="button" class="btn btn-default">NEW</button></a>
     <a href="data/newFile"><button type="button" class="btn btn-default">NEW FILE</button></a>
     <br><br>
+     <form method="post" action="/data/search" accept-charset="UTF-8" style="display:inline">
+           <input type="text" name="search" placeholder="Search..">
+           <input type="submit" value="Submit">
+         </form>
+    TAG SEARCH:  
+    @foreach ($tags as $tag)
+    			<a href="/data/searchTag/{{$tag->getName()}}">{{$tag->getName()}}</a>, 
+    	@endforeach
     <table class="table">
     	<tr>
     		<th>NAME</th>
@@ -43,7 +51,9 @@
             </tr>
         @endforeach
         </table>
-       {!!$datas->render()!!}
+       @if ($datas)
+        	{!!$datas->render()!!}
+        @endIf
     </div>
     </div>
     

@@ -14,6 +14,9 @@ use ParagonIE\Halite\File;
 use ParagonIE\Halite\KeyFactory;
 use Illuminate\Http\Response;
 use ParagonIE\Halite\Symmetric\Crypto as Symmetric;
+use Illuminate\Pagination\Paginator as Paginator;
+use Illuminate\Pagination\LengthAwarePaginator as LengthAwarePaginator;
+use Illuminate\Support\Collection as Collection;
 
 
 class SensitiveDataController extends Controller
@@ -27,10 +30,10 @@ class SensitiveDataController extends Controller
     public function __construct(EntityManager $EntityManager, Request $request)
     {
         $this->em = $EntityManager;
-        var_dump(SensitiveData::class);
+        //var_dump(SensitiveData::class);
         $this->repository = $this->em->getRepository(SensitiveData::class);
-        $this->userRepo = $this->em->getRepository(User::class);
-        var_dump(get_class($this->userRepo));
+        //$this->userRepo = $this->em->getRepository(User::class);
+        //var_dump(get_class($this->userRepo));
     }
 
     public function compare_objects($a, $b)
@@ -432,36 +435,121 @@ class SensitiveDataController extends Controller
 
     protected function sensitiveDataSearch(Request $request)
     {
-      // $result = $this->repository->search($request->input('search'));
-      var_dump(get_class($this->repository));exit;
-      $datas = $this->paginate($result,15);
-      if($loggedUser->getGod())
-      {
-          return view('god.index')->with([
-              'user' => $loggedUser,
-              'title' => 'BEHIGORRI PASSWORD MANAGER',
-              'datas' => $datas
-          ]);
-      } else {
-
-        if($loggedUser->getUserActive())
-        {
-
-            return view('user.index')->with([
-                'user' => $loggedUser,
-                'title' => 'WELLCOME SIMPLE USER',
-                'datas' => $datas
-            ]);
-        } else {
-          //var_dump($loggedUser->getUserActive());exit;
-          Auth::logout();
-          $error='not activated';
-          //return redirect('/auth/login')->with($error);;
-          return view('auth.login')->with(['error' => $error]);
-        }
-      }
+    	$loggedUser = Auth::user();
+    	$datas = $loggedUser->getUniqueSensitiveData();
+      	if($request->input('search')!='')
+      	{
+      		
+      		$splitedWords = explode(' ', $request->input('search'));
+      		foreach ($splitedWords as $id =>$word) {
+      			$splitedWords[$id]=(filter_var(stripslashes(trim($word)), FILTER_SANITIZE_STRING));
+      		}
+      		$searchDatas=[];
+      		foreach ($datas as $id =>$data)
+      		{
+      			if(!$this->similarInArray($data,$splitedWords))
+      			{
+      				//var_dump($datas[$id]->getName() . ' se ha eliminado');exit;
+      				unset($datas[$id]);
+      				
+      			}
+      			
+      			/*if(in_array($data->getName(),$splitedWords))
+      			{
+      				array_push($searchDatas,$data);
+      			}*/
+      			
+      		}
+      		
+      		//dd($datas);
+      		$searchDatas = $this->paginate($datas,15);
+      		
+      	}else{
+      		$searchDatas = $this->paginate($datas,15);
+      	}
+      	return $this->returnSearchView($searchDatas);
+      	
     }
+    
+    public function paginate($items,$perPage)
+    {
+    	if($items)
+    	{
+    		$pageStart = \Request::get('page', 1);
+    		// Start displaying items from this number;
+    		$offSet = ($pageStart * $perPage) - $perPage;
+    		
+    		// Get only the items you need using array_slice
+    		$itemsForCurrentPage = array_slice($items, $offSet, $perPage, true);
+    		
+    		return new LengthAwarePaginator($itemsForCurrentPage, count($items), $perPage,Paginator::resolveCurrentPage(), array('path' => Paginator::resolveCurrentPath()));
+    	}else{
+    		return [];
+    	}
+    	
+    }
+    
+    protected function similarInArray($data, $array)
+    {
+    	foreach ($array as $word)
+    	{
 
+       		if(strpos($data->getName(), $word)!== false)
+    		{
+    			//dd(strpos($data->getName(), $word));
+    			//exit;
+    			return true;
+    		}
+    	}
+    	//exit;
+    	return false;
+    	
+    }
+    
+   protected function sensitiveDataSearchByTag($tag)
+   {
+   		$loggedUser = Auth::user();
+   		$datas = $loggedUser->getSensitiveDataByTag($tag);
+   		//dd($datas);
+   		$searchDatas = $this->paginate($datas,15);
+   		return $this->returnSearchView($searchDatas);
+   }
+
+   protected function returnSearchView($searchDatas)
+   {
+   	$loggedUser =Auth::user();
+   	$Sensitivedatas = $loggedUser->getUniqueSensitiveData();
+   	$datas = $this->paginate($Sensitivedatas,15);
+   	$dataTags = $this->repository->getTags($datas);
+   	if($loggedUser->getGod())
+   	{
+   		return view('god.index')->with([
+   				'user' => $loggedUser,
+   				'title' => 'BEHIGORRI PASSWORD MANAGER',
+   				'datas' => $searchDatas,
+   				'tags'=> $dataTags
+   		]);
+   	} else {
+   	
+   		if($loggedUser->getUserActive())
+   		{
+   	
+   			return view('user.index')->with([
+   					'user' => $loggedUser,
+   					'title' => 'WELLCOME SIMPLE USER',
+   					'datas' => $searchDatas,
+   					'tags' => $dataTags
+   			]);
+   		} else {
+   			//var_dump($loggedUser->getUserActive());exit;
+   			Auth::logout();
+   			$error='not activated';
+   			//return redirect('/auth/login')->with($error);;
+   			return view('auth.login')->with(['error' => $error]);
+   		}
+   	}
+   	
+   }
 
 
 }

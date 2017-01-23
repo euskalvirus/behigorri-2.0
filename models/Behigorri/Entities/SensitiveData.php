@@ -269,4 +269,16 @@ class SensitiveData
     	//var_dump((bool)$this->userActive);exit;
     	return $this->isFile;
     }
+    
+    public function containsTag($tagName)
+    {
+    	foreach ($this->getTags() as $tag)
+    	{
+    		if($tag->getName() == $tagName)
+    		{
+    			return true;
+    		}
+    	}
+    	return false;
+    }
 }

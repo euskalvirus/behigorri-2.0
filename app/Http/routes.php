@@ -24,6 +24,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('admin/user/delete/{id}', 'Admin\UserAdministrationController@userDelete');
     Route::post('admin/user/update', ['as' => 'updateUser', 'uses' => 'Admin\UserAdministrationController@userUpdate']);
     Route::post('admin/user/updatePassword', ['as' => 'updateUserPassword', 'uses' => 'Admin\UserAdministrationController@userPasswordUpdate']);
+    Route::post('admin/user/search', 'Admin\UserAdministrationController@userSearch');
 
     Route::get('edit/profile', 'Admin\UserAdministrationController@editProfile');
 
@@ -38,6 +39,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('admin/group/edit/{id}', 'Admin\GroupAdministrationController@groupEdit');
     Route::post('admin/group/update', 'Admin\GroupAdministrationController@groupUpdate');
     Route::get('admin/group/view/{id}', 'Admin\GroupAdministrationController@groupView');
+    Route::post('admin/group/search', 'Admin\GroupAdministrationController@groupSearch');
 
 
 
@@ -50,6 +52,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('data/delete/{id}', 'data\SensitiveDataController@sensitiveDataDelete');
     Route::get('data/view/{id}', 'data\SensitiveDataController@sensitiveDataView');
     Route::post('data/search', 'data\SensitiveDataController@sensitiveDataSearch');
+    Route::get('data/searchTag/{name}', 'data\SensitiveDataController@sensitiveDataSearchByTag');
 
 
 

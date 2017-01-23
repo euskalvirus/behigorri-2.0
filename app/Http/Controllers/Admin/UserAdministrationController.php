@@ -11,6 +11,9 @@ use Mail;
 use ParagonIE\Halite\KeyFactory;
 use ParagonIE\Halite\Symmetric\EncryptionKey;
 use Illuminate\Support\Facades\DB as DB;
+use Illuminate\Pagination\Paginator as Paginator;
+use Illuminate\Pagination\LengthAwarePaginator as LengthAwarePaginator;
+use Illuminate\Support\Collection as Collection;
 
 
 class UserAdministrationController extends Controller
@@ -28,9 +31,9 @@ class UserAdministrationController extends Controller
     {
         $loggedUser = Auth::user();
         //$users = $this->repository->findBy(['god' => false]);
-        //$users = $this->repository->findAll();
-        $users = DB::table('User')->paginate(15);
-        //dd($users);
+        $users = $this->paginate($this->repository->findAll(),15);
+        //$users = DB::table('User')->paginate(15);
+       	//dd($users);
         if($loggedUser->getGod())
         {
             return view('god.users')->with([
@@ -341,6 +344,37 @@ class UserAdministrationController extends Controller
      		$this->em->flush();
      	}
      	return redirect('/');
+     }
+     
+     public function userSearch(Request $request)
+     {
+     	$loggedUser = Auth::user();
+     	if($loggedUser->getGod())
+     	{
+     		$search['name'] = $request->input('search');
+    		$result = $this->repository->search($search);
+    		$users = $this->paginate($result,15);
+    		//dd($users);
+    		return view('god.users')->with([
+    				'user' => $loggedUser,
+    				'title' => 'BEHIGORRI PASSWORD MANAGER',
+    				'datas' => $users
+    		]);
+     	
+     	} else {
+     		return redirect('/');
+     	}
+     }
+     public function paginate($items,$perPage)
+     {
+     	$pageStart = \Request::get('page', 1);
+     	// Start displaying items from this number;
+     	$offSet = ($pageStart * $perPage) - $perPage;
+     
+     	// Get only the items you need using array_slice
+     	$itemsForCurrentPage = array_slice($items, $offSet, $perPage, true);
+     
+     	return new LengthAwarePaginator($itemsForCurrentPage, count($items), $perPage,Paginator::resolveCurrentPage(), array('path' => Paginator::resolveCurrentPath()));
      }
     
     
