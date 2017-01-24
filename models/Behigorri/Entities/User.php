@@ -16,12 +16,12 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 ** @ORM\Table(
 *   name="User",
 *   options={
-*     "collate"="utf8_general_ci", "charset"="utf8"
+*     "collate"="utf8_bin", "charset"="utf8"
 *   }
 * )
 * @ORM\Entity(repositoryClass="Behigorri\Repositories\BehigorriRepository")
 */
-class User implements AuthenticatableContract, CanResetPasswordContract, AuthorizableContract 
+class User implements AuthenticatableContract, CanResetPasswordContract, AuthorizableContract
 {
 
    use Authenticatable, Authorizable, CanResetPassword;
@@ -525,7 +525,7 @@ class User implements AuthenticatableContract, CanResetPasswordContract, Authori
     {
         return get_object_vars($this);
     }
-    
+
     public function getSensitiveDataByTag($tag)
     {
     	$datas = $this->getUniqueSensitiveData();

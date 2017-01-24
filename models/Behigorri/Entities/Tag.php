@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping AS ORM;
 * @ORM\Table(
 *   name="Tag",
 *   options={
-*     "collate"="utf8_general_ci", "charset"="utf8"
+*     "collate"="utf8_bin", "charset"="utf8"
 *   }
 * )
 *@ORM\Entity(repositoryClass="Behigorri\Repositories\BehigorriRepository")

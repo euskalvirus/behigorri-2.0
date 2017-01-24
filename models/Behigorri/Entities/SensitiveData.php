@@ -11,7 +11,7 @@ use Behigorri\Traits\TimestampCreation;
  * @ORM\Table(
  *   name="SensitiveData",
  *   options={
-*       "collate"="utf8_general_ci", "charset"="utf8"
+*       "collate"="utf8_bin", "charset"="utf8"
 *    }
  * )
  *
@@ -269,7 +269,7 @@ class SensitiveData
     	//var_dump((bool)$this->userActive);exit;
     	return $this->isFile;
     }
-    
+
     public function containsTag($tagName)
     {
     	foreach ($this->getTags() as $tag)

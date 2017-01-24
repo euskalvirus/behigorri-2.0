@@ -45,7 +45,8 @@ class SensitiveDataController extends Controller
     {
     	$data = $this->em->find("Behigorri\Entities\SensitiveData",$id);
         $loggedUser = Auth::user();
-        if ($data->getUser()->getId()==$loggedUser->getId())
+
+        if ($data && $data->getUser()->getId()==$loggedUser->getId())
         {
 
             $filteredGroups=[];
@@ -108,7 +109,8 @@ class SensitiveDataController extends Controller
         } else
         {
             //return redirect('/');
-        	return redirect()->back();
+        	//return redirect()->back();
+          return redirect('/');
         }
     }
 
@@ -189,7 +191,7 @@ class SensitiveDataController extends Controller
     {
     	$loggedUser = Auth::user();
     	$data = $this->em->find("Behigorri\Entities\SensitiveData",$request->input('id'));
-        if ($data->getUser()->getId()==$loggedUser->getId())
+        if ($data && $data->getUser()->getId()==$loggedUser->getId())
         {
 
         	$data->setName($request->input('name'));
@@ -331,7 +333,7 @@ class SensitiveDataController extends Controller
     {
     	$loggedUser = Auth::user();
     	$data = $this->em->find("Behigorri\Entities\SensitiveData",$id);
-    	if ($loggedUser->canBeViewSenstiveData($id))
+    	if ($data && $loggedUser->canBeViewSenstiveData($id))
     	{
     		$owner = $data->getUser();
     		$this->setPaths($id);
@@ -386,15 +388,19 @@ class SensitiveDataController extends Controller
     protected function filterTags($tags,$data)
     {
     	$tagRep = $this->em->getRepository('Behigorri\Entities\Tag');
+      //dd($tags);
     	foreach ($tags as $tag){
     		if(!$this->tagExist($tag, $tagRep)){
     			$newTag = new Tag();
     			$newTag->setName($tag);
     			$this->em->persist($newTag);
     			$this->em->flush();
+          //dd($newTag->getId());
     			$data->addTag($newTag);
     		}else {
+          var_dump($tag .' ');
     			$tag = $tagRep->findBy(['name' => $tag]);
+          var_dump($tag[0]->getName() . '  ' ,$tag[0]->getId());
     			$data->addTag($tag[0]);
     		}
     	}
@@ -430,7 +436,9 @@ class SensitiveDataController extends Controller
     		unset($splitedTags[array_search($tag->getName(), $splitedTags)]);
 
     	}
+      //dd($splitedTags);
     	return $this->filterTags($splitedTags,$data);
+
     }
 
     protected function sensitiveDataSearch(Request $request)
@@ -439,7 +447,7 @@ class SensitiveDataController extends Controller
     	$datas = $loggedUser->getUniqueSensitiveData();
       	if($request->input('search')!='')
       	{
-      		
+
       		$splitedWords = explode(' ', $request->input('search'));
       		foreach ($splitedWords as $id =>$word) {
       			$splitedWords[$id]=(filter_var(stripslashes(trim($word)), FILTER_SANITIZE_STRING));
@@ -451,26 +459,26 @@ class SensitiveDataController extends Controller
       			{
       				//var_dump($datas[$id]->getName() . ' se ha eliminado');exit;
       				unset($datas[$id]);
-      				
+
       			}
-      			
+
       			/*if(in_array($data->getName(),$splitedWords))
       			{
       				array_push($searchDatas,$data);
       			}*/
-      			
+
       		}
-      		
+
       		//dd($datas);
       		$searchDatas = $this->paginate($datas,15);
-      		
+
       	}else{
       		$searchDatas = $this->paginate($datas,15);
       	}
       	return $this->returnSearchView($searchDatas);
-      	
+
     }
-    
+
     public function paginate($items,$perPage)
     {
     	if($items)
@@ -478,17 +486,17 @@ class SensitiveDataController extends Controller
     		$pageStart = \Request::get('page', 1);
     		// Start displaying items from this number;
     		$offSet = ($pageStart * $perPage) - $perPage;
-    		
+
     		// Get only the items you need using array_slice
     		$itemsForCurrentPage = array_slice($items, $offSet, $perPage, true);
-    		
+
     		return new LengthAwarePaginator($itemsForCurrentPage, count($items), $perPage,Paginator::resolveCurrentPage(), array('path' => Paginator::resolveCurrentPath()));
     	}else{
     		return [];
     	}
-    	
+
     }
-    
+
     protected function similarInArray($data, $array)
     {
     	foreach ($array as $word)
@@ -503,9 +511,9 @@ class SensitiveDataController extends Controller
     	}
     	//exit;
     	return false;
-    	
+
     }
-    
+
    protected function sensitiveDataSearchByTag($tag)
    {
    		$loggedUser = Auth::user();
@@ -530,10 +538,10 @@ class SensitiveDataController extends Controller
    				'tags'=> $dataTags
    		]);
    	} else {
-   	
+
    		if($loggedUser->getUserActive())
    		{
-   	
+
    			return view('user.index')->with([
    					'user' => $loggedUser,
    					'title' => 'WELLCOME SIMPLE USER',
@@ -548,7 +556,7 @@ class SensitiveDataController extends Controller
    			return view('auth.login')->with(['error' => $error]);
    		}
    	}
-   	
+
    }
 
 
