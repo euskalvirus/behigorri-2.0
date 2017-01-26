@@ -1,7 +1,7 @@
 @extends('layouts.master')
-@section('title',  $title)
 @section('content')
-@include('god.godMenu')
+<div id="page-wrapper">
+<div class="container-fluid">
 <br>
     <br>
     <div>
@@ -12,9 +12,9 @@
            <input type="text" name="search" placeholder="Search..">
            <input type="submit" value="Submit">
     	</form>
-    	TAG SEARCH:  
+    	TAG SEARCH:
     	@foreach ($tags as $tag)
-    		<a href="/data/searchTag/{{$tag->getName()}}">{{$tag->getName()}}</a>, 
+    		<a href="/data/searchTag/{{$tag->getName()}}">{{$tag->getName()}}</a>,
     	@endforeach
     </div><br>
     <table class="table">
@@ -24,7 +24,7 @@
 
     	</tr>
     @if ($user->getSalt()!=Null)
-    	
+
         @foreach ($datas as $data)
         <tr>
             <td>{{ $data->getName() }}</td>
@@ -52,4 +52,6 @@
       	<a href="admin/generateSalt"><button type="button" class="btn btn-success"
                    formaction="show">GENERATE SALT</button></a>
       @endif
+</div>
+</div>
 @endsection

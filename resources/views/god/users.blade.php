@@ -1,5 +1,4 @@
 @extends('layouts.master')
-@section('title',  $title)
 @section('content')
 @include('god.godMenu')
 <div class="row">
@@ -35,12 +34,12 @@
 		        			DELETE
 		    			</button>
 		    		@endif
-				</form>   
+				</form>
                 <a href="user/view/{{$data->getId()}}"><button type="button" class="btn btn-primary"
                    formaction="exit">VIEW</button></a>
             </td>
             </tr>
-    		
+
         @endforeach
         </table>
 		{!!$datas->render()!!}

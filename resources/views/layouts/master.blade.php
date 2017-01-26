@@ -6,6 +6,24 @@
         <script src="{{ asset('js/prueba.js') }}"></script>
         <link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.css" />
 		<script src="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.min.js"></script>
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/sb-admin.css" rel="stylesheet">
+
+    <!-- Morris Charts CSS -->
+    <link href="css/plugins/morris.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 
 		<style type="text/css">
 			.bootstrap-tagsinput {
@@ -15,56 +33,34 @@
     			line-height: 2 !important;
 			}
 		</style>
-        
+
     </head>
     <body ng-controller="pruebacontroller">
         <!--<div class="container-fluid">
             @{{greeting}}
         </div>  -->
+        @include('god.godMenu')
         <div class="container">
             @yield('content')
         </div>
-        
-        
-        
-        
-        <div class="modal fade" id="confirmDelete" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
-	  <div class="modal-dialog">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	        <h4 class="modal-title">Delete Parmanently</h4>
-	      </div>
-	      <div class="modal-body">
-	        <p>Are you sure about this ?</p>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-	        <button type="button" class="btn btn-danger" id="confirm">Delete</button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
-	
-	
-           
-        
+        @include('god.godMenuSidebar')
+
+
+
+
+        </div>
+        <!-- /#wrapper -->
+
+        <!-- jQuery -->
+        <script src="js/jquery.js"></script>
+
+        <!-- Bootstrap Core JavaScript -->
+        <script src="js/bootstrap.min.js"></script>
+
+        <!-- Morris Charts JavaScript -->
+        <script src="js/plugins/morris/raphael.min.js"></script>
+        <script src="js/plugins/morris/morris.min.js"></script>
+        <script src="js/plugins/morris/morris-data.js"></script>
     </body>
-    <!-- Dialog show event handler -->
-	<script type="text/javascript">
-	  $('#confirmDelete').on('show.bs.modal', function (e) {
-	      $message = $(e.relatedTarget).attr('data-message');
-	      $(this).find('.modal-body p').text($message);
-	      $title = $(e.relatedTarget).attr('data-title');
-	      $(this).find('.modal-title').text($title);
-	      // Pass form reference to modal for submission on yes/ok
-	      var form = $(e.relatedTarget).closest('form');
-	      $(this).find('.modal-footer #confirm').data('form', form);
-	  });
-	  <!-- Form confirm (yes/ok) handler, submits form -->
-	  $('#confirmDelete').find('.modal-footer #confirm').on('click', function(){
-	      $(this).data('form').submit();
-	  });
-	</script>
-    
+
 </html>
