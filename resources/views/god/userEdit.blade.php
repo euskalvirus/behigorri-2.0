@@ -1,5 +1,4 @@
 @extends('layouts.master')
-@section('title',  $title)
 @section('content')
 @if(!$user->getGod())
     @include('user.userMenu')
@@ -17,10 +16,10 @@
                     <div class="panel-body">
                         @if (count($errors) > 0)
                            <div class="alert alert-danger">
-    
+
                            </div>
                         @endif
-                        
+
                         {!! Form::open(['route'=>'updateUser', 'class' => 'form']) !!}
                         	{!!Form::hidden('id', $data->getId(), array('id' => 'invisible_id'))!!}
                             <div class="form-group">
@@ -38,7 +37,7 @@
 							                <select  multiple="multiple" name="groups[]">
 							                   @foreach ($groups as $id => $group) :
 							                       @if ($group['active'])
-							                           	<option selected="selected" value={{$id}}>{{$group['name']}}</option>                           
+							                           	<option selected="selected" value={{$id}}>{{$group['name']}}</option>
 							                       @else:
 							                           <option value={{$id}}>{{$group['name']}}</option>
 							                       @endif
@@ -47,13 +46,13 @@
 							           </div>
 							  	@endif
 						  	@endif
-              
+
                             <div>
                                 {!! Form::submit('SUBMIT',['class' => 'btn  btn-success']) !!}
                                 <a href="/admin/user"><button type="button" class="btn btn-danger">RETURN</button></a>
                             </div>
                         {!! Form::close() !!}
-                        
+
                     </div>
                 </div>
                 <div class="panel panel-default">
@@ -79,5 +78,5 @@
             </div>
         </div>
     </div>
-    
+
 @endsection

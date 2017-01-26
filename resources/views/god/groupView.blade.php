@@ -1,7 +1,5 @@
 @extends('layouts.master')
-@section('title',  $title)
 @section('content')
- @include('god.godMenu')
     <br>
     <br>
     <div class="row">
@@ -25,7 +23,7 @@
 					                <label for="GROUP">USERS</label><p>
 					                <select  multiple="multiple" readonly name="updatedUsers[]">
 					                   @foreach ($users as $id => $groupUser) :
-					                           	<option disabled value={{$id}}>{{$groupUser['name']}}</option>                           
+					                           	<option disabled value={{$id}}>{{$groupUser['name']}}</option>
 					                   @endforeach
 					                </select>
 					           </div>

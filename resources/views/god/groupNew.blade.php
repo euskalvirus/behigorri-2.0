@@ -1,7 +1,5 @@
 @extends('layouts.master')
-@section('title',  $title)
 @section('content')
-    @include('god.godMenu')
     <br>
     <br>
     <div class="row">
@@ -17,7 +15,7 @@
                           		</div>
                            @endforeach
                         @endif
-                        
+
                         {!! Form::open(['route' => 'saveGroup', 'class' => 'form']) !!}
                             <div class="form-group">
                                 <label>name</label>
@@ -41,5 +39,5 @@
             </div>
         </div>
     </div>
-    
+
 @endsection

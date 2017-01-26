@@ -1,7 +1,5 @@
 @extends('layouts.master')
-@section('title',  $title)
 @section('content')
- @include('god.godMenu')
     <br>
     <br>
     <div class="row">
@@ -28,7 +26,7 @@
 					                <select  multiple="multiple" name="updatedUsers[]">
 					                   @foreach ($users as $id => $groupUser) :
 					                       @if ($groupUser['active'])
-					                           	<option selected="selected" value={{$id}}>{{$groupUser['name']}}</option>                           
+					                           	<option selected="selected" value={{$id}}>{{$groupUser['name']}}</option>
 					                       @else:
 					                           <option value={{$id}}>{{$groupUser['name']}}</option>
 					                       @endif

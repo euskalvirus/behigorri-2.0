@@ -1,9 +1,5 @@
 @extends('layouts.master')
-@section('title',  $title)
 @section('content')
-@include('god.godMenu')
-<div class="row">
-<div class="col-xs-12"><br><br>
 <div>
     <h1 >GROUPS LIST:</h1>
     <a href="group/new"><button type="button" class="btn btn-default">NEW</button></a>
@@ -11,7 +7,7 @@
            <input type="text" name="search" placeholder="Search..">
            <input type="submit" value="Submit">
          </form>
-</div><br>  
+</div><br>
     <table class="table">
     <tr>
     		<th>NAME</th>
@@ -20,7 +16,7 @@
     	</tr>
         @foreach ($datas as $data)
         <tr>
-       
+
     </tr>
         <tr>
             <td>{{ $data->getName() }}</td>
@@ -33,7 +29,7 @@
 	    			<button class="btn btn-danger" type="button" data-toggle="modal" data-target="#confirmDelete" data-title="Delete Group" data-message="Are you sure you want to delete this group ?">
 	        			DELETE
 	    			</button>
-				</form>   
+				</form>
                 <a href="group/view/{{$data->getId()}}"><button type="button" class="btn btn-primary"
                    formaction="exit">VIEW</button></a>
             </td>

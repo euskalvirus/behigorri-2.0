@@ -1,5 +1,22 @@
-@extends('layouts.master')
-@section('content')
+<html ng-app="prueba">
+    <head>
+        <link rel="stylesheet" href="{{ asset('css/app.css') }}"></link>
+        <script src="{{ asset('js/app.js') }}"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+        <script src="{{ asset('js/prueba.js') }}"></script>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.css" />
+
+		<style type="text/css">
+			.bootstrap-tagsinput {
+    			width: 100%;
+			}
+			.label {
+    			line-height: 2 !important;
+			}
+		</style>
+
+    </head>
+    <body ng-controller="pruebacontroller">
 <div class="container">
     <div class="row">
         <div class="col-xs-12 col-md-8 col-md-offset-2 col-lg-4 col-lg-offset-4">
@@ -42,4 +59,6 @@
         </div>
     </div>
 </div>
-@endsection
+    </body>
+
+</html>
