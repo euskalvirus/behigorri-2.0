@@ -12,6 +12,7 @@ html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
+  background: white;
 }
 
 body {
@@ -8299,7 +8300,9 @@ button.close {
     display: none !important;
   }
 }
-
-body {
-  padding-top: 40px;
+.bootstrap-tagsinput {
+	width: 100%;
+}
+.label {
+    line-height: 2 !important;
 }

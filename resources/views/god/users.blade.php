@@ -1,6 +1,5 @@
 @extends('layouts.master')
 @section('content')
-
 <div>
   <h1>USERS LIST:</h1>
   <a href="user/new"><button type="button" class="btn btn-default">NEW</button></a>

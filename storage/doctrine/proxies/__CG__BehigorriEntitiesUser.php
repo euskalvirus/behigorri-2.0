@@ -64,10 +64,10 @@ class User extends \Behigorri\Entities\User implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'id', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'name', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'email', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'password', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'sensitiveDatas', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'groups', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'createdAt', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'updatedAt', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'token', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'god'];
+            return ['__isInitialized__', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'id', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'name', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'email', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'password', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'sensitiveDatas', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'groups', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'createdAt', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'updatedAt', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'token', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'userActive', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'god', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'salt', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'activationCode'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'id', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'name', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'email', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'password', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'sensitiveDatas', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'groups', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'createdAt', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'updatedAt', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'token', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'god'];
+        return ['__isInitialized__', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'id', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'name', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'email', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'password', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'sensitiveDatas', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'groups', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'createdAt', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'updatedAt', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'token', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'userActive', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'god', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'salt', '' . "\0" . 'Behigorri\\Entities\\User' . "\0" . 'activationCode'];
     }
 
     /**
@@ -477,6 +477,72 @@ class User extends \Behigorri\Entities\User implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function setSalt($salt)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSalt', [$salt]);
+
+        return parent::setSalt($salt);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSalt()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSalt', []);
+
+        return parent::getSalt();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setUserActive($userActive)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUserActive', [$userActive]);
+
+        return parent::setUserActive($userActive);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getUserActive()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUserActive', []);
+
+        return parent::getUserActive();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setActivationCode($activationCode)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setActivationCode', [$activationCode]);
+
+        return parent::setActivationCode($activationCode);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getActivationCode()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getActivationCode', []);
+
+        return parent::getActivationCode();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getUniqueSensitiveData()
     {
 
@@ -488,12 +554,34 @@ class User extends \Behigorri\Entities\User implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function canBeEditSenstiveData($id)
+    public function canBeViewSenstiveData($id)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'canBeEditSenstiveData', [$id]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'canBeViewSenstiveData', [$id]);
 
-        return parent::canBeEditSenstiveData($id);
+        return parent::canBeViewSenstiveData($id);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function jsonSerialize()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'jsonSerialize', []);
+
+        return parent::jsonSerialize();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSensitiveDataByTag($tag)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSensitiveDataByTag', [$tag]);
+
+        return parent::getSensitiveDataByTag($tag);
     }
 
     /**

@@ -1,15 +1,17 @@
-<html ng-app="prueba">
+<!DOCTYPE html>
+<html>
     <head>
-      <link rel="stylesheet" href="{{ asset('css/app.css') }}"></link>
-      <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}"></link>
-      <link rel="stylesheet" href="{{ asset('css/sb-admin.css') }}"></link>
-      <link rel="stylesheet" href="{{ asset('css/plugins/morris.css') }}"></link>
-      <link rel="stylesheet" type="text/css" href="{{ asset('font-awesome/css/font-awesome.min.css') }}"></link>
-      <script src="{{ asset('js/app.js') }}"></script>
-      <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+        <link rel="stylesheet" href="{{ asset('css/app.css') }}" />
+        <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}" />
+        <script src="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.min.js"></script>
+        <!-- <script src="{{ asset('js/jquery.js') }}"></script> -->
+        <!--<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>-->
+        <!--<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-route.min.js"></script>-->
       <link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.css" />
-      <script src="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.min.js"></script>
-
+      <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
+      <link rel="stylesheet" href="{{ asset('css/sb-admin.css') }}" />
+      <link rel="stylesheet" href="{{ asset('css/plugins/morris.css') }}" />
+      <link rel="stylesheet" type="text/css" href="{{ asset('font-awesome/css/font-awesome.min.css') }}" />
       <style type="text/css">
         .bootstrap-tagsinput {
           width: 100%;
@@ -37,13 +39,16 @@
 
 
     </head>
-    <body ng-controller="pruebacontroller">
+    <body>
         <!--<div class="container-fluid">
             @{{greeting}}
         </div>  -->
         <div id="wrapper">
-          @include('god.godMenu')
-          @include('god.godMenuSidebar')
+            <!-- Navigation -->
+            <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+                @include('god.godMenu')
+                @include('god.godMenuSidebar')
+            </nav>
           <div id="page-wrapper">
             <div class="container-fluid">
               @yield('content')
@@ -54,15 +59,15 @@
         <!-- /#wrapper -->
 
         <!-- jQuery -->
-        <script src="{{ asset('js/jquery.js')}}"></script>
+        <script src="{{ asset('js/jquery.js') }}"></script>
 
         <!-- Bootstrap Core JavaScript -->
-        <script src="{{ asset('js/bootstrap.min.js')}}"></script>
+        <script src="{{ asset('js/bootstrap.min.js') }}"></script>
 
         <!-- Morris Charts JavaScript -->
-        <script src="{{ asset('js/plugins/morris/raphael.min.js') }}"></script>
-        <script src="{{ asset('js/plugins/morris/morris.min.js') }}"></script>
-        <script src="{{ asset('js/plugins/morris/morris-data.js') }}"></script>
+        <script src="{{ asset('js/plugins/morris/raphael.min.js')}}"></script>
+        <script src="{{ asset('js/plugins/morris/morris.min.js')}}"></script>
+        <script src="{{ asset('js/plugins/morris/morris-data.js')}}"></script>
 
     </body>
 

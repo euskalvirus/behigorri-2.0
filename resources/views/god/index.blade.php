@@ -1,25 +1,25 @@
 @extends('layouts.master')
 @section('content')
-<div>
-  <h1 >FILE LIST:</h1>
-  <a href="data/new"><button type="button" class="btn btn-default">NEW</button></a>
-  <a href="data/newFile"><button type="button" class="btn btn-default">NEW FILE</button></a>
-  <form method="post" action="/data/search" accept-charset="UTF-8" style="display:inline">
-    <input type="text" name="search" placeholder="Search..">
-    <input type="submit" value="Submit">
-  </form>
-  TAG SEARCH:
-  @foreach ($tags as $tag)
-  <a href="/data/searchTag/{{$tag->getName()}}">{{$tag->getName()}}</a>,
-  @endforeach
-</div><br>
-<table class="table">
-  <tr>
-    <th>NAME</th>
-    <th>ACTION</th>
-    {!!$datas->render()!!}
+<div id="page-wrapper">
+<div class="container-fluid">
+<div class="row">
+<div class="col-lg-12">
 
-  </tr>
+    <div>
+    	<h1 >FILE LIST:</h1>
+    	<a href="data/new"><button type="button" class="btn btn-default">NEW</button></a>
+    	<a href="data/newFile"><button type="button" class="btn btn-default">NEW FILE</button></a>
+    	<form method="post" action="/data/search" accept-charset="UTF-8" style="display:inline">
+           <input type="text" name="search" placeholder="Search..">
+           <input type="submit" value="Submit">
+    	</form>
+    	TAG SEARCH:
+    	@foreach ($tags as $tag)
+    		<a href="/data/searchTag/{{$tag->getName()}}">{{$tag->getName()}}</a>,
+    	@endforeach
+    </div><br>
+    <ol class="breadcrumb">
+    <table class="table">
   @if ($user->getSalt()!=Null)
 
   @foreach ($datas as $data)
@@ -49,4 +49,9 @@
     <a href="admin/generateSalt"><button type="button" class="btn btn-success"
       formaction="show">GENERATE SALT</button></a>
       @endif
-      @endsection
+    </ol>
+</div>
+</div>
+</div>
+</div>
+@endsection
