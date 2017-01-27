@@ -20,10 +20,10 @@
   <tr>
     <td>{{ $data->getName() }}</td>
     <td>
-      <a href="user/edit/{{$data->getId()}}"><button type="button" class="btn  btn-success">
+      <a href="/admin/user/edit/{{$data->getId()}}"><button type="button" class="btn  btn-success">
         EDIT</button></a>
 
-        <form method="GET" action="user/delete/{{$data->getId()}}"accept-charset="UTF-8" style="display:inline">
+        <form method="GET" action="/admin/user/delete/{{$data->getId()}}"accept-charset="UTF-8" style="display:inline">
           @if($data->getId()==$user->getId())
           <button class="btn btn-danger" disabled  type="button">
             DELETE
@@ -34,7 +34,7 @@
           </button>
           @endif
         </form>
-      <a href="user/view/{{$data->getId()}}"><button type="button" class="btn btn-primary"
+      <a href="/admin/user/view/{{$data->getId()}}"><button type="button" class="btn btn-primary"
           formaction="exit">VIEW</button></a>
     </td>
   </tr>

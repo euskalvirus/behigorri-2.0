@@ -23,26 +23,26 @@ class IndexController extends Controller
     {
         $loggedUser = Auth::user();
         $Sensitivedatas = $loggedUser->getUniqueSensitiveData();
+        $dataTags = $this->repository->getTags($Sensitivedatas);
         $datas = $this->paginate($Sensitivedatas,15);
-        $dataTags = $this->repository->getTags($datas);
         if($loggedUser->getGod())
         {
             return view('god.index')->with([
                 'user' => $loggedUser,
                 'title' => 'BEHIGORRI PASSWORD MANAGER',
                 'datas' => $datas,
-            	'tags' => $dataTags	
+            	'tags' => $dataTags
             ]);
         } else {
-        	
+
         	if($loggedUser->getUserActive())
         	{
-        		
+
 	            return view('user.index')->with([
 	                'user' => $loggedUser,
 	                'title' => 'WELLCOME SIMPLE USER',
 	                'datas' => $datas,
-            		'tags' => $dataTags	
+            		'tags' => $dataTags
 	            ]);
         	} else {
         		//var_dump($loggedUser->getUserActive());exit;
@@ -53,16 +53,16 @@ class IndexController extends Controller
         	}
         }
     }
-    
+
     public function paginate($items,$perPage)
     {
     	$pageStart = \Request::get('page', 1);
     	// Start displaying items from this number;
     	$offSet = ($pageStart * $perPage) - $perPage;
-    
+
     	// Get only the items you need using array_slice
     	$itemsForCurrentPage = array_slice($items, $offSet, $perPage, true);
-    
+
     	return new LengthAwarePaginator($itemsForCurrentPage, count($items), $perPage,Paginator::resolveCurrentPage(), array('path' => Paginator::resolveCurrentPath()));
     }
 }

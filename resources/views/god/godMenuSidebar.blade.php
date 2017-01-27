@@ -1,13 +1,13 @@
 <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
 <div class="collapse navbar-collapse navbar-ex1-collapse">
     <ul class="nav navbar-nav side-nav">
-        <li class="active">
+        <li class="{{ Request::path()=='/' ? 'active' : '' }}" id="dashboard">
             <a href="/"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
         </li>
-        <li>
+        <li class="{{ Request::path()=='admin/user' ? 'active' : '' }}" id="useradmin">
             <a href="{{ route('adminUser') }}"><i class="fa fa-fw fa-dashboard"></i> User Administration</a>
         </li>
-        <li>
+        <li class="{{Request::path()=='admin/group' ? 'active' : '' }}" id="groupadmin">
             <a href="{{ route('adminGroup') }}"><i class="fa fa-fw fa-table"></i> Group Administration</a>
         </li>
         <li>

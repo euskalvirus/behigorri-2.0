@@ -69,6 +69,4 @@
         <script src="{{ asset('js/plugins/morris/morris.min.js')}}"></script>
         <script src="{{ asset('js/plugins/morris/morris-data.js')}}"></script>
 
-    </body>
-
 </html>

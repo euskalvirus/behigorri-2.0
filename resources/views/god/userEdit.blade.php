@@ -1,11 +1,5 @@
-@extends('layouts.master')
+@extends( (!$user->getGod()) ? 'layouts.master' : 'layouts.master')
 @section('content')
-@if(!$user->getGod())
-    @include('user.userMenu')
-@else
-	@include('god.godMenu')
-
-@endif
 <br>
     <br>
     <div class="row">

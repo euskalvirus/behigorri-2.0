@@ -526,9 +526,9 @@ class SensitiveDataController extends Controller
    protected function returnSearchView($searchDatas)
    {
    	$loggedUser =Auth::user();
-   	$Sensitivedatas = $loggedUser->getUniqueSensitiveData();
-   	$datas = $this->paginate($Sensitivedatas,15);
-   	$dataTags = $this->repository->getTags($datas);
+   	$sensitivedatas = $loggedUser->getUniqueSensitiveData();
+   	$dataTags = $this->repository->getTags($sensitivedatas);
+    $datas = $this->paginate($sensitivedatas,15);
    	if($loggedUser->getGod())
    	{
    		return view('god.index')->with([

@@ -21,16 +21,16 @@
         <tr>
             <td>{{ $data->getName() }}</td>
             <td>
-                <a href="group/edit/{{$data->getId()}}"><button type="button" class="btn  btn-success">
+                <a href="/admin/group/edit/{{$data->getId()}}"><button type="button" class="btn  btn-success">
                     EDIT</button></a>
                 <!-- <a href="group/delete/{{$data->getId()}}"><button type="button" class="btn btn-danger"
                    formaction="delete">DELETE</button></a> -->
-                <form method="GET" action="group/delete/{{$data->getId()}}" accept-charset="UTF-8" style="display:inline">
+                <form method="GET" action="/admin/group/delete/{{$data->getId()}}" accept-charset="UTF-8" style="display:inline">
 	    			<button class="btn btn-danger" type="button" data-toggle="modal" data-target="#confirmDelete" data-title="Delete Group" data-message="Are you sure you want to delete this group ?">
 	        			DELETE
 	    			</button>
 				</form>
-                <a href="group/view/{{$data->getId()}}"><button type="button" class="btn btn-primary"
+                <a href="/admin/group/view/{{$data->getId()}}"><button type="button" class="btn btn-primary"
                    formaction="exit">VIEW</button></a>
             </td>
             </tr>
