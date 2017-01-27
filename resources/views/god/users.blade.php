@@ -1,5 +1,9 @@
 @extends('layouts.master')
 @section('content')
+<div id="page-wrapper">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-12">
 <div>
   <h1>USERS LIST:</h1>
   <a href="user/new"><button type="button" class="btn btn-default">NEW</button></a>
@@ -41,5 +45,9 @@
   @endforeach
 </table>
     {!!$datas->render()!!}
+</div>
+</div>
+</div>
+</div>
 </div>
 @endsection

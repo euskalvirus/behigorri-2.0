@@ -23,7 +23,7 @@
                             @if ($users!=null)
 					  			<div class="form-group">
 					                <label for="GROUP">USERS</label><p>
-					                <select  multiple="multiple" name="updatedUsers[]">
+					                <select  class="form-control" multiple="multiple" name="updatedUsers[]">
 					                   @foreach ($users as $id => $groupUser) :
 					                       @if ($groupUser['active'])
 					                           	<option selected="selected" value={{$id}}>{{$groupUser['name']}}</option>

@@ -1,5 +1,9 @@
 @extends('layouts.master')
 @section('content')
+<div id="page-wrapper">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-12">
 <div>
     <h1 >GROUPS LIST:</h1>
     <a href="group/new"><button type="button" class="btn btn-default">NEW</button></a>
@@ -38,5 +42,9 @@
         </table>
     </div>
     </div>
+</div>
+</div>
+</div>
+</div>
 
 @endsection

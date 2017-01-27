@@ -23,7 +23,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="USER">USERS</label>
-					            <select multiple="multiple" name="users[]">
+					            <select class="form-control" multiple="multiple" name="users[]">
 					               @foreach ($users as $user)
 					                   <option value={{$user->getId()}}>{{$user->getName()}}</option>
 					               @endforeach

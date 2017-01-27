@@ -398,9 +398,7 @@ class SensitiveDataController extends Controller
           //dd($newTag->getId());
     			$data->addTag($newTag);
     		}else {
-          var_dump($tag .' ');
     			$tag = $tagRep->findBy(['name' => $tag]);
-          var_dump($tag[0]->getName() . '  ' ,$tag[0]->getId());
     			$data->addTag($tag[0]);
     		}
     	}

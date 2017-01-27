@@ -1,13 +1,5 @@
-@extends('layouts.master')
-@section('title',  $title)
+@extends( (!$user->getGod()) ? 'layouts.master' : 'layouts.master')
 @section('content')
-
-@if(!$user->getGod())
-    @include('user.userMenu')
-@else
-	@include('god.godMenu')
-
-@endif
 
 	<br>
     <br>
@@ -24,7 +16,7 @@
                           		</div>
                            @endforeach
                         @endif
-    
+
     <form action="/data/save" method="post">
         <div class="form-group">
             <label for="NAME">NAME</label>
@@ -36,7 +28,7 @@
         </div>
         <div class="form-group">
             <label for="GROUP">GROUP</label>
-            <select multiple="multiple" name="groups[]">
+            <select class="form-control" multiple="multiple" name="groups[]">
                @foreach ($groups as $group)
                    <option value="{{$group->getId()}}">{{$group->getName()}}</option>
                @endforeach
@@ -51,7 +43,7 @@
             <button type="submit" class="btn  btn-success">SUBMIT</button>
             <a href="/"><button type="button" class="btn btn-danger">RETURN</button></a>
         </div>
-        
+
     </form>
 </div>
 @endsection

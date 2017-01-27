@@ -21,7 +21,7 @@
                             @if ($users!=null)
 					  			<div class="form-group" readonly>
 					                <label for="GROUP">USERS</label><p>
-					                <select  multiple="multiple" readonly name="updatedUsers[]">
+					                <select  class="form-control" multiple="multiple" readonly name="updatedUsers[]">
 					                   @foreach ($users as $id => $groupUser) :
 					                           	<option disabled value={{$id}}>{{$groupUser['name']}}</option>
 					                   @endforeach

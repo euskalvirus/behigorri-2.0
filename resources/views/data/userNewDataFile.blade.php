@@ -1,13 +1,5 @@
-@extends('layouts.master')
-@section('title',  $title)
+@extends( (!$user->getGod()) ? 'layouts.master' : 'layouts.master')
 @section('content')
-
-@if(!$user->getGod())
-    @include('user.userMenu')
-@else
-	@include('god.godMenu')
-
-@endif
 
 	<br>
     <br>
@@ -30,7 +22,7 @@
 		</div>
 		<div class="form-group">
             <label for="GROUP">GROUP</label>
-            <select multiple="multiple" name="groups[]">
+            <select class="form-control" multiple="multiple" name="groups[]">
                @foreach ($groups as $group)
                    <option value="{{$group->getId()}}">{{$group->getName()}}</option>
                @endforeach
@@ -66,5 +58,5 @@ function submit1() {
 
 }
 </script>
-	
+
 @endsection

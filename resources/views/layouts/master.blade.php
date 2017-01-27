@@ -3,10 +3,10 @@
     <head>
         <link rel="stylesheet" href="{{ asset('css/app.css') }}" />
         <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}" />
+        <script src="{{ asset('js/jquery.js') }}"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-route.min.js"></script>
         <script src="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.min.js"></script>
-        <!-- <script src="{{ asset('js/jquery.js') }}"></script> -->
-        <!--<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>-->
-        <!--<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-route.min.js"></script>-->
       <link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.css" />
       <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
       <link rel="stylesheet" href="{{ asset('css/sb-admin.css') }}" />

@@ -20,13 +20,13 @@ class UserAdministrationController extends Controller
 {
     protected $repository;
     protected $em;
-    
+
     public function __construct(EntityManager $em)
     {
     	$this->em = $em;
         $this->repository = $em->getRepository('Behigorri\Entities\User');
     }
-    
+
     public function userAdministration()
     {
         $loggedUser = Auth::user();
@@ -45,7 +45,7 @@ class UserAdministrationController extends Controller
             return redirect('/');
         }
     }
-    
+
     public function newUser()
     {
         $loggedUser = Auth::user();
@@ -59,28 +59,30 @@ class UserAdministrationController extends Controller
             return redirect('/');
         }
     }
-    
+
     public function register(Request $request)
     {
-        //$pass = '123456';
-        //$encryptPass="";
-        //var_dump($request);exit;
-        $validator = $this->validator($request->all());
-        
-        if ($validator->fails()) {
-            $this->throwValidationException(
-                $request, $validator
-                );
+        $loggedUser = Auth::user();
+        if($loggedUser->getGod())
+        {
+            $validator = $this->validator($request->all());
+
+            if ($validator->fails()) {
+                $this->throwValidationException(
+                    $request, $validator
+                    );
+            }
+            //Auth::login($this->create($request->all()));
+            $activationCode = $this->sendEmailReminder($request, 0);
+            $this->create($request->all(),$activationCode);
+
+            //return redirect(route('adminUser'));
+            return redirect('/admin/user');
+        } else {
+            return redirect('/');
         }
-        
-        //Auth::login($this->create($request->all()));
-        $activationCode = $this->sendEmailReminder($request, 0);
-        $this->create($request->all(),$activationCode);
-        
-        //return redirect(route('adminUser'));
-        return redirect('/admin/user');
     }
-    
+
     protected function validator(array $data)
     {
         return Validator::make($data, [
@@ -89,7 +91,7 @@ class UserAdministrationController extends Controller
             'password' => 'required|confirmed|min:6',
         ]);
     }
-    
+
     public function sendEmailReminder(Request $request, $id)
     {
         //$user = User::findOrFail($id);
@@ -103,15 +105,15 @@ class UserAdministrationController extends Controller
             //$m->from($loggedUser->getEmail(), 'Activation Email');
             $m->to('euskalvirus@gmail.com', 'alain')->subject('Activation Email!');
             //$m->to('azabaleta@barnetik.com', 'alain')->subject('Activation Email!');
-        });   
+        });
         //var_dump($request);exit;
         return $key;
     }
-    
+
     public function editUser($id)
     {
         $loggedUser = Auth::user();
-        
+
         if($loggedUser->getGod() || $loggedUser->getId()==$id)
         {
         	$user = $this->repository->find($id);
@@ -127,14 +129,14 @@ class UserAdministrationController extends Controller
         	//return redirect()->back();
         }
     }
-    
+
     /**
      * Create a new user instance after a valid registration.
      *
      * @param  array  $data
      * @return User
      */
-    protected function create(array $data, $activationCode)
+    private function create(array $data, $activationCode)
     {
     	$user = new User();
     	$user->setName($data['name']);
@@ -152,10 +154,10 @@ class UserAdministrationController extends Controller
     	$user->setSalt($salt);
     	$this->em->persist($user);
         $this->em->flush();
-    
+
     	return $user;
     }
-    
+
     private function idToPath($id) {
     	if ($id < 10) {
     		return "0/" . $id;
@@ -164,13 +166,13 @@ class UserAdministrationController extends Controller
     	array_pop($idArray);
     	return implode('/', $idArray);
     }
-    
+
     protected function userDelete($id)
     {
     	$loggedUser = Auth::user();
     	//$user = $this->repository->find($id);
     	$user = $this->em->find("Behigorri\Entities\User",$id);
-    	if($loggedUser->getGod())
+    	if($loggedUser->getGod() && $loggedUser->getId()!=$id && $user)
     	{
     		$groups = $user->getGroups();
     		foreach ($groups as $group)
@@ -190,7 +192,7 @@ class UserAdministrationController extends Controller
     			$dataId = $data->getId();
     			$this->path = storage_path() . '/' . $this->idToPath($dataId);
     			$this->filePath = $this->path . '/' . substr($dataId,-1);
-    			
+
     			if (file_exists($this->filePath)) {
     				unlink($this->filePath);
     			}
@@ -201,11 +203,11 @@ class UserAdministrationController extends Controller
     	}
     	return redirect('/admin/user');
     	//return redirect()->back();
-    	
+
     }
-    
+
     protected function activeUser($activationcode){
-    	
+
     	$user = $this->repository->findBy(['activationCode' => $activationcode]);
     	//var_dump($user);exit;
     	if($user==null)
@@ -221,17 +223,17 @@ class UserAdministrationController extends Controller
     				'title' => 'BEHIGORRI PASSWORD MANAGER',
     				'data' => 'User account activation done'
     		]);
-    		
+
     	}else{
     		return view('user.userActivation')->with([
     				'user' => '',
     				'title' => 'BEHIGORRI PASSWORD MANAGER',
     				'data' => 'User account has been activated before'
     		]);
-    		
+
     	}
     }
-    
+
     protected function viewUser($id)
     {
     	$loggedUser = Auth::user();
@@ -251,7 +253,7 @@ class UserAdministrationController extends Controller
     		//return redirect()->back();
     	}
     }
-    
+
     private function getUserFilteredGroups($id, $user)
     {
     	$filteredGroups=[];
@@ -275,7 +277,7 @@ class UserAdministrationController extends Controller
     	}
     	return $filteredGroups;
     }
-    
+
     protected  function  userUpdate(Request $request)
     {
     	$loggedUser = Auth::user();
@@ -291,7 +293,7 @@ class UserAdministrationController extends Controller
     				$user->removeGroup($group);
     			}
     		}
-    		 
+
     		foreach($newGroups as $groupId)
     		{
     			$group= $this->em->find("Behigorri\Entities\Group", $groupId);
@@ -303,9 +305,9 @@ class UserAdministrationController extends Controller
     		$this->em->flush();
     		return redirect('/admin/user');
     	}
-    	
+
     }
-    
+
     protected  function  userPasswordUpdate(Request $request)
     {
    		$loggedUser = Auth::user();
@@ -320,11 +322,11 @@ class UserAdministrationController extends Controller
     			$this->em->flush();
     			return redirect('/admin/user');
     		}
-    		
+
     	}
-    	 
+
     }
-    
+
     protected function editProfile()
     {
     	$loggedUser = Auth::user();
@@ -345,7 +347,7 @@ class UserAdministrationController extends Controller
      	}
      	return redirect('/');
      }
-     
+
      public function userSearch(Request $request)
      {
      	$loggedUser = Auth::user();
@@ -360,7 +362,7 @@ class UserAdministrationController extends Controller
     				'title' => 'BEHIGORRI PASSWORD MANAGER',
     				'datas' => $users
     		]);
-     	
+
      	} else {
      		return redirect('/');
      	}
@@ -370,12 +372,12 @@ class UserAdministrationController extends Controller
      	$pageStart = \Request::get('page', 1);
      	// Start displaying items from this number;
      	$offSet = ($pageStart * $perPage) - $perPage;
-     
+
      	// Get only the items you need using array_slice
      	$itemsForCurrentPage = array_slice($items, $offSet, $perPage, true);
-     
+
      	return new LengthAwarePaginator($itemsForCurrentPage, count($items), $perPage,Paginator::resolveCurrentPage(), array('path' => Paginator::resolveCurrentPath()));
      }
-    
-    
+
+
 }
