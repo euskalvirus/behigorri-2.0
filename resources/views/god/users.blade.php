@@ -5,7 +5,16 @@
     <div class="row">
       <div class="col-lg-12">
 <div>
-  <h1>USERS LIST:</h1>
+  <h1 class="page-header">USERS LIST:</h1>
+  <ol class="breadcrumb">
+    <li>
+      <i class="fa fa-dashboard"></i>  <a href="/">Dashboard</a>
+    </li>
+    <li class="active">
+      <i class="fa fa-edit"></i> User Administration
+    </li>
+  </ol>
+
   <a href="user/new"><button type="button" class="btn btn-default">NEW</button></a>
   <form method="post" action="/admin/user/search" accept-charset="UTF-8" style="display:inline">
     <input type="text" name="search" placeholder="Search..">

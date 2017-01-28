@@ -47,7 +47,7 @@
             <!-- Navigation -->
             <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
                 @include('god.godMenu')
-                @include('god.godMenuSidebar')
+                @include( (!$user->getGod()) ? 'god.godMenuSidebar' : 'user.userMenuSidebar')
             </nav>
           <div id="page-wrapper">
             <div class="container-fluid">
@@ -68,5 +68,17 @@
         <script src="{{ asset('js/plugins/morris/raphael.min.js')}}"></script>
         <script src="{{ asset('js/plugins/morris/morris.min.js')}}"></script>
         <script src="{{ asset('js/plugins/morris/morris-data.js')}}"></script>
+
+        <!-- Dialog show event handler -->
+      </body>
+      <script>
+        $(".delete").on("submit", function(){
+            return confirm("Do you want to delete this item?");
+        });
+      </script>
+
+
+
+
 
 </html>

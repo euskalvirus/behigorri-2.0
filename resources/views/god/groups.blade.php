@@ -5,12 +5,20 @@
     <div class="row">
       <div class="col-lg-12">
 <div>
-    <h1 >GROUPS LIST:</h1>
+    <h1 class="page-header">GROUPS LIST:</h1>
+    <ol class="breadcrumb">
+                            <li>
+                                <i class="fa fa-dashboard"></i>  <a href="/">Dashboard</a>
+                            </li>
+                            <li class="active">
+                                <i class="fa fa-edit"></i> Group Administration
+                            </li>
+                        </ol>
     <a href="group/new"><button type="button" class="btn btn-default">NEW</button></a>
-     <form method="post" action="/admin/group/search" accept-charset="UTF-8" style="display:inline">
-           <input type="text" name="search" placeholder="Search..">
-           <input type="submit" value="Submit">
-         </form>
+    <form method="post" action="/admin/group/search" accept-charset="UTF-8" style="display:inline">
+        <input type="text" name="search" placeholder="Search..">
+        <input type="submit" value="Submit">
+    </form>
 </div><br>
     <table class="table">
     <tr>

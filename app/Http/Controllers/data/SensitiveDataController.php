@@ -381,8 +381,14 @@ class SensitiveDataController extends Controller
 
     protected function splitAndCreateTags($tagsString, $data)
     {
-    	$tags = explode(',', $tagsString);
-    	return $this->filterTags($tags,$data);
+      if($tagsString!='')
+      {
+        $tags = explode(',', $tagsString);
+      	return $this->filterTags($tags,$data);
+      }
+    	else{
+        return $data;
+      }
     }
 
     protected function filterTags($tags,$data)

@@ -11,12 +11,12 @@
                 <li>
                     <a href="/edit/profile"><i class="fa fa-fw fa-user"></i> Edit Profile</a>
                 </li>
-                <li>
+                <!--<li>
                     <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
                 </li>
                 <li>
                     <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
-                </li>
+                </li>-->
                 <li class="divider"></li>
                 <li>
                     <a href="{{ route('logout') }}"><i class="fa fa-fw fa-power-off"></i> Log Out</a>

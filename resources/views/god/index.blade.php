@@ -6,7 +6,12 @@
       <div class="col-lg-12">
 
         <div>
-          <h1 >FILE LIST:</h1>
+          <h1 class="page-header">FILE LIST:</h1>
+          <ol class="breadcrumb">
+            <li class="active">
+              <i class="fa fa-dashboard"></i> Dashboard
+            </li>
+          </ol>
           <a href="data/new"><button type="button" class="btn btn-default">NEW</button></a>
           <a href="data/newFile"><button type="button" class="btn btn-default">NEW FILE</button></a>
           <form method="post" action="/data/search" accept-charset="UTF-8" style="display:inline">
@@ -17,29 +22,46 @@
           @foreach ($tags as $tag)
           <a href="/data/searchTag/{{$tag->getName()}}">{{$tag->getName()}}</a>,
           @endforeach
-        </div><br>
-          <table class="table">
+        </div ><br>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>NAME</th>
+              <th>TAGS</th>
+              <th>ACTION</th>
+
+            </tr>
+          </thead>
+          <tbody>
             @if ($user->getSalt()!=Null)
 
             @foreach ($datas as $data)
             <tr>
               <td>{{ $data->getName() }}</td>
               <td>
-                <a href="/data/edit/{{$data->getId()}}"><button type="button" class="btn btn-primary">
-                  EDIT</button></a>
-                  <!-- <a href="data/delete/{{$data->getId()}}"><button type="button" class="btn btn-danger"
-                  formaction="delete" data-target="#confirmDelete" data-title="Delete User"
-                  data-message="Are you sure you want to delete this data ?">DELETE</button></a> -->
-                <form method="GET" action="/data/delete/{{$data->getId()}}" accept-charset="UTF-8" style="display:inline">
-                  <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#confirmDelete" data-title="Delete Data" data-message="Are you sure you want to delete this data ?">
-                      DELETE
-                  </button>
-                </form>
-                <a href="/data/view/{{$data->getId()}}"><button type="button" class="btn btn-success"
-                    formaction="show">VIEW</button></a>
+                @if($data->getTags())
+                  @foreach($data->getTags() as $tag)
+                      <a href="/data/searchTag/{{$tag->getName()}}">{{$tag->getName()}},</a>
+                  @endforeach
+                @endif
               </td>
-            </tr>
-                @endforeach
+                <td>
+                  <a href="/data/edit/{{$data->getId()}}"><button type="button" class="btn btn-primary">
+                    EDIT</button></a>
+                    <!-- <a href="data/delete/{{$data->getId()}}"><button type="button" class="btn btn-danger"
+                    formaction="delete" data-target="#confirmDelete" data-title="Delete User"
+                    data-message="Are you sure you want to delete this data ?">DELETE</button></a> -->
+                    <form class="delete" method="GET" action="/data/delete/{{$data->getId()}}" accept-charset="UTF-8" style="display:inline">
+                      <button class="btn btn-danger" value="Delete" type="submit" data-toggle="modal" data-target="#confirmDelete" data-title="Delete Data" data-message="Are you sure you want to delete this data ?">
+                        DELETE
+                      </button>
+                    </form>
+                    <a href="/data/view/{{$data->getId()}}"><button type="button" class="btn btn-success"
+                      formaction="show">VIEW</button></a>
+                    </td>
+                  </tr>
+                  @endforeach
+                </tbody>
               </table>
               @if ($datas)
               {!!$datas->render()!!}
@@ -48,8 +70,8 @@
               <a href="admin/generateSalt"><button type="button" class="btn btn-success"
                 formaction="show">GENERATE SALT</button></a>
                 @endif
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      @endsection
+        @endsection
