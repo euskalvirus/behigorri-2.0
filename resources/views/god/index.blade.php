@@ -6,7 +6,7 @@
       <div class="col-lg-12">
 
         <div>
-          <h1 class="page-header">FILE LIST:</h1>
+          <h1 class="page-header">{{ trans('translations.title') }} FILE LIST:</h1>
           <ol class="breadcrumb">
             <li class="active">
               <i class="fa fa-dashboard"></i> Dashboard

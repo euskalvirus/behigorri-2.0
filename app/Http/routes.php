@@ -58,6 +58,13 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('auth/logout',['as' => 'logout', 'uses' => 'Auth\AuthController@getLogout']);
 
+    Route::get('{locale}/', function ($locale) {
+        App::setLocale($locale);
+        return redirect('/');
+
+    //
+});
+
 
 
 });

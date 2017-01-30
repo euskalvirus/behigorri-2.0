@@ -3,6 +3,17 @@
 
         <a class="navbar-brand" href="/">BEHIGORRI PASSWORD MANAGER</a>
     </div>
+    <font color="white">
+        <?php $langs = ['en','eu','es'];
+                $locale =App::getLocale(); ?>
+        @foreach ($langs as $lang)
+            @if($locale !== $lang)
+                <a href="/{{$lang}}/">{{$lang}} </a>
+            @else
+                {{$lang}}
+            @endif
+        @endforeach
+    </font>
     <!-- Top Menu Items -->
     <ul class="nav navbar-right top-nav">
         <li class="dropdown">

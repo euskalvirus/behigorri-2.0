@@ -47,7 +47,7 @@
             <!-- Navigation -->
             <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
                 @include('god.godMenu')
-                @include( (!$user->getGod()) ? 'god.godMenuSidebar' : 'user.userMenuSidebar')
+                @include( ($user->getGod()) ? 'god.godMenuSidebar' : 'user.userMenuSidebar')
             </nav>
           <div id="page-wrapper">
             <div class="container-fluid">

@@ -27,7 +27,7 @@ class IndexController extends Controller
         $datas = $this->paginate($Sensitivedatas,15);
         if($loggedUser->getGod())
         {
-            return view('god.index')->with([
+            return view(trans('god.index'))->with([
                 'user' => $loggedUser,
                 'title' => 'BEHIGORRI PASSWORD MANAGER',
                 'datas' => $datas,

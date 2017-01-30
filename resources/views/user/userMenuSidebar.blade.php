@@ -4,13 +4,13 @@
         <li class="{{ Request::path()=='/' ? 'active' : '' }}" id="dashboard">
             <a href="/"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
         </li>
-        <li class="{{ Request::path()=='admin/user' ? 'active' : '' }}" id="useradmin">
+        <!--<li class="{{ Request::path()=='admin/user' ? 'active' : '' }}" id="useradmin">
             <a href="{{ route('adminUser') }}"><i class="fa fa-fw fa-dashboard"></i> User Administration</a>
         </li>
         <li class="{{Request::path()=='admin/group' ? 'active' : '' }}" id="groupadmin">
             <a href="{{ route('adminGroup') }}"><i class="fa fa-fw fa-table"></i> Group Administration</a>
         </li>
-        <!--<li>
+        <li>
             <a href="forms.html"><i class="fa fa-fw fa-edit"></i> Forms</a>
         </li>
         <li>
