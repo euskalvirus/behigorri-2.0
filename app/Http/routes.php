@@ -14,6 +14,7 @@
     //Route::resource('api/group', 'GroupController');
     //Route::resource('api/data', 'Api\SensitiveDataController');
 Route::group(['middleware' => 'auth'], function () {
+
     Route::get('/', 'IndexController@index');
 
     Route::get('admin/user',['as' => 'adminUser', 'uses' => 'Admin\UserAdministrationController@userAdministration'] );
@@ -58,12 +59,20 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('auth/logout',['as' => 'logout', 'uses' => 'Auth\AuthController@getLogout']);
 
-    Route::get('{locale}/', function ($locale) {
+  /*  Route::get('{locale}/', function ($locale) {
+
+      if (in_array($locale, Config::get('app.alt_langs'))) {
         App::setLocale($locale);
-        return redirect('/');
+        Config::set('app.locale_prefix', $locale);
+        Session::put('locale', $locale);
+
+      }
+        return redirect()->back();
 
     //
-});
+});*/
+
+      Route::get('{locale}/', 'IndexController@setLocale');
 
 
 

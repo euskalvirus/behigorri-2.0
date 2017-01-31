@@ -5,28 +5,28 @@
     <div class="row">
       <div class="col-lg-12">
 <div>
-  <h1 class="page-header">USERS LIST:</h1>
+  <!--  <?php var_dump(App::getLocale() . '  ' . Session::get('locale'));?>-->
+  <h1 class="page-header">{{trans('translations.userlist')}}</h1>
   <ol class="breadcrumb">
     <li>
-      <i class="fa fa-dashboard"></i>  <a href="/">Dashboard</a>
+      <i class="fa fa-dashboard"></i>  <a href="/">{{trans('translations.dashboard')}}</a>
     </li>
     <li class="active">
-      <i class="fa fa-edit"></i> User Administration
+      <i class="fa fa-edit"></i> {{trans('translations.userlist')}}
     </li>
   </ol>
 
-  <a href="user/new"><button type="button" class="btn btn-default">NEW</button></a>
+  <a href="user/new"><button type="button" class="btn btn-default">{{trans('translations.new')}}</button></a>
   <form method="post" action="/admin/user/search" accept-charset="UTF-8" style="display:inline">
-    <input type="text" name="search" placeholder="Search..">
-    <input type="submit" value="Submit">
+    <input type="text" name="search" placeholder={{trans('translations.searchplaceholder')}}>
+    <input type="submit" value={{trans('translations.submit')}}>
   </form>
 </div><br>
 <div>
 <table class="table">
   <tr>
-    <th>NAME</th>
-    <th>ACTION</th>
-    <th>{!!$datas->render()!!}</th>
+    <th>{{trans('translations.name')}}</th>
+    <th>{{trans('translations.action')}}</th>
 
   </tr>
   @foreach ($datas as $data)
@@ -34,21 +34,21 @@
     <td>{{ $data->getName() }}</td>
     <td>
       <a href="/admin/user/edit/{{$data->getId()}}"><button type="button" class="btn  btn-success">
-        EDIT</button></a>
+        {{trans('translations.edit')}}</button></a>
 
         <form method="GET" action="/admin/user/delete/{{$data->getId()}}"accept-charset="UTF-8" style="display:inline">
           @if($data->getId()==$user->getId())
           <button class="btn btn-danger" disabled  type="button">
-            DELETE
+            {{trans('translations.delete')}}
           </button>
           @else
           <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#confirmDelete" data-title="Delete User" data-message="Are you sure you want to delete this user ?">
-            DELETE
+            {{trans('translations.delete')}}
           </button>
           @endif
         </form>
       <a href="/admin/user/view/{{$data->getId()}}"><button type="button" class="btn btn-primary"
-          formaction="exit">VIEW</button></a>
+          formaction="exit">{{trans('translations.view')}}</button></a>
     </td>
   </tr>
   @endforeach

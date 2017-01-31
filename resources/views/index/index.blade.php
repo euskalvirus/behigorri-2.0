@@ -6,19 +6,20 @@
       <div class="col-lg-12">
 
         <div>
-          <h1 class="page-header">{{ trans('translations.title') }} FILE LIST:</h1>
+
+          <h1 class="page-header">{{trans('translations.filelist')}}</h1>
           <ol class="breadcrumb">
             <li class="active">
-              <i class="fa fa-dashboard"></i> Dashboard
+              <i class="fa fa-dashboard"></i> {{trans('translations.dashboard')}}
             </li>
           </ol>
-          <a href="data/new"><button type="button" class="btn btn-default">NEW</button></a>
-          <a href="data/newFile"><button type="button" class="btn btn-default">NEW FILE</button></a>
+          <a href="data/new"><button type="button" class="btn btn-default">{{trans('translations.new')}}</button></a>
+          <a href="data/newFile"><button type="button" class="btn btn-default">{{trans('translations.newfile')}}</button></a>
           <form method="post" action="/data/search" accept-charset="UTF-8" style="display:inline">
-            <input type="text" name="search" placeholder="Search..">
-            <input type="submit" value="Submit">
+            <input type="text" name="search" placeholder={{trans('translations.searchplaceholder')}}>
+            <input type="submit" value={{trans('translations.submit')}}>
           </form>
-          TAG SEARCH:
+          {{trans('translations.tagsearch')}}:
           @foreach ($tags as $tag)
           <a href="/data/searchTag/{{$tag->getName()}}">{{$tag->getName()}}</a>,
           @endforeach
@@ -26,9 +27,9 @@
         <table class="table table-hover">
           <thead>
             <tr>
-              <th>NAME</th>
-              <th>TAGS</th>
-              <th>ACTION</th>
+              <th>{{trans('translations.name')}}</th>
+              <th>{{trans('translations.tags')}}</th>
+              <th>{{trans('translations.action')}}</th>
 
             </tr>
           </thead>
@@ -47,17 +48,17 @@
               </td>
                 <td>
                   <a href="/data/edit/{{$data->getId()}}"><button type="button" class="btn btn-primary">
-                    EDIT</button></a>
+                    {{trans('translations.edit')}}</button></a>
                     <!-- <a href="data/delete/{{$data->getId()}}"><button type="button" class="btn btn-danger"
                     formaction="delete" data-target="#confirmDelete" data-title="Delete User"
                     data-message="Are you sure you want to delete this data ?">DELETE</button></a> -->
                     <form class="delete" method="GET" action="/data/delete/{{$data->getId()}}" accept-charset="UTF-8" style="display:inline">
                       <button class="btn btn-danger" value="Delete" type="submit" data-toggle="modal" data-target="#confirmDelete" data-title="Delete Data" data-message="Are you sure you want to delete this data ?">
-                        DELETE
+                        {{trans('translations.delete')}}
                       </button>
                     </form>
                     <a href="/data/view/{{$data->getId()}}"><button type="button" class="btn btn-success"
-                      formaction="show">VIEW</button></a>
+                      formaction="show">{{trans('translations.view')}}</button></a>
                     </td>
                   </tr>
                   @endforeach

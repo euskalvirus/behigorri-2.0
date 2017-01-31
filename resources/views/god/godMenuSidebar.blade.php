@@ -2,15 +2,15 @@
 <div class="collapse navbar-collapse navbar-ex1-collapse">
     <ul class="nav navbar-nav side-nav">
         <li class="{{ Request::path()=='/' ? 'active' : '' }}" id="dashboard">
-            <a href="/"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
+            <a href="/"><i class="fa fa-fw fa-dashboard"></i> {{ trans('translations.dashboard') }}</a>
         </li>
         <li class="{{ Request::path()=='admin/user' ? 'active' : '' }}" id="useradmin">
-            <a href="{{ route('adminUser') }}"><i class="fa fa-fw fa-dashboard"></i> User Administration</a>
+            <a href="{{ route('adminUser') }}"><i class="fa fa-fw fa-dashboard"></i> {{ trans('translations.useradministration') }}</a>
         </li>
         <li class="{{Request::path()=='admin/group' ? 'active' : '' }}" id="groupadmin">
-            <a href="{{ route('adminGroup') }}"><i class="fa fa-fw fa-table"></i> Group Administration</a>
+            <a href="{{ route('adminGroup') }}"><i class="fa fa-fw fa-table"></i> {{ trans('translations.groupadministration') }}</a>
         </li>
-        
+
 
         <!--<li>
             <a href="forms.html"><i class="fa fa-fw fa-edit"></i> Forms</a>

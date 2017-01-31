@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\DB as DB;
 use Illuminate\Pagination\Paginator as Paginator;
 use Illuminate\Pagination\LengthAwarePaginator as LengthAwarePaginator;
 use Illuminate\Support\Collection as Collection;
+use Session;
+use App;
 class IndexController extends Controller
 {
     protected $repository;
@@ -25,32 +27,20 @@ class IndexController extends Controller
         $Sensitivedatas = $loggedUser->getUniqueSensitiveData();
         $dataTags = $this->repository->getTags($Sensitivedatas);
         $datas = $this->paginate($Sensitivedatas,15);
-        if($loggedUser->getGod())
+
+        if($loggedUser->getGod() || $loggedUser->getUserActive())
         {
-            return view(trans('god.index'))->with([
-                'user' => $loggedUser,
-                'title' => 'BEHIGORRI PASSWORD MANAGER',
-                'datas' => $datas,
-            	'tags' => $dataTags
-            ]);
-        } else {
-
-        	if($loggedUser->getUserActive())
-        	{
-
-	            return view('user.index')->with([
-	                'user' => $loggedUser,
-	                'title' => 'WELLCOME SIMPLE USER',
-	                'datas' => $datas,
-            		'tags' => $dataTags
-	            ]);
-        	} else {
-        		//var_dump($loggedUser->getUserActive());exit;
-        		Auth::logout();
-        		$error='not activated';
-        		//return redirect('/auth/login')->with($error);;
-        		return view('auth.login')->with(['error' => $error]);
-        	}
+          return view(trans('index.index'))->with([
+              'user' => $loggedUser,
+              'title' => 'BEHIGORRI PASSWORD MANAGER',
+              'datas' => $datas,
+              'tags' => $dataTags
+          ]);
+        } else{
+          Auth::logout();
+          $error='not activated';
+          //return redirect('/auth/login')->with($error);;
+          return view('auth.login')->with(['error' => $error]);
         }
     }
 
@@ -64,5 +54,13 @@ class IndexController extends Controller
     	$itemsForCurrentPage = array_slice($items, $offSet, $perPage, true);
 
     	return new LengthAwarePaginator($itemsForCurrentPage, count($items), $perPage,Paginator::resolveCurrentPage(), array('path' => Paginator::resolveCurrentPath()));
+    }
+
+    public function setLocale($locale)
+    {
+      App::setLocale($locale);
+      Session::put('locale', $locale);
+      return redirect()->back();
+      //return $this->index();
     }
 }

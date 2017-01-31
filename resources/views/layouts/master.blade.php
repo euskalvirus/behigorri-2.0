@@ -26,7 +26,7 @@
       <meta name="description" content="">
       <meta name="author" content="">
 
-      <title>SB Admin - Bootstrap Admin Template</title>
+      <title>SB Admin - Behigorri Password Manager</title>
 
 
 
@@ -46,7 +46,7 @@
         <div id="wrapper">
             <!-- Navigation -->
             <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-                @include('god.godMenu')
+                @include('index.menu')
                 @include( ($user->getGod()) ? 'god.godMenuSidebar' : 'user.userMenuSidebar')
             </nav>
           <div id="page-wrapper">

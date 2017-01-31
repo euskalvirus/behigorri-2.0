@@ -20,7 +20,7 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> {{ $user->getEmail() }} <b class="caret"></b></a>
             <ul class="dropdown-menu">
                 <li>
-                    <a href="/edit/profile"><i class="fa fa-fw fa-user"></i> Edit Profile</a>
+                    <a href="/edit/profile"><i class="fa fa-fw fa-user"></i> {{ trans('translations.editprofile') }}</a>
                 </li>
                 <!--<li>
                     <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
@@ -30,7 +30,7 @@
                 </li>-->
                 <li class="divider"></li>
                 <li>
-                    <a href="{{ route('logout') }}"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                    <a href="{{ route('logout') }}"><i class="fa fa-fw fa-power-off"></i> {{ trans('translations.logout') }}</a>
                 </li>
             </ul>
         </li>

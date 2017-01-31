@@ -1,5 +1,31 @@
 <?php
 
 return [
-    'title' => 'bienvenido a behigorri'
+    'title' => 'Bienvenido a Behigorri',
+    'filelist' => 'LISTA DE FICHEROS:',
+    'userlist' => 'LISTA DE USUARIOS:',
+    'grouplist' => 'LISTA DE GRUPOS:',
+    'dashboard' => 'Menu Principal',
+    'useradministration' => 'Gestion de Usuarios',
+    'groupadministration' => 'Gestion de Grupos',
+    'editprofile' => 'Editar Perfil',
+    'logout' => 'Cerrar Sesión',
+    'edit' => 'EDITAR',
+    'delete' => 'ELIMINAR',
+    'view' => 'VER',
+    'download' => 'DESCARGAR',
+    'new' => 'NUEVO',
+    'newfile' => 'SUBIR FICHERO',
+    'submit' => 'BUSCAR',
+    'name' => 'NOMBRE',
+    'tags' => 'TAGS',
+    'action' => 'ACCIÓN',
+    'tagsearch' => 'BUSQUEDA POR TAG',
+    'searchplaceholder' => 'Buscar..',
+    'newgroup' => 'NEVO GRUPO',
+    'users' => 'USUARIOS',
+    'save' => 'GUARDAR',
+    'return' => 'ATRAS',
+    'viewgroup' => 'VER GRUPO',
+    'editgroup' => 'EDITAR GRUPO'
 ];

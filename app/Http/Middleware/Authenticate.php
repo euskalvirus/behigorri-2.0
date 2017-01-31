@@ -4,6 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
+use Session;
+use App;
 
 class Authenticate
 {
@@ -40,6 +42,10 @@ class Authenticate
             } else {
                 return redirect()->guest('auth/login');
             }
+        }
+        //Set session locale in App
+        if (Session::has('locale')) {
+          App::setLocale(Session::get('locale'));
         }
 
         return $next($request);

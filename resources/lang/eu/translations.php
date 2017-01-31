@@ -1,0 +1,31 @@
+<?php
+
+return [
+    'title' => 'Ongi etorri Behigorrira',
+    'filelist' => 'FITXATEGIEN ZERRENDA:',
+    'userlist' => 'ERABILTZAILEEN ZERRENDA:',
+    'grouplist' => 'TALDEEN ZERRENDA:',
+    'dashboard' => 'Menu Nagusia',
+    'useradministration' => 'Erabiltzaileen Administrazioa',
+    'groupadministration' => 'Taldeen Administrazioa',
+    'editprofile' => 'Profila Editatu',
+    'logout' => 'Sesioa Itxi',
+    'edit' => 'EDITATU',
+    'delete' => 'EZABATU',
+    'view' => 'IKUSI',
+    'download' => 'DESKARGATU',
+    'new' => 'BERRIA',
+    'newfile' => 'FITXATEGI BERRIA IGO',
+    'submit' => 'BILATU',
+    'name' => 'IZENA',
+    'tags' => 'TAGS',
+    'action' => 'EKINTZA',
+    'tagsearch' => 'TAG BIDEZKO BILAKETA:',
+    'searchplaceholder' => 'Bilatu..',
+    'newgroup' => 'TALDE BERRIA',
+    'users' => 'ERABILTZAILEAK',
+    'save' => 'GORDE',
+    'return' => 'ATZERA',
+    'viewgroup' => 'TALDEA IKUSI',
+    'editgroup' => 'TALDEA EDITATU'
+];

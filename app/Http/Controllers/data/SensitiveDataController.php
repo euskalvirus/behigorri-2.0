@@ -520,6 +520,7 @@ class SensitiveDataController extends Controller
 
    protected function sensitiveDataSearchByTag($tag)
    {
+    //var_dump($tag);exit();
    		$loggedUser = Auth::user();
    		$datas = $loggedUser->getSensitiveDataByTag($tag);
    		//dd($datas);
@@ -533,33 +534,20 @@ class SensitiveDataController extends Controller
    	$sensitivedatas = $loggedUser->getUniqueSensitiveData();
    	$dataTags = $this->repository->getTags($sensitivedatas);
     $datas = $this->paginate($sensitivedatas,15);
-   	if($loggedUser->getGod())
-   	{
-   		return view('god.index')->with([
-   				'user' => $loggedUser,
-   				'title' => 'BEHIGORRI PASSWORD MANAGER',
-   				'datas' => $searchDatas,
-   				'tags'=> $dataTags
-   		]);
-   	} else {
-
-   		if($loggedUser->getUserActive())
-   		{
-
-   			return view('user.index')->with([
-   					'user' => $loggedUser,
-   					'title' => 'WELLCOME SIMPLE USER',
-   					'datas' => $searchDatas,
-   					'tags' => $dataTags
-   			]);
-   		} else {
-   			//var_dump($loggedUser->getUserActive());exit;
-   			Auth::logout();
-   			$error='not activated';
-   			//return redirect('/auth/login')->with($error);;
-   			return view('auth.login')->with(['error' => $error]);
-   		}
-   	}
+    if($loggedUser->getGod() || $loggedUser->getUserActive())
+    {
+      return view(trans('index.index'))->with([
+          'user' => $loggedUser,
+          'title' => 'BEHIGORRI PASSWORD MANAGER',
+          'datas' => $searchDatas,
+          'tags' => $dataTags
+      ]);
+    } else{
+      Auth::logout();
+      $error='not activated';
+      //return redirect('/auth/login')->with($error);;
+      return view('auth.login')->with(['error' => $error]);
+    }
 
    }
 

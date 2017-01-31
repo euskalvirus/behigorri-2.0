@@ -52,7 +52,9 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'es',
+
+    'locales' => ['en' => 'English', 'eu' => 'Basque', 'es' => 'Spanish'],
 
     /*
     |--------------------------------------------------------------------------
@@ -64,8 +66,19 @@ return [
     | the language folders that are provided through your application.
     |
     */
-
     'fallback_locale' => 'en',
+
+    /**
+    * List of alternative languages (not including the one specified as 'locale')
+    */
+    'alt_langs' => array ('es', 'eu', 'en'),
+
+    /**
+    *  Prefix of selected locale  - leave empty (set in runtime)
+    */
+    'locale_prefix' => '',
+
+
 
     /*
     |--------------------------------------------------------------------------
@@ -145,7 +158,7 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        
+
         /*
          * External Providers...
          */

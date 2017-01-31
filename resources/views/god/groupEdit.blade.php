@@ -6,7 +6,7 @@
         <div class="col-xs-12">
             <div class="col-md-6 col-md-offset-3">
                 <div class="panel panel-default">
-                    <div class="panel-heading">EDIT GROUP</div>
+                    <div class="panel-heading">{{trans('translations.editgroup')}}</div>
                     <div class="panel-body">
 
    			 			<form action="/admin/group/update" method="post">
@@ -15,14 +15,14 @@
 							  </div>
 
 						  <div class="form-group">
-						    <label for="NAME">GROUP NAME</label>
-						    <input type="TEXT" class="form-control" name="name" value={{$group->getName()}} placeholder="Name" required>
+						    <label for="NAME">{{trans('translations.name')}}</label>
+						    <input type="TEXT" class="form-control" name="name" value={{$group->getName()}} required>
 						  </div>
 
 
                             @if ($users!=null)
 					  			<div class="form-group">
-					                <label for="GROUP">USERS</label><p>
+					                <label for="GROUP">{{trans('translations.users')}}</label><p>
 					                <select  class="form-control" multiple="multiple" name="updatedUsers[]">
 					                   @foreach ($users as $id => $groupUser) :
 					                       @if ($groupUser['active'])
@@ -34,8 +34,8 @@
 					                </select>
 					           </div>
 					  		@endif
-					  		<button type="submit" class="btn  btn-success">Submit</button>
-  							<a href="/admin/group"><button type="button" class="btn btn-danger">Return</button></a>
+					  		<button type="submit" class="btn  btn-success">{{trans('translations.save')}}</button>
+  							<a href="/admin/group"><button type="button" class="btn btn-danger">{{trans('translations.return')}}</button></a>
 						</form>
                 	</div>
                 </div>
