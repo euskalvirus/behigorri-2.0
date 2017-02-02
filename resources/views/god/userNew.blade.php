@@ -1,49 +1,58 @@
 @extends('layouts.master')
-@section('title',  $title)
 @section('content')
-    @include('god.godMenu')
-    <br>
-    <br>
+<div id="page-wrapper">
+  <div class="container-fluid">
     <div class="row">
-        <div class="col-xs-12">
-            <div class="col-md-6 col-md-offset-3">
-                <div class="panel panel-default">
-                    <div class="panel-heading">NEW USER</div>
-                    <div class="panel-body">
-                        @if (count($errors) > 0)
-                        	@foreach ($errors->all() as $error)
-                           		<div class="alert alert-danger">
-    								<li>{{$error}}</li>
-                          		</div>
-                           @endforeach
-                        @endif
-                        
-                        {!! Form::open(['route' => 'doRegistration', 'class' => 'form']) !!}
-                            <div class="form-group">
-                                <label>name</label>
-                                {!! Form::input('text', 'name', '', ['class'=> 'form-control', 'required' => 'required']) !!}
-                            </div>
-                            <div class="form-group">
-                                <label>Email</label>
-                                {!! Form::email('email', '', ['class'=> 'form-control', 'required' => 'required']) !!}
-                            </div>
-                            <div class="form-group">
-                                <label>Password</label>
-                                {!! Form::password('password', ['class'=> 'form-control', 'required' => 'required']) !!}
-                            </div>
-                            <div class="form-group">
-                                <label>Password confirmation</label>
-                                {!! Form::password('password_confirmation', ['class'=> 'form-control', 'required' => 'required']) !!}
-                            </div>
-                            <div>
-                                {!! Form::submit('SUBMIT',['class' => 'btn  btn-success']) !!}
-                                <a href="/admin/user"><button type="button" class="btn btn-danger">RETURN</button></a>
-                            </div>
-                        {!! Form::close() !!}
-                    </div>
-                </div>
-            </div>
+      <div class="col-lg-12">
+        <div>
+          <h1 class="page-header">{{trans('translations.newuser')}}:</h1>
+          <ol class="breadcrumb">
+            <li>
+              <i class="fa fa-dashboard"></i>  <a href="/">{{trans('translations.dashboard')}}</a>
+            </li>
+            <li>
+              <i class="fa fa-table"></i> <a href="/admin/user">{{trans('translations.useradministration')}}</a>
+            </li>
+            <li class="active">
+              <i class="fa fa-edit"></i> {{trans('translations.newuser')}}
+            </li>
+          </ol>
         </div>
+        <div class="panel-body">
+          @if (count($errors) > 0)
+          @foreach ($errors->all() as $error)
+          <div class="alert alert-danger">
+            <li>{{$error}}</li>
+          </div>
+          @endforeach
+          @endif
+
+          {!! Form::open(['route' => 'doRegistration', 'class' => 'form']) !!}
+          <div class="form-group">
+            <label>{{trans('translations.name')}}</label>
+            {!! Form::input('text', 'name', '', ['class'=> 'form-control', 'required' => 'required']) !!}
+          </div>
+          <div class="form-group">
+            <label>{{trans('translations.email')}}</label>
+            {!! Form::email('email', '', ['class'=> 'form-control', 'required' => 'required']) !!}
+          </div>
+          <div class="form-group">
+            <label>{{trans('translations.password')}}</label>
+            {!! Form::password('password', ['class'=> 'form-control', 'required' => 'required']) !!}
+          </div>
+          <div class="form-group">
+            <label>{{trans('translations.passconfirm')}}</label>
+            {!! Form::password('password_confirmation', ['class'=> 'form-control', 'required' => 'required']) !!}
+          </div>
+          <div>
+            {!! Form::submit(trans('translations.save'),['class' => 'btn  btn-success']) !!}
+            <a href="/admin/user"><button type="button" class="btn btn-danger">{{trans('translations.return')}}</button></a>
+          </div>
+          {!! Form::close() !!}
+        </div>
+      </div>
     </div>
-    
+  </div>
+</div>
+
 @endsection

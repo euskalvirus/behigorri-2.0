@@ -27,6 +27,23 @@ return [
     'save' => 'SAVE',
     'return' => 'RETURN',
     'viewgroup' => 'VIEW GROUP',
-    'editgroup' => 'EDIT GROUP'
+    'editgroup' => 'EDIT GROUP',
+    'userdata' => 'USER DATA',
+    'viewuser' => 'VIEW USER',
+    'edituser' => 'EDIT USER',
+    'newuser' => 'NEW USER',
+    'email' => 'EMAIL',
+    'changeinfo' => 'CHANGE INFO',
+    'changepass' => 'CHANGE PASSWORD',
+    'password' => 'PASSWORD',
+    'passconfirm' => 'PASSWORD CONFIRMATION',
+    'owner' => 'OWNER',
+    'text' => 'TEXT',
+    'groups' => 'GROUP/S',
+    'editdata' => 'EDIT DATA',
+    'viewdata' => 'VIEW DATA',
+    'newdatafile' => 'NEW DATA FILE',
+    'newdata' => 'NEW DATA',
+    'choosefile' => 'Choose file, please'
 
 ];

@@ -46,11 +46,13 @@
         <div id="wrapper">
             <!-- Navigation -->
             <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-                @include('index.menu')
+              
                 @include( ($user->getGod()) ? 'god.godMenuSidebar' : 'user.userMenuSidebar')
+                @include('index.menu')
+
             </nav>
           <div id="page-wrapper">
-            <div class="container-fluid">
+            <div>
               @yield('content')
             </div>
           </div>

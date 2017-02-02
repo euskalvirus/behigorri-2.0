@@ -1,13 +1,20 @@
 @extends('layouts.master')
 @section('content')
-
-	<br>
-    <br>
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="col-md-6 col-md-offset-3">
-                <div class="panel panel-default">
-                    <div class="panel-heading">USER DATA</div>
+<div id="page-wrapper">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-lg-12">
+				<div>
+					<h1 class="page-header">{{trans('translations.userdata')}}:</h1>
+					<ol class="breadcrumb">
+						<li>
+							<i class="fa fa-table"></i> <a href="/">{{trans('translations.dashboard')}}</a>
+						</li>
+						<li class="active">
+							<i class="fa fa-edit"></i> {{trans('translations.newdatafile')}}
+						</li>
+					</ol>
+				</div>
                     <div class="panel-body">
                         @if (count($errors) > 0)
                         	@foreach ($errors->all() as $error)
@@ -18,10 +25,10 @@
                         @endif
 	<form  class="upload-form" action="/data/saveFile" method="post"  enctype="multipart/form-data">
 		<div class="form-group">
-			<input class="upload-file" type="file" name="dataFile" >
+			<input required class="upload-file" type="file" name="dataFile" id="dataFile">
 		</div>
 		<div class="form-group">
-            <label for="GROUP">GROUP</label>
+            <label for="GROUP">{{trans('translations.groups')}}</label>
             <select class="form-control" multiple="multiple" name="groups[]">
                @foreach ($groups as $group)
                    <option value="{{$group->getId()}}">{{$group->getName()}}</option>
@@ -29,13 +36,13 @@
             </select>
     	</div>
     	<div class="form-group">
-        	<label for="TAGS">TAGS</label>
+        	<label for="TAGS">{{trans('translations.tags')}}</label>
             <input type="text" name="tags" class="form-control"
                     data-role="tagsinput" />
     	</div>
 	</form>
-	<button  class="btn  btn-success" onclick="submit1()">VERIFY</button>
-	<a href="/"><button type="button" class="btn btn-danger">RETURN</button></a>
+	<button  class="btn  btn-success" onclick="submit1()">{{trans('translations.save')}}</button>
+	<a href="/"><button type="button" class="btn btn-danger">{{trans('translations.return')}}</button></a>
 </div>
 </div>
 <script>
@@ -52,11 +59,12 @@ function submit1() {
 			$('.upload-form' ).submit();
 		}
 	}else{
-		alert('choose file, please');
+		alert('{{ trans('translations.choosefile') }}');
 		return false;
 	}
 
 }
+
 </script>
 
 @endsection
