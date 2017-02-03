@@ -44,6 +44,16 @@ return [
     'viewdata' => 'VIEW DATA',
     'newdatafile' => 'NEW DATA FILE',
     'newdata' => 'NEW DATA',
-    'choosefile' => 'Choose file, please'
-
+    'choosefile' => 'Choose file, please',
+    'errorlogin' => 'Email or Password not correct!',
+    'erroractivation' => 'User account still not activated, check your email for activation!',
+    'rememberme' => 'Remember me',
+    'login' => 'Login',
+    'activationok' => 'User account activation done',
+    'activationbefore' => 'User account has been activated before',
+    'status' => 'STATUS',
+    'activated' => 'ACTIVATED',
+    'notactivated' => 'NOT ACTIVATED',
+    'download' => 'DOWNLOAD',
+    'deleteitem' => '"Do you want to delete this item?"'
 ];

@@ -30,10 +30,7 @@ class SensitiveDataController extends Controller
     public function __construct(EntityManager $EntityManager, Request $request)
     {
         $this->em = $EntityManager;
-        //var_dump(SensitiveData::class);
         $this->repository = $this->em->getRepository(SensitiveData::class);
-        //$this->userRepo = $this->em->getRepository(User::class);
-        //var_dump(get_class($this->userRepo));
     }
 
     public function compare_objects($a, $b)
@@ -48,7 +45,6 @@ class SensitiveDataController extends Controller
 
         if ($data && $data->getUser()->getId()==$loggedUser->getId())
         {
-
             $filteredGroups=[];
             if($data->getUser()->getId() == $loggedUser->getId())
             {
@@ -71,7 +67,6 @@ class SensitiveDataController extends Controller
                         ];
                     }
                 }
-                //	var_dump($filteredGroups);exit;
             }
             $sensitiveDataText = '';
             $this->setPaths($id);
@@ -84,8 +79,6 @@ class SensitiveDataController extends Controller
                 $decrypted = Symmetric::decrypt($sensitiveDataText, $encryptionKey);
                 unlink(storage_path() . '/' . 'encryption.key');
             }
-            //var_dump($this->path);exit;
-            //var_dump($sensitiveDataText);exit;
             if(!$data->getIsFile())
             {
            		return view('data.userDataEdit')->with([
@@ -108,8 +101,6 @@ class SensitiveDataController extends Controller
             }
         } else
         {
-            //return redirect('/');
-        	//return redirect()->back();
           return redirect('/');
         }
     }
@@ -128,7 +119,6 @@ class SensitiveDataController extends Controller
 
     protected function sensitiveDataSave(Request $request)
     {
-    		//var_dump($request->input('tags'));exit;
 	        $loggedUser = Auth::user();
 	        $data = new SensitiveData();
 	        $data->setName($request->input('name'));
@@ -144,7 +134,6 @@ class SensitiveDataController extends Controller
 	            $data->addGroup($group);
 	        }
 
-	        ///FALTA ENCRIPTAR Y GUARDAR LOS DATOS EN EL SERVIDOR
 	        $this->em->persist($data);
 	        $this->em->flush();
 
@@ -167,8 +156,6 @@ class SensitiveDataController extends Controller
 	        $this->em->flush();
 
         return redirect('/');
-        //return redirect()->back();
-
     }
 
     private function setPaths($id){
@@ -230,10 +217,7 @@ class SensitiveDataController extends Controller
 		        unlink(storage_path() . '/' . 'encryption.key');
 		    }
 
-	        //return redirect()->back();
-
-	        //return Redirect::to(URL::previous())->withInput()->withErrors($validation);
-        }
+      }
         return redirect('/');
     }
 
@@ -255,7 +239,6 @@ class SensitiveDataController extends Controller
             $this->em->remove($data);
             $this->em->flush();
         }
-        //return redirect('/');
         return redirect()->back();
 
     }
@@ -291,8 +274,6 @@ class SensitiveDataController extends Controller
     		$group= $this->em->find("Behigorri\Entities\Group", $groupId);
     		$data->addGroup($group);
     	}
-
-    	///FALTA ENCRIPTAR Y GUARDAR LOS DATOS EN EL SERVIDOR
     	$this->em->persist($data);
     	$this->em->flush();
 
@@ -300,8 +281,7 @@ class SensitiveDataController extends Controller
     	if (!file_exists($this->path)) {
     		mkdir($this->path, 0777, true);
     	}
-		$file->move($this->path, $fileName);
-		//var_dump($this->filePath);exit();
+		  $file->move($this->path, $fileName);
     	$outputFile  = fopen($this->filePath , "w") or die("Unable to open file!");
 
 
@@ -313,7 +293,6 @@ class SensitiveDataController extends Controller
 
     	unlink(storage_path() . '/' . 'encryption.key');
 
-    	//$encryptionKey = KeyFactory::deriveEncryptionKey('dad67a87sd78a678a0sd9as0896657645asd', KeyFactory::generateEncryptionKey());
     	File::encrypt($this->path . '/' . $fileName, $outputFile, $encryptionKey);
     	fclose($outputFile);
     	unlink($this->path . '/' . $fileName);
@@ -322,11 +301,6 @@ class SensitiveDataController extends Controller
     	$this->em->persist($dataWithTags);
     	$this->em->flush();
     	return redirect('/');
-    	//return redirect()->back();
-
-    	//File::encrypt($file, $this->path, $loggedUser->getSalt());
-
-
     }
 
     protected function sensitiveDataView($id)
@@ -342,8 +316,6 @@ class SensitiveDataController extends Controller
 
     			if ($data->getIsFile())
     			{
-    				//$sensitiveDataText  = fopen($this->filePath , "r") or die("Unable to open file!");
-    			 	//dd("is a file");
     			 	$keyFactoryFile  = fopen(storage_path() . '/' . 'encryption.key', "w") or die("Unable to open file!");
     			 	fwrite($keyFactoryFile  , $owner->getSalt());
     			 	fclose($keyFactoryFile );
@@ -353,8 +325,6 @@ class SensitiveDataController extends Controller
     			 	return response()->download(storage_path() . '/' . $data->getName())->deleteFileAfterSend(true);
     			 	fclose($outputFile);
     			 	unlink(storage_path() . '/' . 'encryption.key');
-    			 	//return Response::download($file);
-
     			}else{
     				$sensitiveDataText = file_get_contents($this->filePath);
                 	$keyFactoryFile  = fopen(storage_path() . '/' . 'encryption.key', "w") or die("Unable to open file!");
@@ -379,7 +349,7 @@ class SensitiveDataController extends Controller
 
     }
 
-    protected function splitAndCreateTags($tagsString, $data)
+    private function splitAndCreateTags($tagsString, $data)
     {
       if($tagsString!='')
       {
@@ -391,7 +361,7 @@ class SensitiveDataController extends Controller
       }
     }
 
-    protected function filterTags($tags,$data)
+    private function filterTags($tags,$data)
     {
     	$tagRep = $this->em->getRepository('Behigorri\Entities\Tag');
       //dd($tags);
@@ -411,7 +381,7 @@ class SensitiveDataController extends Controller
     	return $data;
     }
 
-    protected function tagExist($tag, $tagRep)
+    private function tagExist($tag, $tagRep)
     {
     	$search = $tagRep->findBy(['name' => $tag]);
     	if(empty($search)){
@@ -421,7 +391,7 @@ class SensitiveDataController extends Controller
     	}
     }
 
-    protected function getTagsStrings($tags){
+    private function getTagsStrings($tags){
     	$tagsString = "";
     	foreach ($tags as $tag){
     		$tagsString = $tagsString . $tag->getName() . ',';
@@ -429,7 +399,7 @@ class SensitiveDataController extends Controller
     	return $tagsString;
     }
 
-    protected function updateTags($tagsString, $data)
+    private function updateTags($tagsString, $data)
     {
     	$splitedTags = explode(',', $tagsString);
     	foreach ($data->getTags() as $tag)
@@ -440,7 +410,6 @@ class SensitiveDataController extends Controller
     		unset($splitedTags[array_search($tag->getName(), $splitedTags)]);
 
     	}
-      //dd($splitedTags);
     	return $this->filterTags($splitedTags,$data);
 
     }
@@ -451,7 +420,6 @@ class SensitiveDataController extends Controller
     	$datas = $loggedUser->getUniqueSensitiveData();
       	if($request->input('search')!='')
       	{
-
       		$splitedWords = explode(' ', $request->input('search'));
       		foreach ($splitedWords as $id =>$word) {
       			$splitedWords[$id]=(filter_var(stripslashes(trim($word)), FILTER_SANITIZE_STRING));
@@ -461,36 +429,23 @@ class SensitiveDataController extends Controller
       		{
       			if(!$this->similarInArray($data,$splitedWords))
       			{
-      				//var_dump($datas[$id]->getName() . ' se ha eliminado');exit;
       				unset($datas[$id]);
-
       			}
-
-      			/*if(in_array($data->getName(),$splitedWords))
-      			{
-      				array_push($searchDatas,$data);
-      			}*/
-
       		}
-
-      		//dd($datas);
       		$searchDatas = $this->paginate($datas,15);
-
       	}else{
       		$searchDatas = $this->paginate($datas,15);
       	}
       	return $this->returnSearchView($searchDatas);
-
     }
 
-    public function paginate($items,$perPage)
+    private function paginate($items,$perPage)
     {
     	if($items)
     	{
     		$pageStart = \Request::get('page', 1);
     		// Start displaying items from this number;
     		$offSet = ($pageStart * $perPage) - $perPage;
-
     		// Get only the items you need using array_slice
     		$itemsForCurrentPage = array_slice($items, $offSet, $perPage, true);
 
@@ -501,34 +456,27 @@ class SensitiveDataController extends Controller
 
     }
 
-    protected function similarInArray($data, $array)
+    private function similarInArray($data, $array)
     {
     	foreach ($array as $word)
     	{
-
        		if(strpos($data->getName(), $word)!== false)
     		{
-    			//dd(strpos($data->getName(), $word));
-    			//exit;
     			return true;
     		}
     	}
-    	//exit;
     	return false;
-
     }
 
-   protected function sensitiveDataSearchByTag($tag)
+   public function sensitiveDataSearchByTag($tag)
    {
-    //var_dump($tag);exit();
    		$loggedUser = Auth::user();
    		$datas = $loggedUser->getSensitiveDataByTag($tag);
-   		//dd($datas);
    		$searchDatas = $this->paginate($datas,15);
    		return $this->returnSearchView($searchDatas);
    }
 
-   protected function returnSearchView($searchDatas)
+   private function returnSearchView($searchDatas)
    {
    	$loggedUser =Auth::user();
    	$sensitivedatas = $loggedUser->getUniqueSensitiveData();
@@ -545,11 +493,8 @@ class SensitiveDataController extends Controller
     } else{
       Auth::logout();
       $error='not activated';
-      //return redirect('/auth/login')->with($error);;
       return view('auth.login')->with(['error' => $error]);
     }
-
    }
-
 
 }

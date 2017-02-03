@@ -46,7 +46,7 @@
         <div id="wrapper">
             <!-- Navigation -->
             <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-              
+
                 @include( ($user->getGod()) ? 'god.godMenuSidebar' : 'user.userMenuSidebar')
                 @include('index.menu')
 
@@ -75,7 +75,7 @@
       </body>
       <script>
         $(".delete").on("submit", function(){
-            return confirm("Do you want to delete this item?");
+            return confirm('{!!trans('translations.deleteitem')!!}');
         });
       </script>
 

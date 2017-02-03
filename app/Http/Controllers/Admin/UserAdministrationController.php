@@ -83,7 +83,7 @@ class UserAdministrationController extends Controller
         }
     }
 
-    protected function validator(array $data)
+    private function validator(array $data)
     {
         return Validator::make($data, [
             'name' => 'required|max:255',
@@ -92,21 +92,20 @@ class UserAdministrationController extends Controller
         ]);
     }
 
-    public function sendEmailReminder(Request $request, $id)
+    private function sendEmailReminder(Request $request, $id)
     {
-        //$user = User::findOrFail($id);
-        //$loggedUser = Auth::user();
-        $loggedUser = $request['email'];
+        $loggedUser = Auth::user();
+        $userName = $request['name'];
+        $userEmail = $request['email'];
+        $pass = $request['password'];
         //$generatedKey = "http://localhost:8000/activation/". sha1(mt_rand(1000000,9999999).time().$loggedUser);
-        $key = sha1(mt_rand(1000000,9999999).time().$loggedUser);
+        $key = sha1(mt_rand(1000000,9999999).time().$userEmail);
         $generatedKey = env('WEB_HOST', 'http://localhost:8800/activation/') . $key;
-        Mail::send('activation', ['activationCode' => $generatedKey], function ($m) use ($loggedUser) {
-        	$m->from($loggedUser, 'Activation Email');
-            //$m->from($loggedUser->getEmail(), 'Activation Email');
+        Mail::send('activation', ['activationCode' => $generatedKey, 'password' => $pass], function ($m) use ($loggedUser, $userName, $userEmail) {
+          $m->from($loggedUser->getEmail(),$loggedUser->getName());
             $m->to('euskalvirus@gmail.com', 'alain')->subject('Activation Email!');
-            //$m->to('azabaleta@barnetik.com', 'alain')->subject('Activation Email!');
+            //$m->to($userEmail, $userName)->subject('Activation Email!');
         });
-        //var_dump($request);exit;
         return $key;
     }
 
@@ -218,17 +217,19 @@ class UserAdministrationController extends Controller
     		$user[0]->setUserActive(true);
     		$this->em->persist($user[0]);
     		$this->em->flush();
-    		return view('user.userActivation')->with([
+    		return view('auth.login')->with([
     				'user' => $user[0]->getEmail(),
     				'title' => 'BEHIGORRI PASSWORD MANAGER',
-    				'data' => 'User account activation done'
+    				//'data' => 'User account activation done'
+            'data' => trans('translations.activationok')
     		]);
 
     	}else{
-    		return view('user.userActivation')->with([
+    		return view('auth.login')->with([
     				'user' => '',
     				'title' => 'BEHIGORRI PASSWORD MANAGER',
-    				'data' => 'User account has been activated before'
+    				//'data' => 'User account has been activated before'
+            'data' => trans('translations.activationbefore')
     		]);
 
     	}
@@ -320,11 +321,27 @@ class UserAdministrationController extends Controller
     			$user->setPassword(bcrypt($pass));
     			$this->em->persist($user);
     			$this->em->flush();
+          if($loggedUser->getGod())
+          {
+            $this->sendPasswordUpdateReminder($loggedUser,$user,$pass);
+          }
     			return redirect('/admin/user');
     		}
 
     	}
 
+    }
+
+    private function sendPasswordUpdateReminder($loggedUser,$user,$pass)
+    {
+        $loggedUser = Auth::user();
+        $userName = $user->getName();
+        $userEmail = $user->getEmail();
+        Mail::send('passwordUpdate', ['pass' => $pass], function ($m) use ($loggedUser, $userName, $userEmail) {
+          $m->from($loggedUser->getEmail(),$loggedUser->getName());
+            $m->to('euskalvirus@gmail.com', $userName)->subject('Password Update!');
+            //$m->to($userEmail, $userName)->subject('Activation Email!');
+        });
     }
 
     protected function editProfile()

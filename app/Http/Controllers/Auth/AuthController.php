@@ -10,6 +10,8 @@ use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use App\Http\Requests\Request;
 //use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityManager;
+use Auth;
+Use Session;
 
 class AuthController extends Controller
 {
@@ -68,7 +70,18 @@ class AuthController extends Controller
         $user->setPassword(bcrypt($data['password']));
         $this->em->persist($user);
         $this->em->flush();
-        
+
         return $user;
+    }
+
+    protected function getLogin()
+    {
+      return view('auth.login');
+    }
+    public function getLogout()
+    {
+        Auth::logout();
+        Session::flush();
+        return redirect('/auth/login');
     }
 }

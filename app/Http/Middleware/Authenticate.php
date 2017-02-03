@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Contracts\Auth\Guard;
 use Session;
 use App;
+use Config;
 
 class Authenticate
 {
@@ -44,7 +45,8 @@ class Authenticate
             }
         }
         //Set session locale in App
-        if (Session::has('locale')) {
+        $lang = Session::get('locale');
+        if (Session::has('locale') && in_array($lang, Config::get('app.alt_langs'))) {
           App::setLocale(Session::get('locale'));
         }
 

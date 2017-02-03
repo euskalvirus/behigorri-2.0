@@ -5,7 +5,7 @@
     <div class="row">
       <div class="col-lg-12">
         <div>
-          <h1 class="page-header">{{trans('translations.grouplist')}}:</h1>
+          <h1 class="page-header">{{trans('translations.grouplist')}}</h1>
           <ol class="breadcrumb">
             <li>
               <i class="fa fa-dashboard"></i>  <a href="/">{{trans('translations.dashboard')}}</a>
@@ -21,20 +21,17 @@
           </form>
         </div><br>
         <table class="table">
-          <tr>
+          <tr bgcolor="#EDEDED">
             <th>{{trans('translations.name')}}</th>
             <!--<th>{{trans('translations.action')}}</th>-->
-            <th>{{trans('translations.edit')}} {{trans('translations.delete')}} {{trans('translations.view')}}</th>
+            <th>{{trans('translations.action')}}</th>
 
           </tr>
           @foreach ($datas as $data)
           <tr>
-
-          </tr>
-          <tr>
             <td>{{ $data->getName() }}</td>
             <td>
-              <a href="/admin/group/edit/{{$data->getId()}}"><button type="button" class="btn  btn-success" title={{trans('translations.edit')}}>
+              <a href="/admin/group/edit/{{$data->getId()}}"><button type="button" class="btn btn-primary" title={{trans('translations.edit')}}>
                 <span class="glyphicon glyphicon-pencil"></span></button></a>
                 <!-- <a href="group/delete/{{$data->getId()}}"><button type="button" class="btn btn-danger"
                 formaction="delete">DELETE</button></a> -->
@@ -43,7 +40,7 @@
                       <span class="glyphicon glyphicon-trash"></span>
                   </button>
                 </form>
-                <a href="/admin/group/view/{{$data->getId()}}"><button type="button" class="btn btn-primary"
+                <a href="/admin/group/view/{{$data->getId()}}"><button type="button" class="btn  btn-success"
                   formaction="exit" title={{trans('translations.view')}}><span class="glyphicon glyphicon-search"></span></button></a>
                 </td>
               </tr>

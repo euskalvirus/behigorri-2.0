@@ -2,9 +2,9 @@
 
 return [
     'title' => 'Ongi etorri Behigorrira',
-    'filelist' => 'FITXATEGIEN ZERRENDA',
-    'userlist' => 'ERABILTZAILEEN ZERRENDA',
-    'grouplist' => 'TALDEEN ZERRENDA',
+    'filelist' => 'FITXATEGIEN ZERRENDA:',
+    'userlist' => 'ERABILTZAILEEN ZERRENDA:',
+    'grouplist' => 'TALDEEN ZERRENDA:',
     'dashboard' => 'Menu Nagusia',
     'useradministration' => 'Erabiltzaileen Administrazioa',
     'groupadministration' => 'Taldeen Administrazioa',
@@ -44,5 +44,16 @@ return [
     'viewdata' => 'DATUA IKUSI',
     'newdatafile' => 'FITXATEGI BERRIA',
     'newdata' => 'DATU BERRIA',
-    'choosefile' => 'Fitxategi ba aukeratu, mesedez'
+    'choosefile' => 'Fitxategi ba aukeratu, mesedez',
+    'errorlogin' => 'Emaila edo Pasahitza ez dira egokiak!',
+    'erroractivation' => 'Erabiltzaile kontua ez dago aktibaturik, berrikusi zure emaila aktibaziorako!',
+    'rememberme' => 'Gogoratu',
+    'login' => 'Sesioa Hasi',
+    'activationok' => 'kontua aktubatu egin da',
+    'activationbefore' => 'Kontu hau aurretik aktibatuta dago',
+    'status' => 'EGOERA',
+    'activated' => 'AKTIBATUTA',
+    'notactivated' => 'AKTIBATU GABE',
+    'download' => 'DESKARGATU',
+    'deleteitem' => '"Elementu hay ezabatu nahi al duzu?"'
 ];

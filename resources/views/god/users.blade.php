@@ -6,7 +6,7 @@
       <div class="col-lg-12">
 <div>
   <!--  <?php var_dump(App::getLocale() . '  ' . Session::get('locale'));?>-->
-  <h1 class="page-header">{{trans('translations.userlist')}}:</h1>
+  <h1 class="page-header">{{trans('translations.userlist')}}</h1>
   <ol class="breadcrumb">
     <li>
       <i class="fa fa-dashboard"></i>  <a href="/">{{trans('translations.dashboard')}}</a>
@@ -24,17 +24,31 @@
 </div><br>
 <div>
 <table class="table">
-  <tr>
+  <tr bgcolor="#EDEDED">
     <th>{{trans('translations.name')}}</th>
+    <th>{{trans('translations.email')}}</th>
+    <th>{{trans('translations.status')}}</th>
     <th>{{trans('translations.action')}}</th>
 
   </tr>
   @foreach ($datas as $data)
-  <tr>
+  <tr >
     <td>{{ $data->getName() }}</td>
+    <td>{{ $data->getEmail()}}</td>
+    <td>
+        @if ($data->getUserActive())
+        <span class="label label-default">
+          {{trans('translations.activated')}}
+        </span>
+        @else
+          <span class="label label-warning">
+            {{trans('translations.notactivated')}}
+          </span>
+        @endif
+    </td>
     <td>
       <a href="/admin/user/edit/{{$data->getId()}}">
-        <button class="btn btn-success"data-title="Edit"
+        <button class="btn btn-primary"data-title="Edit"
               title={{trans('translations.edit')}}>
                 <span class="glyphicon glyphicon-pencil"></span>
         </button></a>
@@ -48,7 +62,7 @@
           <span class="glyphicon glyphicon-trash"></span>
           </button>
         </form>
-      <a href="/admin/user/view/{{$data->getId()}}"><button type="button" class="btn btn-primary"
+      <a href="/admin/user/view/{{$data->getId()}}"><button type="button" class="btn  btn-success"
           formaction="exit" title={{trans('translations.view')}}><span class="glyphicon glyphicon-search"></span></button></a>
     </td>
   </tr>

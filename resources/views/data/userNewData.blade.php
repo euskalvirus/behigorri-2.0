@@ -27,7 +27,7 @@
 					<form action="/data/save" method="post">
 						<div class="form-group">
 							<label for="NAME">{{trans('translations.name')}}</label>
-							<input type="TEXT" class="form-control" name="name"  required>
+							<input type="TEXT" class="form-control" name="name"  required autofocus>
 						</div>
 						<div class="form-group">
 							<label for="TEXT">{{trans('translations.text')}}</label>

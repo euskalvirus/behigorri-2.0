@@ -30,7 +30,7 @@
           {!! Form::open(['route' => 'doRegistration', 'class' => 'form']) !!}
           <div class="form-group">
             <label>{{trans('translations.name')}}</label>
-            {!! Form::input('text', 'name', '', ['class'=> 'form-control', 'required' => 'required']) !!}
+            {!! Form::input('text', 'name', '', ['class'=> 'form-control', 'required' => 'required', 'autofocus'=>'autofocus']) !!}
           </div>
           <div class="form-group">
             <label>{{trans('translations.email')}}</label>

@@ -2,9 +2,9 @@
 
 return [
     'title' => 'Bienvenido a Behigorri',
-    'filelist' => 'LISTA DE FICHEROS',
-    'userlist' => 'LISTA DE USUARIOS',
-    'grouplist' => 'LISTA DE GRUPOS',
+    'filelist' => 'LISTA DE FICHEROS:',
+    'userlist' => 'LISTA DE USUARIOS:',
+    'grouplist' => 'LISTA DE GRUPOS:',
     'dashboard' => 'Menu Principal',
     'useradministration' => 'Gestion de Usuarios',
     'groupadministration' => 'Gestion de Grupos',
@@ -44,5 +44,16 @@ return [
     'viewdata' => 'VER DATO',
     'newdatafile' => 'NUEVO FICHERO',
     'newdata' => 'NUEVO DATO',
-    'choosefile' => 'Elige un fichero, porfavor'
+    'choosefile' => 'Elige un fichero, porfavor',
+    'errorlogin' => 'El Email o Contraseña no son validos!',
+    'erroractivation' => 'La cuenta de usuario no esta activada, resiva tu email para la activación!',
+    'rememberme' => 'Recordar',
+    'login' => 'Iniciar Sesión',
+    'activationok' => 'ha sidoactivada',
+    'activationbefore' => 'Cuenta activada anteriormente',
+    'status' => 'ESTADO',
+    'activated' => 'ACTIVADO',
+    'notactivated' => 'SIN ACTIVAR',
+    'download' => 'DESCARGAR',
+    'delteitem' => '"Quiere eliminar este registro?"'
 ];
