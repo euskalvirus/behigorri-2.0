@@ -164,6 +164,12 @@ class GroupAdministrationController extends Controller
       //$group = $this->em->find("Behigorri\Entities\Group",$request->input('id'));
     	if($loggedUser->getGod() && $group)
     	{
+        $validator = $this->validator($request->all());
+        if ($validator->fails()) {
+            $this->throwValidationException(
+                $request, $validator
+                );
+        }
     		$newUsers=$request->input('updatedUsers', []);
     		$groupUsers = $group->getUsers();
     		foreach($group->getUsers() as $user)

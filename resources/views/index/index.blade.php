@@ -25,15 +25,12 @@
           @endforeach
         </div ><br>
         <table class="table">
-          <thead>
             <tr bgcolor="#EDEDED">
               <th>{{trans('translations.name')}}</th>
               <th>{{trans('translations.tags')}}</th>
               <th>{{trans('translations.action')}}</th>
 
             </tr>
-          </thead>
-          <tbody>
             @if ($user->getSalt()!=Null)
 
             @foreach ($datas as $data)
@@ -72,7 +69,6 @@
                     </td>
                   </tr>
                   @endforeach
-                </tbody>
               </table>
               @if ($datas)
               {!!$datas->render()!!}

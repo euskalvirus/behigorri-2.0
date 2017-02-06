@@ -102,7 +102,7 @@ class UserAdministrationController extends Controller
         $key = sha1(mt_rand(1000000,9999999).time().$userEmail);
         $generatedKey = env('WEB_HOST', 'http://localhost:8800/activation/') . $key;
         Mail::send('activation', ['activationCode' => $generatedKey, 'password' => $pass], function ($m) use ($loggedUser, $userName, $userEmail) {
-          $m->from($loggedUser->getEmail(),$loggedUser->getName());
+          $m->from($loggedUser->getEmail(),'Behigorri Password Manager');
             $m->to('euskalvirus@gmail.com', 'alain')->subject('Activation Email!');
             //$m->to($userEmail, $userName)->subject('Activation Email!');
         });
@@ -285,6 +285,12 @@ class UserAdministrationController extends Controller
     	$user = $this->repository->find($request->input('id'));
     	if($loggedUser->getGod() || $loggedUser->getId()== $user->getId() )
     	{
+        $validator = $this->infoChangeValidator($request->all());
+        if ($validator->fails()) {
+            $this->throwValidationException(
+                $request, $validator
+                );
+        }
     		$newGroups=$request->input('groups', []);
     		foreach($user->getGroups() as $group)
     		{
@@ -315,6 +321,12 @@ class UserAdministrationController extends Controller
     	$user = $this->em->find("Behigorri\Entities\User",$request->input('id'));
     	if($loggedUser->getGod() || $loggedUser->getId()== $user->getId())
     	{
+        $validator = $this->passwordChangeValidator($request->all());
+        if ($validator->fails()) {
+            $this->throwValidationException(
+                $request, $validator
+                );
+        }
     		$pass=$request['password_confirmation'];
     		$passConfirm=$request['password_confirmation'];
     		if($pass==$passConfirm){
@@ -338,7 +350,7 @@ class UserAdministrationController extends Controller
         $userName = $user->getName();
         $userEmail = $user->getEmail();
         Mail::send('passwordUpdate', ['pass' => $pass], function ($m) use ($loggedUser, $userName, $userEmail) {
-          $m->from($loggedUser->getEmail(),$loggedUser->getName());
+          $m->from($loggedUser->getEmail(),'Behigorri Password Manager');
             $m->to('euskalvirus@gmail.com', $userName)->subject('Password Update!');
             //$m->to($userEmail, $userName)->subject('Activation Email!');
         });
@@ -396,5 +408,21 @@ class UserAdministrationController extends Controller
      	return new LengthAwarePaginator($itemsForCurrentPage, count($items), $perPage,Paginator::resolveCurrentPage(), array('path' => Paginator::resolveCurrentPath()));
      }
 
+     private function infoChangeValidator(array $data)
+     {
+         return Validator::make($data, [
+             'name' => 'required|max:255',
+             'email' => 'required|email|max:255|unique:User',
+         ]);
+     }
+
+     private function passwordChangeValidator(array $data)
+     {
+         return Validator::make($data, [
+             'password' => 'required|confirmed|min:6',
+             'password_confirmation' => 'required'
+             //'password_confirmation' => 'required|same:password'
+         ]);
+     }
 
 }
