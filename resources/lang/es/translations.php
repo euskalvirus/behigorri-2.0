@@ -55,5 +55,17 @@ return [
     'activated' => 'ACTIVADO',
     'notactivated' => 'SIN ACTIVAR',
     'download' => 'DESCARGAR',
-    'delteitem' => '"Quiere eliminar este registro?"'
+    'delteitem' => '"Quiere eliminar este registro?"',
+    'emailRequired'=> 'El campo EMAIL es obligatorio.',
+    'emailEmail' => 'El campo EMAIL debe ser una dirección email valida.',
+    'emailMax' => 'El campo EMAIL no debe ser de una longitud mayor de :max caracteres.',
+    'emailUnique' => 'El EMAIL ya esta registrado.',
+    'nameRequired'=> 'El campo NOMBRE es obligatorio.',
+    'nameMax' => 'El campo NOMBRE no debe ser de una longitud mayor de :max caracteres.',
+    'nameUnique' =>  'El NOMBRE ya esta registrado.',
+    'passwordRequired' => 'El campo CONTRASEÑA es obligatorio.',
+    'passwordConfirmed' => 'La confirmación del campo CONTRASEÑA no concuerda.',
+    'passwordMin' => 'El campo CONTRASEÑA debe ser superior a :min caracteres.',
+    'password_Confirmation.required' => 'El campo CONFIRMAR CONTRASEÑA es obligatorio.',
+    'password_Confirmation.same' => 'Los campos CONTRASEÑA y CONFIRMAR CONTRASEÑA deben ser iguales.'
 ];

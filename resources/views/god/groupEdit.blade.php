@@ -33,8 +33,9 @@
 							  </div>
 
 						  <div class="form-group">
+                              
 						    <label for="NAME">{{trans('translations.name')}}</label>
-						    <input type="TEXT" class="form-control" name="name" value={{$group->getName()}} required>
+						    <input type="TEXT" class="form-control" name="name" value="{{$group->getName()}}" required>
 						  </div>
 
 

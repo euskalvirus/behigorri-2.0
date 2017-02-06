@@ -13,8 +13,8 @@
               <i class="fa fa-dashboard"></i> {{trans('translations.dashboard')}}
             </li>
           </ol>
-          <a href="data/new"><button type="button" class="btn btn-default btn-sm">{{trans('translations.new')}}</button></a>
-          <a href="data/newFile"><button type="button" class="btn btn-default btn-sm">{{trans('translations.newfile')}}</button></a>
+          <a href="/data/new"><button type="button" class="btn btn-default btn-sm">{{trans('translations.new')}}</button></a>
+          <a href="/data/newFile"><button type="button" class="btn btn-default btn-sm">{{trans('translations.newfile')}}</button></a>
           <form method="post" action="/data/search" accept-charset="UTF-8" style="display:inline">
             <input type="text" name="search" placeholder={{trans('translations.searchplaceholder')}}>
             <input type="submit" value={{trans('translations.submit')}}>

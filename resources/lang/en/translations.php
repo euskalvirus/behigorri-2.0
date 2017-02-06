@@ -55,5 +55,17 @@ return [
     'activated' => 'ACTIVATED',
     'notactivated' => 'NOT ACTIVATED',
     'download' => 'DOWNLOAD',
-    'deleteitem' => '"Do you want to delete this item?"'
+    'deleteitem' => '"Do you want to delete this item?"',
+    'emailRequired'=> 'The EMAIL field is required.',
+    'emailEmail' => 'The EMAIL must be a valid email address.',
+    'emailMax' => 'The EMAIL may not be greater than :max characters.',
+    'emailUnique' => 'The EMAIL has already been taken.',
+    'nameRequired'=> 'The NAME field is required.',
+    'nameMax' => 'The NAME may not be greater than :max characters.',
+    'nameUnique' => 'The NAME has already been taken.',
+    'passwordRequired' => 'The PASSWORD field is required.',
+    'passwordConfirmed' => 'The PASSWORD confirmation does not match.',
+    'passwordMin' => 'The PASSWORD must be at least :min characters.',
+    'password_Confirmation.required' => 'The PASSWORD_CONFIRMATION field is required.',
+    'password_Confirmation.same' => 'The PASSWORD and PASSWORD CONFIRMATION must match.'
 ];

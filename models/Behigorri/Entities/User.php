@@ -12,14 +12,14 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
 /**
-*
+* @ORM\Entity(repositoryClass="Behigorri\Repositories\BehigorriRepository")
 ** @ORM\Table(
 *   name="User",
 *   options={
 *     "collate"="utf8_bin", "charset"="utf8"
 *   }
 * )
-* @ORM\Entity(repositoryClass="Behigorri\Repositories\BehigorriRepository")
+
 */
 class User implements AuthenticatableContract, CanResetPasswordContract, AuthorizableContract
 {

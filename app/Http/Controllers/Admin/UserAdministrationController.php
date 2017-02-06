@@ -24,7 +24,8 @@ class UserAdministrationController extends Controller
     public function __construct(EntityManager $em)
     {
     	$this->em = $em;
-        $this->repository = $em->getRepository('Behigorri\Entities\User');
+        //$this->repository = $em->getRepository('Behigorri\Entities\User');
+        $this->repository = $this->em->getRepository(User::class);
     }
 
     public function userAdministration()
@@ -89,7 +90,7 @@ class UserAdministrationController extends Controller
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:User',
             'password' => 'required|confirmed|min:6',
-        ]);
+        ], $this->repository->getValitationMessages());
     }
 
     private function sendEmailReminder(Request $request, $id)
@@ -138,7 +139,7 @@ class UserAdministrationController extends Controller
     private function create(array $data, $activationCode)
     {
     	$user = new User();
-    	$user->setName($data['name']);
+    	$user->setName($this->repository->avoidSqlInjection($data['name']));
     	$user->setEmail($data['email']);
     	$user->setPassword(bcrypt($data['password']));
     	$user->setGod(false);
@@ -285,12 +286,12 @@ class UserAdministrationController extends Controller
     	$user = $this->repository->find($request->input('id'));
     	if($loggedUser->getGod() || $loggedUser->getId()== $user->getId() )
     	{
-        $validator = $this->infoChangeValidator($request->all());
-        if ($validator->fails()) {
-            $this->throwValidationException(
-                $request, $validator
+            $validator = $this->infoChangeValidator($request->all(),$user->getEmail());
+            if ($validator->fails()) {
+                $this->throwValidationException(
+                    $request, $validator
                 );
-        }
+            }
     		$newGroups=$request->input('groups', []);
     		foreach($user->getGroups() as $group)
     		{
@@ -306,7 +307,7 @@ class UserAdministrationController extends Controller
     			$group= $this->em->find("Behigorri\Entities\Group", $groupId);
     			$user->addGroup($group);
     		}
-    		$user->setName($request->input('name'));
+    		$user->setName($this->repository->avoidSqlInjection($request->input('name')));
     		$user->setEmail($request->input('email'));
     		$this->em->persist($user);
     		$this->em->flush();
@@ -321,12 +322,12 @@ class UserAdministrationController extends Controller
     	$user = $this->em->find("Behigorri\Entities\User",$request->input('id'));
     	if($loggedUser->getGod() || $loggedUser->getId()== $user->getId())
     	{
-        $validator = $this->passwordChangeValidator($request->all());
-        if ($validator->fails()) {
-            $this->throwValidationException(
-                $request, $validator
+            $validator = $this->passwordChangeValidator($request->all());
+            if ($validator->fails()) {
+                $this->throwValidationException(
+                    $request, $validator
                 );
-        }
+            }
     		$pass=$request['password_confirmation'];
     		$passConfirm=$request['password_confirmation'];
     		if($pass==$passConfirm){
@@ -408,12 +409,19 @@ class UserAdministrationController extends Controller
      	return new LengthAwarePaginator($itemsForCurrentPage, count($items), $perPage,Paginator::resolveCurrentPage(), array('path' => Paginator::resolveCurrentPath()));
      }
 
-     private function infoChangeValidator(array $data)
+     private function infoChangeValidator(array $data, $previousEmail)
      {
-         return Validator::make($data, [
-             'name' => 'required|max:255',
-             'email' => 'required|email|max:255|unique:User',
-         ]);
+         if($previousEmail !== $data['email'])
+         {
+             return Validator::make($data, [
+                 'name' => 'required|max:255',
+                 'email' => 'required|email|max:255|unique:User',
+             ], $this->repository->getValitationMessages());
+         }else{
+             return Validator::make($data, [
+                 'name' => 'required|max:255'
+             ], $this->repository->getValitationMessages());
+         }
      }
 
      private function passwordChangeValidator(array $data)
@@ -422,7 +430,7 @@ class UserAdministrationController extends Controller
              'password' => 'required|confirmed|min:6',
              'password_confirmation' => 'required'
              //'password_confirmation' => 'required|same:password'
-         ]);
+         ], $this->getValitationMessages());
      }
 
 }

@@ -65,7 +65,7 @@ class GroupAdministrationController extends Controller
       $loggedUser = Auth::user();
       if($loggedUser->getGod())
       {
-    	   $validator = $this->validator($request->all());
+    	   $validator = $this->validator($request->all(),'');
 
     	    if ($validator->fails()) {
     		      $this->throwValidationException(
@@ -73,7 +73,7 @@ class GroupAdministrationController extends Controller
     			    );
     	    }
     	  $group = new Group();
-    	  $group->setName($request->input('name'));
+    	  $group->setName($this->repository->avoidSqlInjection($request->input('name')));
     	  $users=$request->input('users');
     		if($users == null){
     		    $users = [];
@@ -94,11 +94,19 @@ class GroupAdministrationController extends Controller
     	//return redirect()->back();
 
     }
-    private function validator(array $data)
+    private function validator(array $data, $groupName)
     {
-    	return Validator::make($data, [
-    			'name' => 'required|max:255|unique:Group'
-    	]);
+        if($groupName!=='' && $data['name'] !== $groupName)
+        {
+
+    	       return Validator::make($data, [
+    			            'name' => 'required|max:255|unique:Group'
+    	              ], $this->repository->getValitationMessages());
+        } else{
+            return Validator::make($data, [
+                         'name' => 'required|max:255'
+                   ], $this->repository->getValitationMessages());
+        }
     }
 
     protected function groupDelete($id)
@@ -123,6 +131,7 @@ class GroupAdministrationController extends Controller
     {
     	$loggedUser = Auth::user();
     	$group = $this->repository->find($id);
+
     	if($loggedUser->getGod() && $group)
     	{
     		$groupUsers = $group->getUsers();
@@ -164,12 +173,12 @@ class GroupAdministrationController extends Controller
       //$group = $this->em->find("Behigorri\Entities\Group",$request->input('id'));
     	if($loggedUser->getGod() && $group)
     	{
-        $validator = $this->validator($request->all());
-        if ($validator->fails()) {
-            $this->throwValidationException(
-                $request, $validator
-                );
-        }
+            $validator = $this->validator($request->all(), $group->getName());
+            if ($validator->fails()) {
+                $this->throwValidationException(
+                    $request, $validator
+                    );
+                }
     		$newUsers=$request->input('updatedUsers', []);
     		$groupUsers = $group->getUsers();
     		foreach($group->getUsers() as $user)
@@ -185,6 +194,7 @@ class GroupAdministrationController extends Controller
     			$user= $this->em->find("Behigorri\Entities\User", $userId);
     			$user->addGroup($group);
     		}
+            $group->setName($this->repository->avoidSqlInjection($request->input('name')));
     		$this->em->persist($group);
     		$this->em->flush();
 			return redirect('/admin/group');

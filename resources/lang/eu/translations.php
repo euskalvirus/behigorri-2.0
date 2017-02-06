@@ -55,5 +55,17 @@ return [
     'activated' => 'AKTIBATUTA',
     'notactivated' => 'AKTIBATU GABE',
     'download' => 'DESKARGATU',
-    'deleteitem' => '"Elementu hay ezabatu nahi al duzu?"'
+    'deleteitem' => '"Elementu hay ezabatu nahi al duzu?"',
+    'emailRequired'=> 'EMAIL eremua derrigorrezkoa da.',
+    'emailEmail' => 'The EMAIL must be a valid email address.',
+    'emailMax' => 'The EMAIL may not be greater than :max characters.',
+    'emailUnique' => 'The EMAIL has already been taken.',
+    'nameRequired'=> 'IZENA eremua derrigorrezkoa da.',
+    'nameMax' => 'The NAME may not be greater than :max characters.',
+    'nameUnique' => 'The NAME has already been taken.',
+    'passwordRequired' => 'The PASSWORD field is required.',
+    'passwordConfirmed' => 'The PASSWORD confirmation does not match.',
+    'passwordMin' => 'The PASSWORD must be at least :min characters.',
+    'password_Confirmation.required' => 'The PASSWORD_CONFIRMATION field is required.',
+    'password_Confirmation.same' => 'The PASSWORD and PASSWORD CONFIRMATION must match'
 ];

@@ -53,26 +53,9 @@ class AuthController extends Controller
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:User',
             'password' => 'required|confirmed|min:6',
-        ]);
+        ], $em->getRepository('Behigorri\Entities\User')->getValitationMessages());
     }
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return User
-     */
-    protected function create(array $data)
-    {
-        $user = new User();
-        $user->setName($data['name']);
-        $user->setEmail($data['email']);
-        $user->setPassword(bcrypt($data['password']));
-        $this->em->persist($user);
-        $this->em->flush();
-
-        return $user;
-    }
 
     protected function getLogin()
     {

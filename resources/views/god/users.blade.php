@@ -16,7 +16,7 @@
     </li>
   </ol>
 
-  <a href="user/new"><button type="button" class="btn btn-default btn-sm">{{trans('translations.new')}}</button></a>
+  <a href="/user/new"><button type="button" class="btn btn-default btn-sm">{{trans('translations.new')}}</button></a>
   <form method="post" action="/admin/user/search" accept-charset="UTF-8" style="display:inline">
     <input type="text" name="search" placeholder={{trans('translations.searchplaceholder')}}>
     <input type="submit" value={{trans('translations.submit')}}>
