@@ -121,8 +121,10 @@ class SensitiveDataController extends Controller
     {
 	        $loggedUser = Auth::user();
 	        $data = new SensitiveData();
-	        $data->setName($request->input('name'));
+	        $data->setName($this->repository->avoidSqlInjection($request->input('name')));
 	        $data->setUser($loggedUser);
+            $data->setCreatedAt($mysqltime = date("Y-m-d H:i:s"));
+            $data->setUpdatedAt($mysqltime = date("Y-m-d H:i:s"));
 	        $data->setIsFile(false);
 	        $groups=$request->input('groups');
 	        if($groups == null){
@@ -181,7 +183,8 @@ class SensitiveDataController extends Controller
         if ($data && $data->getUser()->getId()==$loggedUser->getId())
         {
 
-        	$data->setName($request->input('name'));
+        	$data->setName($this->repository->avoidSqlInjection($request->input('name')));
+            $data->setUpdatedAt($mysqltime = date("Y-m-d H:i:s"));
 	        $newGroups=$request->input('groups', []);
 	        foreach($data->getGroups() as $group)
 	        {
@@ -265,6 +268,8 @@ class SensitiveDataController extends Controller
     	$data->setName($fileName);
     	$data->setUser($loggedUser);
     	$data->setIsFile(true);
+        $data->setCreatedAt($mysqltime = date("Y-m-d H:i:s"));
+        $data->setUpdatedAt($mysqltime = date("Y-m-d H:i:s"));
     	$groups=$request->input('groups');
     	if($groups == null){
     		$groups = [];
@@ -328,7 +333,7 @@ class SensitiveDataController extends Controller
     			}else{
     				$sensitiveDataText = file_get_contents($this->filePath);
                 	$keyFactoryFile  = fopen(storage_path() . '/' . 'encryption.key', "w") or die("Unable to open file!");
-                	fwrite($keyFactoryFile  , $loggedUser->getSalt());
+                	fwrite($keyFactoryFile  , $owner->getSalt());
                 	fclose($keyFactoryFile );
                 	$encryptionKey = KeyFactory::loadEncryptionKey(storage_path() . '/' . 'encryption.key');
                		$decrypted = Symmetric::decrypt($sensitiveDataText, $encryptionKey);
@@ -369,6 +374,8 @@ class SensitiveDataController extends Controller
     		if(!$this->tagExist($tag, $tagRep)){
     			$newTag = new Tag();
     			$newTag->setName($tag);
+                $newTag->setUpdatedAt($mysqltime = date("Y-m-d H:i:s"));
+                $newTag->setUpdatedAt($mysqltime = date("Y-m-d H:i:s"));
     			$this->em->persist($newTag);
     			$this->em->flush();
           //dd($newTag->getId());

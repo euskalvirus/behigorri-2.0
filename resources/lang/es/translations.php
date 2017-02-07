@@ -67,5 +67,9 @@ return [
     'passwordConfirmed' => 'La confirmación del campo CONTRASEÑA no concuerda.',
     'passwordMin' => 'El campo CONTRASEÑA debe ser superior a :min caracteres.',
     'password_Confirmation.required' => 'El campo CONFIRMAR CONTRASEÑA es obligatorio.',
-    'password_Confirmation.same' => 'Los campos CONTRASEÑA y CONFIRMAR CONTRASEÑA deben ser iguales.'
+    'password_Confirmation.same' => 'Los campos CONTRASEÑA y CONFIRMAR CONTRASEÑA deben ser iguales.',
+    'newPassword1' => 'Tu contraseña se ha cambiado.',
+    'newPassword2' => 'Esta es la nueva:',
+    'activation1' => 'Activa tu usuario haciendo click en este enlace:',
+    'activation2' => 'Tu contraseña de acceso es:',
 ];

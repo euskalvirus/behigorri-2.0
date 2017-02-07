@@ -67,5 +67,9 @@ return [
     'passwordConfirmed' => 'The PASSWORD confirmation does not match.',
     'passwordMin' => 'The PASSWORD must be at least :min characters.',
     'password_Confirmation.required' => 'The PASSWORD_CONFIRMATION field is required.',
-    'password_Confirmation.same' => 'The PASSWORD and PASSWORD CONFIRMATION must match.'
+    'password_Confirmation.same' => 'The PASSWORD and PASSWORD CONFIRMATION must match.',
+    'newPassword1' => 'Your password have been changed.',
+    'newPassword2' => 'This is the new one:',
+    'activation1' => 'Activate your registration in this link:',
+    'activation2' => 'Your login passwor is:',
 ];

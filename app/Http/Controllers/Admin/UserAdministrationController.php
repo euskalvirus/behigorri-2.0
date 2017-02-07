@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\admin;
 
 use Behigorri\Entities\User;
+use Behigorri\Entities\Group;
 use Auth;
 use App\Http\Controllers\Controller;
 use Doctrine\ORM\EntityManager;
@@ -55,6 +56,7 @@ class UserAdministrationController extends Controller
             return view('god.userNew')->with([
                 'user' => $loggedUser,
                 'title' => 'BEHIGORRI PASSWORD MANAGER',
+                'groups' => $this->em->getRepository(Group::class)->findAll()
             ]);
         } else {
             return redirect('/');
@@ -75,7 +77,14 @@ class UserAdministrationController extends Controller
             }
             //Auth::login($this->create($request->all()));
             $activationCode = $this->sendEmailReminder($request, 0);
-            $this->create($request->all(),$activationCode);
+            $user = $this->create($request->all(),$activationCode);
+            foreach($request['groups'] as $groupId)
+    		{
+    			$group= $this->em->find("Behigorri\Entities\Group", $groupId);
+    			$user->addGroup($group);
+    		}
+            $this->em->persist($user);
+            $this->em->flush();
 
             //return redirect(route('adminUser'));
             return redirect('/admin/user');
@@ -152,8 +161,6 @@ class UserAdministrationController extends Controller
     	$salt = file_get_contents(storage_path() . '/' . 'encryption.key');
     	unlink(storage_path() . '/' . 'encryption.key');
     	$user->setSalt($salt);
-    	$this->em->persist($user);
-        $this->em->flush();
 
     	return $user;
     }
@@ -216,13 +223,14 @@ class UserAdministrationController extends Controller
     	}
     	if(!$user[0]->getUserActive()){
     		$user[0]->setUserActive(true);
+            $user[0]->setUpdatedAt($mysqltime = date("Y-m-d H:i:s"));
     		$this->em->persist($user[0]);
     		$this->em->flush();
     		return view('auth.login')->with([
     				'user' => $user[0]->getEmail(),
     				'title' => 'BEHIGORRI PASSWORD MANAGER',
     				//'data' => 'User account activation done'
-            'data' => trans('translations.activationok')
+                    'data' => trans('translations.activationok')
     		]);
 
     	}else{
@@ -230,7 +238,7 @@ class UserAdministrationController extends Controller
     				'user' => '',
     				'title' => 'BEHIGORRI PASSWORD MANAGER',
     				//'data' => 'User account has been activated before'
-            'data' => trans('translations.activationbefore')
+                    'data' => trans('translations.activationbefore')
     		]);
 
     	}
@@ -308,7 +316,7 @@ class UserAdministrationController extends Controller
     			$user->addGroup($group);
     		}
     		$user->setName($this->repository->avoidSqlInjection($request->input('name')));
-    		$user->setEmail($request->input('email'));
+            $user->setUpdatedAt($mysqltime = date("Y-m-d H:i:s"));
     		$this->em->persist($user);
     		$this->em->flush();
     		return redirect('/admin/user');
@@ -332,6 +340,7 @@ class UserAdministrationController extends Controller
     		$passConfirm=$request['password_confirmation'];
     		if($pass==$passConfirm){
     			$user->setPassword(bcrypt($pass));
+                $user->setUpdatedAt($mysqltime = date("Y-m-d H:i:s"));
     			$this->em->persist($user);
     			$this->em->flush();
           if($loggedUser->getGod())
@@ -372,6 +381,7 @@ class UserAdministrationController extends Controller
      		$salt = file_get_contents(storage_path() . '/' . 'encryption.key');
      		unlink(storage_path() . '/' . 'encryption.key');
      		$loggedUser->setSalt($salt);
+            $loggedUser->setUpdatedAt($mysqltime = date("Y-m-d H:i:s"));
      		$this->em->persist($loggedUser);
      		$this->em->flush();
      	}
@@ -411,17 +421,9 @@ class UserAdministrationController extends Controller
 
      private function infoChangeValidator(array $data, $previousEmail)
      {
-         if($previousEmail !== $data['email'])
-         {
-             return Validator::make($data, [
-                 'name' => 'required|max:255',
-                 'email' => 'required|email|max:255|unique:User',
-             ], $this->repository->getValitationMessages());
-         }else{
-             return Validator::make($data, [
-                 'name' => 'required|max:255'
-             ], $this->repository->getValitationMessages());
-         }
+        return Validator::make($data, [
+            'name' => 'required|max:255'
+        ], $this->repository->getValitationMessages());
      }
 
      private function passwordChangeValidator(array $data)
@@ -430,7 +432,7 @@ class UserAdministrationController extends Controller
              'password' => 'required|confirmed|min:6',
              'password_confirmation' => 'required'
              //'password_confirmation' => 'required|same:password'
-         ], $this->getValitationMessages());
+         ], $this->repository->getValitationMessages());
      }
 
 }

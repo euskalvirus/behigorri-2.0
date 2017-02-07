@@ -28,6 +28,7 @@
             <tr bgcolor="#EDEDED">
               <th>{{trans('translations.name')}}</th>
               <th>{{trans('translations.tags')}}</th>
+              <th>{{trans('translations.owner')}}</th>
               <th>{{trans('translations.action')}}</th>
 
             </tr>
@@ -43,7 +44,10 @@
                   @endforeach
                 @endif
               </td>
-                <td>
+              <td>
+                  {{ $data->getUser()->getName() }}
+              </td>
+              <td>
                     <form class="delete" method="GET" action="/data/delete/{{$data->getId()}}" accept-charset="UTF-8" style="display:inline">
                       @if ($data->getUser()->getId()==$user->getId())
                       <a href="/data/edit/{{$data->getId()}}"><button type="button" class="btn btn-primary" title={{trans('translations.edit')}}>

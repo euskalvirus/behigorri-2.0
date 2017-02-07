@@ -14,7 +14,7 @@
               <i class="fa fa-table"></i> {{trans('translations.groupadministration')}}
             </li>
           </ol>
-          <a href="/group/new"><button type="button" class="btn btn-default btn-sm">{{trans('translations.new')}}</button></a>
+          <a href="/admin/group/new"><button type="button" class="btn btn-default btn-sm">{{trans('translations.new')}}</button></a>
           <form method="post" action="/admin/group/search" accept-charset="UTF-8" style="display:inline">
             <input type="text" name="search" placeholder={{trans('translations.searchplaceholder')}}>
             <input type="submit" value={{trans('translations.submit')}}>

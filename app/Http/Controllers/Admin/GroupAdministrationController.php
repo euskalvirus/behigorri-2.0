@@ -74,6 +74,8 @@ class GroupAdministrationController extends Controller
     	    }
     	  $group = new Group();
     	  $group->setName($this->repository->avoidSqlInjection($request->input('name')));
+          $group->setCreatedAt($mysqltime = date("Y-m-d H:i:s"));
+          $group->setUpdatedAt($mysqltime = date("Y-m-d H:i:s"));
     	  $users=$request->input('users');
     		if($users == null){
     		    $users = [];
@@ -195,6 +197,7 @@ class GroupAdministrationController extends Controller
     			$user->addGroup($group);
     		}
             $group->setName($this->repository->avoidSqlInjection($request->input('name')));
+            $group->setUpdatedAt($mysqltime = date("Y-m-d H:i:s"));
     		$this->em->persist($group);
     		$this->em->flush();
 			return redirect('/admin/group');

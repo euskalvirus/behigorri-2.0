@@ -37,7 +37,7 @@
           </div>
           <div class="form-group">
             <label>{{trans('translations.email')}}</label>
-            {!! Form::email('email', $data->getEmail(), ['class'=> 'form-control', 'required' => 'required']) !!}
+            {!! Form::email('email', $data->getEmail(), ['class'=> 'form-control', 'required' => 'required', 'disabled' => 'disabled']) !!}
           </div>
           @if($user->getGod())
           @if ($groups!=null)

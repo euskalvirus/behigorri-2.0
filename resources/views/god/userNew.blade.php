@@ -44,6 +44,17 @@
             <label>{{trans('translations.passconfirm')}}</label>
             {!! Form::password('password_confirmation', ['class'=> 'form-control', 'required' => 'required']) !!}
           </div>
+          <div class="form-group">
+            <label for="GROUP">{{trans('translations.groups')}}</label>
+            @if ($groups!=null && !empty($groups))
+                <select  class="form-control" multiple="multiple" name="groups[]">
+                    @foreach ($groups as $group)
+                        <option value={{$group->getId()}}>{{$group->getName()}}</option>
+                    @endforeach
+                </select>
+            @endif
+          </div>
+
           <div>
             {!! Form::submit(trans('translations.save'),['class' => 'btn  btn-success']) !!}
             <a href="/admin/user"><button type="button" class="btn btn-danger">{{trans('translations.return')}}</button></a>
