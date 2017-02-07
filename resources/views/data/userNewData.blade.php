@@ -15,7 +15,9 @@
 						</li>
 					</ol>
 				</div>
-				<div class="panel-body">
+				<div class="panel panel-default">
+          <div class="panel-heading">{{trans('translations.sensitivedatainfo')}}</div>
+        <div class="panel-body">
 					@if (count($errors) > 0)
 					@foreach ($errors->all() as $error)
 					<div class="alert alert-danger">
@@ -32,6 +34,9 @@
 						<div class="form-group">
 							<label for="TEXT">{{trans('translations.text')}}</label>
 							<textarea class="form-control" name="text" rows="10"  required> </textarea>
+						</div>
+						<div class="form-group">
+							<input  class="upload-file" type="file" name="dataFile" id="dataFile">
 						</div>
 						<div class="form-group">
 							<label for="GROUP">{{trans('translations.groups')}}</label>
@@ -53,4 +58,5 @@
 
 					</form>
 				</div>
+			</div>
 				@endsection

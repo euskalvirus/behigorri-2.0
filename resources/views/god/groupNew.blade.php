@@ -18,6 +18,8 @@
             </li>
           </ol>
         </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">{{trans('translations.groupinfo')}}</div>
         <div class="panel-body">
           @if (count($errors) > 0)
           @foreach ($errors->all() as $error)
@@ -46,6 +48,7 @@
           </div>
           {!! Form::close() !!}
         </div>
+      </div>
       </div>
     </div>
   </div>

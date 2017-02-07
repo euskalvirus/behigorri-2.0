@@ -18,7 +18,9 @@
             </li>
           </ol>
         </div>
-              <div class="panel-body">
+        <div class="panel panel-default">
+          <div class="panel-heading">{{trans('translations.groupinfo')}}</div>
+        <div class="panel-body">
                 @if (count($errors) > 0)
                 <div class="alert alert-danger">
                   @foreach($errors->all() as $error)
@@ -33,7 +35,7 @@
 							  </div>
 
 						  <div class="form-group">
-                              
+
 						    <label for="NAME">{{trans('translations.name')}}</label>
 						    <input type="TEXT" class="form-control" name="name" value="{{$group->getName()}}" required>
 						  </div>
@@ -57,6 +59,7 @@
   							<a href="/admin/group"><button type="button" class="btn btn-danger">{{trans('translations.return')}}</button></a>
 						</form>
                 	</div>
+                </div>
                 </div>
             </div>
         </div>

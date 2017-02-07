@@ -15,7 +15,9 @@
 						</li>
 					</ol>
 				</div>
-				<div class="panel-body">
+				<div class="panel panel-default">
+          <div class="panel-heading">{{trans('translations.sensitivedatainfo')}}</div>
+        <div class="panel-body">
 					@if (count($errors) > 0)
 					<div class="alert alert-danger">
 
@@ -33,7 +35,7 @@
 							<label for="OWNER">{{trans('translations.owner')}}</label>
 							<input type="TEXT" class="form-control" name="owner" value="{{$data->getUser()->getName()}}" readonly >
 						</div>
-						@if(!$data->getIsFile())
+						@if(!$data->gethasFile())
 						<div class="form-group">
 							<label for="TEXT">{{trans('translations.text')}}</label>
 							<textarea class="form-control" required style="overflow:auto;resize:none" name="text" rows="10" >{{$text}}</textarea>
@@ -63,5 +65,7 @@
 						<button type="submit" class="btn  btn-success">{{trans('translations.save')}}</button>
 						<a href="/"><button type="button" class="btn btn-danger">{{trans('translations.return')}}</button></a>
 					</form>
+				</div>
+			</div>
 
 					@endsection

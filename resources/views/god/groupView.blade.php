@@ -18,6 +18,8 @@
               </li>
             </ol>
           </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">{{trans('translations.groupinfo')}}</div>
           <div class="panel-body">
             <div class="form-group">
               {!!Form::hidden('id', $group->getId(), array('id' => 'invisible_id'))!!}
@@ -42,6 +44,7 @@
               <a href="/admin/group/edit/{{$group->getId()}}"><button type="button" class="btn  btn-success">{{trans('translations.edit')}}</button></a>
               <a href="/admin/group"><button type="button" class="btn btn-danger">{{trans('translations.return')}}</button></a>
             </div>
+          </div>
           </div>
         </div>
       </div>

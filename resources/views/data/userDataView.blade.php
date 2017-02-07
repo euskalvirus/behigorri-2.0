@@ -15,51 +15,55 @@
 						</li>
 					</ol>
 				</div>
-                    <div class="panel-body">
-                        @if (count($errors) > 0)
-                           <div class="alert alert-danger">
+				<div class="panel panel-default">
+          <div class="panel-heading">{{trans('translations.sensitivedatainfo')}}</div>
+        <div class="panel-body">
+					@if (count($errors) > 0)
+					<div class="alert alert-danger">
 
-                           </div>
-                        @endif
-  <div class="form-group">
-    {!!Form::hidden('id', $data->getId(), array('id' => 'invisible_id'))!!}
-  </div>
-  <div class="form-group">
-    <label for="NAME">{{trans('translations.name')}}</label>
-    <input type="TEXT" class="form-control" name="name" readonly value="{{$data->getName()}}" placeholder="Name">
-  </div>
-  <div class="form-group">
-    <label for="OWNER">{{trans('translations.owner')}}</label>
-    <input type="TEXT" class="form-control" name="owner" readonly value="{{$data->getUser()->getName()}}">
-  </div>
-  @if(!$data->getIsFile())
-  	<div class="form-group">
-    	<label for="TEXT">{{trans('translations.text')}}</label>
-    	<textarea class="form-control" readonly style="overflow:auto;resize:none" name="text" rows="10" placeholder="Text" >{{$text}}</textarea>
-  	</div>
-  @endif
+					</div>
+					@endif
+					<div class="form-group">
+						{!!Form::hidden('id', $data->getId(), array('id' => 'invisible_id'))!!}
+					</div>
+					<div class="form-group">
+						<label for="NAME">{{trans('translations.name')}}</label>
+						<input type="TEXT" class="form-control" name="name" readonly value="{{$data->getName()}}" placeholder="Name">
+					</div>
+					<div class="form-group">
+						<label for="OWNER">{{trans('translations.owner')}}</label>
+						<input type="TEXT" class="form-control" name="owner" readonly value="{{$data->getUser()->getName()}}">
+					</div>
+					@if(!$data->gethasFile())
+					<div class="form-group">
+						<label for="TEXT">{{trans('translations.text')}}</label>
+						<textarea class="form-control" readonly style="overflow:auto;resize:none" name="text" rows="10" placeholder="Text" >{{$text}}</textarea>
+					</div>
+					@endif
 
-  @if ($groups!=null)
-  		<div class="form-group">
-                <label for="GROUP">{{trans('translations.groups')}}</label>
-                <select  class="form-control" multiple="multiple" readonly name="groups[]">
-                   @foreach ($groups as $id => $group) :
-                       @if ($group['active'])
-                           	<option  disabled value={{$id}}>{{$group['name']}}</option>
-                       @endif
-                   @endforeach
-                </select>
-           </div>
-  @endif
+					@if ($groups!=null)
+					<div class="form-group">
+						<label for="GROUP">{{trans('translations.groups')}}</label>
+						<select  class="form-control" multiple="multiple" readonly name="groups[]">
+							@foreach ($groups as $id => $group) :
+							@if ($group['active'])
+							<option  disabled value={{$id}}>{{$group['name']}}</option>
+							@endif
+							@endforeach
+						</select>
+					</div>
+					@endif
 
-  <div class="form-group">
-        	<label for="TAGS">{{trans('translations.tags')}}</label>
-            <input type="text" name="tags" class="form-control"
-                    data-role="tagsinput" value="{{$tags}}" readonly disabled/>
-    	</div>
-  @if ($user->getId() == $data->getUser()->getId())
-  	<a href="/data/edit/{{$data->getId()}}"><button type="button" class="btn  btn-success">{{trans('translations.edit')}}</button></a>
-  @endif
-  <a href="/"><button type="button" class="btn btn-danger">{{trans('translations.return')}}</button></a>
+					<div class="form-group">
+						<label for="TAGS">{{trans('translations.tags')}}</label>
+						<input type="text" name="tags" class="form-control"
+						data-role="tagsinput" value="{{$tags}}" readonly disabled/>
+					</div>
 
-@endsection
+					@if ($user->getId() == $data->getUser()->getId())
+					<a href="/data/edit/{{$data->getId()}}"><button type="button" class="btn  btn-success">{{trans('translations.edit')}}</button></a>
+					@endif
+					<a href="/"><button type="button" class="btn btn-danger">{{trans('translations.return')}}</button></a>
+				</div>
+				</div>
+					@endsection

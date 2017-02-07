@@ -69,7 +69,7 @@ class SensitiveData
      * @var boolean
      * @ORM\Column(type="boolean", options = {"default":0}, nullable=false)
      */
-    private $isFile;
+    private $hasFile;
 
     /**
      * Get id
@@ -246,28 +246,28 @@ class SensitiveData
     }
 
     /**
-     * Set userActive
+     * Set hasFile
      *
-     * @param boolean $isFile
+     * @param boolean $hasFile
      *
      * @return User
      */
-    public function setIsFile($isFile)
+    public function setHasFile($hasFile)
     {
-    	$this->isFile = $isFile;
+    	$this->hasFile = $hasFile;
 
     	return $this;
     }
 
     /**
-     * Get userActive
+     * Get hasFile
      *
      * @return boolean
      */
-    public function getIsFile()
+    public function getHasFile()
     {
     	//var_dump((bool)$this->userActive);exit;
-    	return $this->isFile;
+    	return $this->hasFile;
     }
 
     public function containsTag($tagName)

@@ -18,6 +18,8 @@
             </li>
           </ol>
         </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">{{trans('translations.userinfo')}}</div>
         <div class="panel-body">
           @if (count($errors) > 0)
           <div class="alert alert-danger">
@@ -55,7 +57,7 @@
           </div>
 
           {!! Form::close() !!}
-
+        </div>
         </div>
       </div>
     </div>

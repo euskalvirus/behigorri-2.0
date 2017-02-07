@@ -64,7 +64,12 @@ class BehigorriRepository extends EntityRepository
               'password.confirmed' => trans('translations.passwordConfirmed'),
               'password.min' => trans('translations.passwordMin'),
               'password_Confirmation.required' => trans('translations.passwordConfirmationRequired'),
-              'password_Confirmation.same' => trans('translations.passwordConfirmationSame')
+              'password_Confirmation.same' => trans('translations.passwordConfirmationSame'),
+              'decryptpassword.required' => trans('translations.decryptPasswordRequired'),
+              'decryptpassword.confirmed' => trans('translations.decryptPasswordConfirmed'),
+              'decryptpassword.min' => trans('translations.decryptPasswordMin'),
+              'decryptpassword_Confirmation.required' => trans('translations.decryptPasswordConfirmationRequired'),
+              'decryptpassword_Confirmation.same' => trans('translations.decryptPasswordConfirmationSame')
          );
       }
 

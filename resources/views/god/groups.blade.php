@@ -20,6 +20,7 @@
             <input type="submit" value={{trans('translations.submit')}}>
           </form>
         </div><br>
+        <div class="panel panel-default">
         <table class="table">
           <tr bgcolor="#EDEDED">
             <th>{{trans('translations.name')}}</th>
@@ -46,6 +47,7 @@
               </tr>
               @endforeach
             </table>
+          </div>
           </div>
         </div>
       </div>

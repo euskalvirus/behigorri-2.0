@@ -68,6 +68,8 @@ class UserAdministrationController extends Controller
         $loggedUser = Auth::user();
         if($loggedUser->getGod())
         {
+            $request['password'] = str_random(6);
+            $request['decryptPassword'] = str_random(6);
             $validator = $this->validator($request->all());
 
             if ($validator->fails()) {
@@ -78,11 +80,11 @@ class UserAdministrationController extends Controller
             //Auth::login($this->create($request->all()));
             $activationCode = $this->sendEmailReminder($request, 0);
             $user = $this->create($request->all(),$activationCode);
-            foreach($request['groups'] as $groupId)
-    		{
-    			$group= $this->em->find("Behigorri\Entities\Group", $groupId);
-    			$user->addGroup($group);
-    		}
+            foreach((array)$request['groups'] as $groupId)
+    		    {
+    			         $group= $this->em->find("Behigorri\Entities\Group", $groupId);
+    			            $user->addGroup($group);
+    		    }
             $this->em->persist($user);
             $this->em->flush();
 
@@ -98,7 +100,8 @@ class UserAdministrationController extends Controller
         return Validator::make($data, [
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:User',
-            'password' => 'required|confirmed|min:6',
+            //'password' => 'required|confirmed|min:6',
+            //'decryptPassword' => 'required|confirmed|min:6',
         ], $this->repository->getValitationMessages());
     }
 
@@ -108,10 +111,11 @@ class UserAdministrationController extends Controller
         $userName = $request['name'];
         $userEmail = $request['email'];
         $pass = $request['password'];
+        $dPass = $request['decryptPassword'];
         //$generatedKey = "http://localhost:8000/activation/". sha1(mt_rand(1000000,9999999).time().$loggedUser);
         $key = sha1(mt_rand(1000000,9999999).time().$userEmail);
         $generatedKey = env('WEB_HOST', 'http://localhost:8800/activation/') . $key;
-        Mail::send('activation', ['activationCode' => $generatedKey, 'password' => $pass], function ($m) use ($loggedUser, $userName, $userEmail) {
+        Mail::send('activation', ['activationCode' => $generatedKey, 'password' => $pass, 'decryptPassword' => $dPass], function ($m) use ($loggedUser, $userName, $userEmail) {
           $m->from($loggedUser->getEmail(),'Behigorri Password Manager');
             $m->to('euskalvirus@gmail.com', 'alain')->subject('Activation Email!');
             //$m->to($userEmail, $userName)->subject('Activation Email!');
@@ -161,7 +165,7 @@ class UserAdministrationController extends Controller
     	$salt = file_get_contents(storage_path() . '/' . 'encryption.key');
     	unlink(storage_path() . '/' . 'encryption.key');
     	$user->setSalt($salt);
-
+      $user->setDecryptPassword(bcrypt($data['decryptPassword']));
     	return $user;
     }
 
@@ -336,7 +340,7 @@ class UserAdministrationController extends Controller
                     $request, $validator
                 );
             }
-    		$pass=$request['password_confirmation'];
+    		$pass=$request['password'];
     		$passConfirm=$request['password_confirmation'];
     		if($pass==$passConfirm){
     			$user->setPassword(bcrypt($pass));
@@ -431,6 +435,43 @@ class UserAdministrationController extends Controller
          return Validator::make($data, [
              'password' => 'required|confirmed|min:6',
              'password_confirmation' => 'required'
+             //'password_confirmation' => 'required|same:password'
+         ], $this->repository->getValitationMessages());
+     }
+
+     public function userDecryptPasswordUpdate(Request $request)
+     {
+       $loggedUser = Auth::user();
+     	$user = $this->em->find("Behigorri\Entities\User",$request->input('id'));
+     	if($loggedUser->getId()== $user->getId())
+     	{
+        //dd(!password_verify($request['password'], $user->getPassword()));
+        if(!password_verify($request['password'], $user->getPassword()))
+        {
+          return redirect()->back()->withErrors(array('error' => 'incorrect password'));
+
+        }
+        $validator = $this->decryptPasswordChangeValidator($request->all());
+        if ($validator->fails()) {
+          $this->throwValidationException(
+              $request, $validator
+          );
+        }
+     		$pass=$request['decryptpassword_confirmation'];
+     		$passConfirm=$request['decryptpassword_confirmation'];
+   			$user->setDecryptPassword(bcrypt($pass));
+        $user->setUpdatedAt($mysqltime = date("Y-m-d H:i:s"));
+     		$this->em->persist($user);
+     		$this->em->flush();
+     		return redirect('/admin/user');
+     }
+   }
+
+     private function decryptPasswordChangeValidator(array $data)
+     {
+         return Validator::make($data, [
+             'decryptpassword' => 'required|confirmed|min:6',
+             'decryptpassword_confirmation' => 'required'
              //'password_confirmation' => 'required|same:password'
          ], $this->repository->getValitationMessages());
      }

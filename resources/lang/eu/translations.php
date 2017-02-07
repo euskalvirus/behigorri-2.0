@@ -72,4 +72,13 @@ return [
     'newPassword2' => 'Hau da berria:',
     'activation1' => 'Zure erabiltzailea aktibatzeko egin klik esteka honetan:',
     'activation2' => 'Zure pasahitza hau da:',
+    'activation3' => 'Zure desencriptatze pasahitza hau da:',
+    'changedecryptpass' => 'DESENKRIPTATZE PASAHITZA ALDATU',
+    'decryptpassword' => 'DESENKRIPTATZE PASAHITZA',
+    'decryptpassconfirm' => 'DESENKRIPTATZE PASAHITZA BAIEZTATU',
+    'decryptPasswordRequired' => 'DESENCKRIPTATZE PASAHITZA eremua derrigorrezkoa da.',
+    'decryptPasswordConfirmed' => 'DESENKRIPTATZE PASAHITZAk ez dira berdinak.',
+    'decryptPasswordMin' => 'DESENKRIPTATZE PASAHITZA gutxienez :min karakterekoa izan behar da.',
+    'decryptPassword_Confirmation.required' => 'DESENKRIPTATZE PASAHITZA KONFIRMATU eremua derrigorrezkoa da.',
+    'decryptPassword_Confirmation.same' => 'DESENKRIPTATZE PASAHITZA eta DESENKRIPTATZE PASAHITZA KONFIRMATU ez dira berdinak.',
 ];

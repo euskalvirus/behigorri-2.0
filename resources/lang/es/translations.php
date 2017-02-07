@@ -72,4 +72,13 @@ return [
     'newPassword2' => 'Esta es la nueva:',
     'activation1' => 'Activa tu usuario haciendo click en este enlace:',
     'activation2' => 'Tu contraseña de acceso es:',
+    'activation3' => 'Tu contraseña de desencriptación es:',
+    'changedecryptpass' => 'CAMBIAR CONTRASEÑA DE DESENCRIPTAR',
+    'decryptpassword' => 'CONTRASEÑA DE DESENCRIPTAR',
+    'decryptpassconfirm' => 'CONFIRMAR CONTRASEÑA DE DESENCRIPTAR',
+    'decryptPasswordRequired' => 'El campo CONTRASEÑA DE DESENCRIPTAR es obligatorio.',
+    'decryptPasswordConfirmed' => 'La confirmación del campo CONTRASEÑA DE DESENCRIPTAR no concuerda.',
+    'decryptPasswordMin' => 'El campo CONTRASEÑA DE DESENCRIPTAR debe ser superior a :min caracteres.',
+    'decryptPassword_Confirmation.required' => 'El campo CONFIRMAR CONTRASEÑA DE DESENCRIPTAR es obligatorio.',
+    'decryptPassword_Confirmation.same' => 'Los campos CONTRASEÑA DE DESENCRIPTAR y CONFIRMAR CONTRASEÑA DE DESENCRIPTAR deben ser iguales.',
 ];

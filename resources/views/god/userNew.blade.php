@@ -18,6 +18,8 @@
             </li>
           </ol>
         </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">{{trans('translations.userinfo')}}</div>
         <div class="panel-body">
           @if (count($errors) > 0)
           @foreach ($errors->all() as $error)
@@ -36,6 +38,7 @@
             <label>{{trans('translations.email')}}</label>
             {!! Form::email('email', '', ['class'=> 'form-control', 'required' => 'required']) !!}
           </div>
+          <!--
           <div class="form-group">
             <label>{{trans('translations.password')}}</label>
             {!! Form::password('password', ['class'=> 'form-control', 'required' => 'required']) !!}
@@ -43,7 +46,7 @@
           <div class="form-group">
             <label>{{trans('translations.passconfirm')}}</label>
             {!! Form::password('password_confirmation', ['class'=> 'form-control', 'required' => 'required']) !!}
-          </div>
+          </div>-->
           <div class="form-group">
             <label for="GROUP">{{trans('translations.groups')}}</label>
             @if ($groups!=null && !empty($groups))
@@ -61,6 +64,7 @@
           </div>
           {!! Form::close() !!}
         </div>
+      </div>
       </div>
     </div>
   </div>

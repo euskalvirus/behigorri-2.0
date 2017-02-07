@@ -70,7 +70,7 @@ class SensitiveDataController extends Controller
             }
             $sensitiveDataText = '';
             $this->setPaths($id);
-            if (file_exists($this->path) && !$data->getIsFile()) {
+            if (file_exists($this->path) && !$data->gethasFile()) {
                 $sensitiveDataText = file_get_contents($this->filePath);
                 $keyFactoryFile  = fopen(storage_path() . '/' . 'encryption.key', "w") or die("Unable to open file!");
                 fwrite($keyFactoryFile  , $loggedUser->getSalt());
@@ -79,7 +79,7 @@ class SensitiveDataController extends Controller
                 $decrypted = Symmetric::decrypt($sensitiveDataText, $encryptionKey);
                 unlink(storage_path() . '/' . 'encryption.key');
             }
-            if(!$data->getIsFile())
+            if(!$data->gethasFile())
             {
            		return view('data.userDataEdit')->with([
            			'user' => $loggedUser,
@@ -95,7 +95,7 @@ class SensitiveDataController extends Controller
             			'title' => 'WELLCOME SIMPLE USER',
             			'data' => $data,
             			'groups' => $filteredGroups,
-            			'text'=> "isfile",
+            			'text'=> "hasfile",
             			'tags' => $this->getTagsStrings($data->getTags())
     				]);
             }
@@ -119,13 +119,14 @@ class SensitiveDataController extends Controller
 
     protected function sensitiveDataSave(Request $request)
     {
+          dd($request->input('dataFile'));
 	        $loggedUser = Auth::user();
 	        $data = new SensitiveData();
 	        $data->setName($this->repository->avoidSqlInjection($request->input('name')));
 	        $data->setUser($loggedUser);
             $data->setCreatedAt($mysqltime = date("Y-m-d H:i:s"));
             $data->setUpdatedAt($mysqltime = date("Y-m-d H:i:s"));
-	        $data->setIsFile(false);
+	        $data->setHasFile(false);
 	        $groups=$request->input('groups');
 	        if($groups == null){
 	            $groups = [];
@@ -152,6 +153,9 @@ class SensitiveDataController extends Controller
 	        $ciphertext = Symmetric::encrypt($request->input('text'), $encryptionKey);
 	        fwrite($sensitiveDataText , $ciphertext);
 	        fclose($sensitiveDataText );
+          if($request->input('dataFile')!=''){
+
+          }
 	        unlink(storage_path() . '/' . 'encryption.key');
 	        $dataWithTags = $this->splitAndCreateTags($request->input('tags'),$data);
 	        $this->em->persist($dataWithTags);
@@ -203,7 +207,7 @@ class SensitiveDataController extends Controller
 	        $data = $this->updateTags($request->input('tags'),$data);
 	        $this->em->persist($data);
 	        $this->em->flush();
-	        if(!$data->getIsFile())
+	        if(!$data->gethasFile())
 		    {
 		        $this->setPaths($request->input('id'));
 		        if (!file_exists($this->path)) {
@@ -267,7 +271,7 @@ class SensitiveDataController extends Controller
 
     	$data->setName($fileName);
     	$data->setUser($loggedUser);
-    	$data->setIsFile(true);
+    	$data->setHasFile(true);
         $data->setCreatedAt($mysqltime = date("Y-m-d H:i:s"));
         $data->setUpdatedAt($mysqltime = date("Y-m-d H:i:s"));
     	$groups=$request->input('groups');
@@ -319,7 +323,7 @@ class SensitiveDataController extends Controller
     		if (file_exists($this->path))
     		{
 
-    			if ($data->getIsFile())
+    			if ($data->gethasFile())
     			{
     			 	$keyFactoryFile  = fopen(storage_path() . '/' . 'encryption.key', "w") or die("Unable to open file!");
     			 	fwrite($keyFactoryFile  , $owner->getSalt());

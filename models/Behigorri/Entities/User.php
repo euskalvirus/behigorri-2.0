@@ -112,6 +112,12 @@ class User implements AuthenticatableContract, CanResetPasswordContract, Authori
     private $activationCode;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=false)
+     * @var string
+     */
+    private $decryptPassword;
+
+    /**
      * Get id
      *
      * @return integer
@@ -537,5 +543,29 @@ class User implements AuthenticatableContract, CanResetPasswordContract, Authori
     		}
     	}
     	return $datas;
+    }
+
+    /**
+     * Set decryptPassword
+     *
+     * @param string $decryptPassword
+     *
+     * @return User
+     */
+    public function setDecryptPassword($decryptPassword)
+    {
+        $this->decryptPassword = $decryptPassword;
+
+        return $this;
+    }
+
+    /**
+     * Get decryptPassword
+     *
+     * @return string
+     */
+    public function getDecryptPassword()
+    {
+        return $this->decryptPassword;
     }
 }

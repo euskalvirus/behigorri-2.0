@@ -84,6 +84,32 @@
           {!! Form::close() !!}
         </div>
       </div>
+      @if($user->getId() === $data->getId())
+      <div class="panel panel-default">
+        <div class="panel-heading">{{trans('translations.changedecryptpass')}}</div>
+        <div class="panel-body">
+          {!! Form::open(['route'=>'updateUserDecryptPassword', 'class' => 'form']) !!}
+          {!!Form::hidden('id', $data->getId(), array('id' => 'invisible_id'))!!}
+          <div class="form-group">
+            <label>{{trans('translations.password')}}</label>
+            {!! Form::password('password', ['class'=> 'form-control', 'required' => 'required' ]) !!}
+          </div>
+          <div class="form-group">
+            <label>{{trans('translations.decryptpassword')}}</label>
+            {!! Form::password('decryptpassword', ['class'=> 'form-control', 'required' => 'required' ]) !!}
+          </div>
+          <div class="form-group">
+            <label>{{trans('translations.decryptpassconfirm')}}</label>
+            {!! Form::password('decryptpassword_confirmation', ['class'=> 'form-control', 'required' => 'required']) !!}
+          </div>
+          <div>
+            {!! Form::submit(trans('translations.save'),['class' => 'btn  btn-success']) !!}
+            <a href="/admin/user"><button type="button" class="btn btn-danger">{{trans('translations.return')}}</button></a>
+          </div>
+          {!! Form::close() !!}
+        </div>
+      </div>
+      @endif
     </div>
     </div>
   </div>

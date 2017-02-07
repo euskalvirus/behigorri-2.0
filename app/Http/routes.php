@@ -26,6 +26,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('admin/user/update', ['as' => 'updateUser', 'uses' => 'Admin\UserAdministrationController@userUpdate']);
     Route::post('admin/user/updatePassword', ['as' => 'updateUserPassword', 'uses' => 'Admin\UserAdministrationController@userPasswordUpdate']);
     Route::post('admin/user/search', 'Admin\UserAdministrationController@userSearch');
+    Route::post('admin/user/updateDecryptPassword', ['as' => 'updateUserDecryptPassword', 'uses' => 'Admin\UserAdministrationController@userDecryptPasswordUpdate']);
 
     Route::get('edit/profile', 'Admin\UserAdministrationController@editProfile');
 

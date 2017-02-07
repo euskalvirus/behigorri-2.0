@@ -24,6 +24,7 @@
           <a href="/data/searchTag/{{$tag->getName()}}">{{$tag->getName()}}</a>,
           @endforeach
         </div ><br>
+        <div class="panel panel-default">
         <table class="table">
             <tr bgcolor="#EDEDED">
               <th>{{trans('translations.name')}}</th>
@@ -62,13 +63,14 @@
                     </button>
                     </form>
                     <a href="/data/view/{{$data->getId()}}">
-                      @if (!$data->getIsFile())
-                        <button type="button" class="btn btn-success"
-                        formaction="show" title={{trans('translations.view')}}><span class="glyphicon glyphicon-search"></button>
+                      <button type="button" class="btn btn-success"
+                      formaction="show" title={{trans('translations.view')}}><span class="glyphicon glyphicon-search"></button>
+                      <!--@if (!$data->gethasFile())
+
                       @else
                         <button type="button" class="btn btn-success"
                         formaction="show" title={{trans('translations.download')}}><span class="glyphicon glyphicon-download-alt"></button>
-                      @endif
+                      @endif-->
                     </a>
                     </td>
                   </tr>
@@ -78,6 +80,7 @@
               {!!$datas->render()!!}
               @endIf
               @else
+            </div>
               <a href="admin/generateSalt"><button type="button" class="btn btn-success"
                 formaction="show">GENERATE SALT</button></a>
                 @endif
