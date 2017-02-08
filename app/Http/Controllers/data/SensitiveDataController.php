@@ -119,7 +119,7 @@ class SensitiveDataController extends Controller
 
     protected function sensitiveDataSave(Request $request)
     {
-          dd($request->input('dataFile'));
+          //dd($request->input('dataFile'));
 	        $loggedUser = Auth::user();
 	        $data = new SensitiveData();
 	        $data->setName($this->repository->avoidSqlInjection($request->input('name')));
