@@ -45,17 +45,18 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 
-    Route::get('data/edit/{id}', 'data\SensitiveDataController@sensitiveDataEdit');
+    Route::post('data/edit', 'data\SensitiveDataController@sensitiveDataEdit');
     Route::get('data/new', 'data\SensitiveDataController@newSensitiveData');
     Route::get('data/newFile', 'data\SensitiveDataController@newSensitiveDataFile');
     Route::post('data/save', 'data\SensitiveDataController@sensitiveDataSave');
     Route::post('data/saveFile', 'data\SensitiveDataController@sensitiveDataFileSave');
     Route::post('data/update', 'data\SensitiveDataController@sensitiveDataUpdate');
     Route::get('data/delete/{id}', 'data\SensitiveDataController@sensitiveDataDelete');
-    Route::get('data/view/{id}', 'data\SensitiveDataController@sensitiveDataView');
+    Route::post('data/view', 'data\SensitiveDataController@sensitiveDataView');
     Route::post('data/search', 'data\SensitiveDataController@sensitiveDataSearch');
     Route::get('data/searchTag/{name}', 'data\SensitiveDataController@sensitiveDataSearchByTag');
-
+    Route::get('data/download/{id}', 'data\SensitiveDataController@sensitiveDataDownload');
+    Route::post('data/confirmAndEdit', 'data\SensitiveDataController@confirmAndEdit');
 
 
     Route::get('auth/logout',['as' => 'logout', 'uses' => 'Auth\AuthController@getLogout']);

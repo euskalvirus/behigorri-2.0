@@ -72,6 +72,16 @@ class SensitiveData
     private $hasFile;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=false)
+     */
+    private $fileName;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=false)
+     */
+    private $fileExtension;
+
+    /**
      * Get id
      *
      * @return integer
@@ -280,5 +290,53 @@ class SensitiveData
     		}
     	}
     	return false;
+    }
+
+    /**
+     * Set fileName
+     *
+     * @param string $fileName
+     *
+     * @return SensitiveData
+     */
+    public function setFileName($fileName)
+    {
+        $this->fileName = $fileName;
+
+        return $this;
+    }
+
+    /**
+     * Get fileName
+     *
+     * @return string
+     */
+    public function getFileName()
+    {
+        return $this->fileName;
+    }
+
+    /**
+     * Set fileExtension
+     *
+     * @param string $fileExtension
+     *
+     * @return SensitiveData
+     */
+    public function setFileExtension($fileExtension)
+    {
+        $this->fileExtension = $fileExtension;
+
+        return $this;
+    }
+
+    /**
+     * Get fileExtension
+     *
+     * @return string
+     */
+    public function getFileExtension()
+    {
+        return $this->fileExtension;
     }
 }

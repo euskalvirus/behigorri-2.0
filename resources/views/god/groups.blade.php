@@ -32,6 +32,8 @@
           <tr>
             <td>{{ $data->getName() }}</td>
             <td>
+              <a href="/admin/group/view/{{$data->getId()}}"><button type="button" class="btn  btn-success"
+                formaction="exit" title={{trans('translations.view')}}><span class="glyphicon glyphicon-search"></span></button></a>
               <a href="/admin/group/edit/{{$data->getId()}}"><button type="button" class="btn btn-primary" title={{trans('translations.edit')}}>
                 <span class="glyphicon glyphicon-pencil"></span></button></a>
                 <!-- <a href="group/delete/{{$data->getId()}}"><button type="button" class="btn btn-danger"
@@ -41,8 +43,6 @@
                       <span class="glyphicon glyphicon-trash"></span>
                   </button>
                 </form>
-                <a href="/admin/group/view/{{$data->getId()}}"><button type="button" class="btn  btn-success"
-                  formaction="exit" title={{trans('translations.view')}}><span class="glyphicon glyphicon-search"></span></button></a>
                 </td>
               </tr>
               @endforeach

@@ -26,7 +26,7 @@
 					@endforeach
 					@endif
 
-					<form action="/data/save" method="post">
+					<form class="upload-form" action="/data/save" method="post" enctype="multipart/form-data">
 						<div class="form-group">
 							<label for="NAME">{{trans('translations.name')}}</label>
 							<input type="TEXT" class="form-control" name="name"  required autofocus>
@@ -52,11 +52,31 @@
 							data-role="tagsinput" />
 						</div>
 						<div class="form-group">
-							<button type="submit" class="btn  btn-success">{{trans('translations.save')}}</button>
+							<button type="submit" onclick="submit1()" class="btn  btn-success">{{trans('translations.save')}}</button>
 							<a href="/"><button type="button" class="btn btn-danger">{{trans('translations.return')}}</button></a>
 						</div>
 
 					</form>
 				</div>
 			</div>
+
+			<script>
+			function submit1() {
+				var maxSize="15728640"
+				var fileInput = $('.upload-file');
+				//var maxSize = fileInput.data('data-max-size');
+				if(fileInput.get(0).files.length){
+					var fileSize = fileInput.get(0).files[0].size; // in bytes
+					if(fileSize>maxSize){
+						alert('file size is more then' + maxSize + ' bytes');
+						return false;
+					}else{
+						$('.upload-form' ).submit();
+					}
+
+
+			}
+
+			</script>
+
 				@endsection

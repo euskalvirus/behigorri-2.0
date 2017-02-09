@@ -35,12 +35,21 @@
 							<label for="OWNER">{{trans('translations.owner')}}</label>
 							<input type="TEXT" class="form-control" name="owner" value="{{$data->getUser()->getName()}}" readonly >
 						</div>
-						@if(!$data->gethasFile())
 						<div class="form-group">
 							<label for="TEXT">{{trans('translations.text')}}</label>
 							<textarea class="form-control" required style="overflow:auto;resize:none" name="text" rows="10" >{{$text}}</textarea>
 						</div>
-						@endif
+
+						<div class="form-group">
+
+							<label for="DATAFILE">{{trans('translations.file')}}</label>
+							@if ($data->getHasFile())
+								<a href="/data/download/{{$data->getId()}}">
+									<input type="TEXT" class="form-control" name="owner" value="{{$data->getFIlename()}}.{{$data->getFileExtension()}}" readonly >
+								</a>
+							@endif
+							<input  class="upload-file" type="file" name="dataFile" id="dataFile">
+						</div>
 
 						@if ($groups!=null)
 						<div class="form-group">

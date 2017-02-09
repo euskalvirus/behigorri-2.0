@@ -47,6 +47,8 @@
                 @endif
               </td>
               <td>
+                <a href="/admin/user/view/{{$data->getId()}}"><button type="button" class="btn  btn-success"
+                  formaction="exit" title={{trans('translations.view')}}><span class="glyphicon glyphicon-search"></span></button></a>
                 <a href="/admin/user/edit/{{$data->getId()}}">
                   <button class="btn btn-primary"data-title="Edit"
                   title={{trans('translations.edit')}}>
@@ -62,8 +64,7 @@
                     <span class="glyphicon glyphicon-trash"></span>
                   </button>
                 </form>
-                <a href="/admin/user/view/{{$data->getId()}}"><button type="button" class="btn  btn-success"
-                  formaction="exit" title={{trans('translations.view')}}><span class="glyphicon glyphicon-search"></span></button></a>
+
                 </td>
               </tr>
               @endforeach
