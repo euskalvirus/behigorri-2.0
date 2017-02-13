@@ -47,7 +47,6 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('data/edit', 'data\SensitiveDataController@sensitiveDataEdit');
     Route::get('data/new', 'data\SensitiveDataController@newSensitiveData');
-    Route::get('data/newFile', 'data\SensitiveDataController@newSensitiveDataFile');
     Route::post('data/save', 'data\SensitiveDataController@sensitiveDataSave');
     Route::post('data/saveFile', 'data\SensitiveDataController@sensitiveDataFileSave');
     Route::post('data/update', 'data\SensitiveDataController@sensitiveDataUpdate');

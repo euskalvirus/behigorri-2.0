@@ -59,16 +59,17 @@
               <td>
 
                     <form class="delete" method="GET" action="/data/delete/{{$data->getId()}}" accept-charset="UTF-8" style="display:inline">
-                      <button type="button" data-target="#viewModal"  data-toggle="modal"  class="btn btn-success"
-                      formaction="show" title={{trans('translations.view')}}><span class="glyphicon glyphicon-search"></button>
+                      <button type="button" data-toggle="modal" data-button-action="view" data-data-id="{{$data->getId()}}"  class="btn btn-success"
+                      form-action="show" onclick="decryptionPass(this)" title={{trans('translations.view')}}><span class="glyphicon glyphicon-search"></button>
                       @if ($data->getUser()->getId()==$user->getId())
-                      <button type="button" data-target="#editModal" data-toggle="modal" class="btn btn-primary"  data-id=""
+                      <button type="button" onclick="decryptionPass(this)" data-button-action="edit" data-data-id="{{$data->getId()}}" data-toggle="modal" class="btn btn-primary"  data-id=""
                       data-title="" title={{trans('translations.edit')}}>
                       <span class="glyphicon glyphicon-pencil"></button>
                         <button class="btn btn-danger" value="Delete" type="submit" data-toggle="modal" title={{trans('translations.delete')}}>
                           @else
                           <button disabled type="button" class="btn btn-primary" title={{trans('translations.edit')}}>
                             <span class="glyphicon glyphicon-pencil"></button></a>
+                                <input type="text" name="bookId" id="bookId" value=""/>
                               <button disabled class="btn btn-danger" value="Delete" type="submit" data-toggle="modal" title={{trans('translations.delete')}}>
                                 @endif
                                 <span class="glyphicon glyphicon-trash"></span>
@@ -94,7 +95,7 @@
             </div>
 
 
-            <div class="modal fade" id="editModal"
+            <div class="modal fade" id="passModal"
             tabindex="-1" role="dialog"
             aria-labelledby="favoritesModalLabel">
             <div class="modal-dialog" role="document">
@@ -107,9 +108,9 @@
                   <h4 class="modal-title"
                   id="favoritesModalLabel">AUTHENTICATE</h4>
                 </div>
-                {!! Form::open(['url' => '/data/edit', 'class' => 'form']) !!}
+                {!! Form::open(['id'=>'passForm', 'url' => '', 'class' => 'form', 'method' => 'post']) !!}
                 <div class="form-group">
-                  {!!Form::hidden('id', $data->getId(), array('id' => 'invisible_id'))!!}
+                  <input type="hidden" name="id" id="dataId" value="" />
                 </div>
                 <div class="modal-body">
                   <label>Insert User Password:</label>
@@ -125,39 +126,21 @@
             </div>
           </div>
 
-          <div class="modal fade" id="viewModal"
-          tabindex="-1" role="dialog"
-          aria-labelledby="favoritesModalLabel">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close"
-                data-dismiss="modal"
-                aria-label="Close">
-                <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"
-                id="favoritesModalLabel">AUTHENTICATE</h4>
-              </div>
-              {!! Form::open(['url' => '/data/view', 'class' => 'form']) !!}
-              <div class="form-group">
-                {!!Form::hidden('id', $data->getId(), array('id' => 'invisible_id'))!!}
-              </div>
-              <div class="modal-body">
-                <label>Insert User Password:</label>
-                {!! Form::password('password', ['class'=> 'form-control', 'required' => 'required']) !!}
-              </div>
-              <div class="modal-footer">
-                {!! Form::submit(trans('translations.save'),['class' => 'btn  btn-success']) !!}
-                <button type="button" data-dismiss="modal" class="btn btn-danger">{{trans('translations.return')}}</button></a>
-              </div>
-              {!! Form::close() !!}
+<script>
+function decryptionPass(identifier) {
+    id = $(identifier).data('data-id');
+    action = $(identifier).data('button-action');
+    $('#passModal').find('input[name="id"]').val(id);
+    if(action == "edit")
+    {
+        document.getElementById('passForm').action = '/data/edit';
+    }else if (action == "view"){
+        document.getElementById('passForm').action = '/data/view';
+    }
+    $('#passModal').modal('show')
+}
 
-            </div>
-          </div>
-        </div>
-
-
-
+</script>
 
 
 
