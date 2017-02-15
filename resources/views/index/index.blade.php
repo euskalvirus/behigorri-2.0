@@ -69,7 +69,6 @@
                           @else
                           <button disabled type="button" class="btn btn-primary" title={{trans('translations.edit')}}>
                             <span class="glyphicon glyphicon-pencil"></button></a>
-                                <input type="text" name="bookId" id="bookId" value=""/>
                               <button disabled class="btn btn-danger" value="Delete" type="submit" data-toggle="modal" title={{trans('translations.delete')}}>
                                 @endif
                                 <span class="glyphicon glyphicon-trash"></span>
@@ -93,8 +92,6 @@
                 </div>
               </div>
             </div>
-
-
             <div class="modal fade" id="passModal"
             tabindex="-1" role="dialog"
             aria-labelledby="favoritesModalLabel">
@@ -106,22 +103,22 @@
                   aria-label="Close">
                   <span aria-hidden="true">&times;</span></button>
                   <h4 class="modal-title"
-                  id="favoritesModalLabel">AUTHENTICATE</h4>
+                  id="favoritesModalLabel">{{trans('translations.authenticate')}}</h4>
                 </div>
-                {!! Form::open(['id'=>'passForm', 'url' => '', 'class' => 'form', 'method' => 'post']) !!}
+                {!! Form::open(['id'=>'passForm', 'url' => '/data/confirmPassword', 'class' => 'form', 'method' => 'post']) !!}
                 <div class="form-group">
                   <input type="hidden" name="id" id="dataId" value="" />
+                  <input type="hidden" name="action" id="dataAction" value="" />
                 </div>
                 <div class="modal-body">
                   <label>Insert User Password:</label>
-                  {!! Form::password('password', ['class'=> 'form-control', 'required' => 'required']) !!}
+                  {!! Form::password('password', ['class'=> 'form-control', 'required' => 'required', 'autofocus' => 'autofocus']) !!}
                 </div>
                 <div class="modal-footer">
                   {!! Form::submit(trans('translations.save'),['class' => 'btn  btn-success']) !!}
                   <button type="button" data-dismiss="modal" class="btn btn-danger">{{trans('translations.return')}}</button></a>
                 </div>
                 {!! Form::close() !!}
-
               </div>
             </div>
           </div>
@@ -130,34 +127,18 @@
 function decryptionPass(identifier) {
     id = $(identifier).data('data-id');
     action = $(identifier).data('button-action');
+    console.log(action);
     $('#passModal').find('input[name="id"]').val(id);
     if(action == "edit")
     {
-        document.getElementById('passForm').action = '/data/edit';
+      $('#passModal').find('input[name="action"]').val('edit');
+        //document.getElementById('passForm').action = '/data/edit';
     }else if (action == "view"){
-        document.getElementById('passForm').action = '/data/view';
+      $('#passModal').find('input[name="action"]').val('view');
+        //document.getElementById('passForm').action = '/data/view';
     }
     $('#passModal').modal('show')
 }
 
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-          @endsection
+@endsection

@@ -83,5 +83,6 @@ return [
     'file' => 'FILE',
     'sensitivedatainfo' => 'Sensitive Data Information',
     'groupinfo' =>'Group Information',
-    'userinfo' => 'User Information'
+    'userinfo' => 'User Information',
+    'authenticate' => 'Insert decryption password:'
 ];

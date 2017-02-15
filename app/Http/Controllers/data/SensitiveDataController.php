@@ -17,6 +17,8 @@ use ParagonIE\Halite\Symmetric\Crypto as Symmetric;
 use Illuminate\Pagination\Paginator as Paginator;
 use Illuminate\Pagination\LengthAwarePaginator as LengthAwarePaginator;
 use Illuminate\Support\Collection as Collection;
+use Validator;
+use Route;
 
 
 class SensitiveDataController extends Controller
@@ -40,11 +42,20 @@ class SensitiveDataController extends Controller
 
     protected function sensitiveDataEdit(Request $request)
     {
-        $id =$request->input('id');
-        $this->confirmPassword($request);
-    	$data = $this->em->find("Behigorri\Entities\SensitiveData",$id);
+        //$request->request() = $request->session()->get('_old_input');
+        dd($request);
+        if($request->session()->get('_old_input'))
+        {
+          $request->request->add($request->session()->get('_old_input'));
+        }
+
+        //dd($request);
+        $inputs = $request->session()->get('_old_input');
+        $id =$inputs['id'];
+        //$this->confirmPassword($request);
+    	  $data = $this->em->find("Behigorri\Entities\SensitiveData",$id);
         $loggedUser = Auth::user();
-        if ($data && $data->getUser()->getId()==$loggedUser->getId())
+        if ($data && $data->getUser()->getId()==$loggedUser->getId() && $inputs['dataToken'] == $loggedUser->getDataToken())
         {
             $filteredGroups=[];
             if($data->getUser()->getId() == $loggedUser->getId())
@@ -278,17 +289,17 @@ class SensitiveDataController extends Controller
 
     protected function sensitiveDataView(Request $request)
     {
-      $id = $request->input('id');
-    $this->confirmPassword($request);
+      $inputs = $request->session()->get('_old_input');
+      $id =$inputs['id'];
+    //$this->confirmPassword($request);
     $loggedUser = Auth::user();
     $data = $this->em->find("Behigorri\Entities\SensitiveData",$id);
-    if ($data && $loggedUser->canBeViewSenstiveData($id))
+    if ($data && $loggedUser->canBeViewSenstiveData($id) && $inputs['dataToken'] == $loggedUser->getDataToken())
     {
             $owner = $data->getUser();
             $this->setPaths($id);
             if (file_exists($this->path))
             {
-
                     $file=null;
                     if ($data->gethasFile())
                     {
@@ -313,7 +324,6 @@ class SensitiveDataController extends Controller
     }else{
             return redirect('/');
     }
-
 }
 
 
@@ -518,13 +528,57 @@ class SensitiveDataController extends Controller
 
    public function confirmPassword(Request $request)
    {
+     //dd($request);
      $loggedUser = Auth::user();
      if(!password_verify( $request->input('password'),$loggedUser->getDecryptPassword()))
      {
-         dd('333333333');
        return redirect()->back()->withErrors(array('error' => 'incorrect password'));
      }
+     $dataToken = ['dataToken' => '' . md5(microtime().rand()) . ''];
+     $validator = $this->tokeValidator($dataToken);
 
+     while ($validator->fails()) {
+        $dataToken = $this->createDataToken();
+        $validator = $this->tokeValidator($dataToken);
+     }
+     $loggedUser->setDataToken($dataToken['dataToken']);
+     //$request->all()['dataToken'] = $dataToken['dataToken'];
+     $request->request->set('dataToken', $dataToken['dataToken']);
+     $this->generateArray($request);
+     $this->em->persist($loggedUser);
+     $this->em->flush();
+     if($request->input('action')=='edit')
+     {
+       return redirect('/data/edit/' . $dataToken['dataToken'])->withInput($request->all());
+       //return redirect()->route('/data/edit/{token?}')->with($request->all());
+       //return redirect('/data/edit/' . $dataToken['dataToken'])->with('id',1);
+     }elseif ($request->input('action')=='view')
+     {
+        return redirect('/data/view/' . $dataToken['dataToken'])->withInput($request->all());
+     }else{
+       return redirect()->back();
+     }
    }
 
+   private function tokeValidator(array $data)
+   {
+       return Validator::make($data, [
+           'dataToken' => 'required|max:355|unique:User',
+       ], $this->repository->getValitationMessages());
+   }
+
+   private function createDataToken()
+   {
+      return md5(microtime().rand());
+   }
+
+   private function generateArray($request)
+   {
+     $datas=[];
+     foreach($request->all() as $id => $field)
+     {
+       $datas[$id] = $field;
+     }
+     return $datas;
+   }
 }

@@ -118,6 +118,12 @@ class User implements AuthenticatableContract, CanResetPasswordContract, Authori
     private $decryptPassword;
 
     /**
+     * @var string
+     * @ORM\Column(type="string", length=355, nullable=true)
+     */
+    private $dataToken;
+
+    /**
      * Get id
      *
      * @return integer
@@ -567,5 +573,29 @@ class User implements AuthenticatableContract, CanResetPasswordContract, Authori
     public function getDecryptPassword()
     {
         return $this->decryptPassword;
+    }
+
+    /**
+     * Set dataToken
+     *
+     * @param string $dataToken
+     *
+     * @return User
+     */
+    public function setDataToken($dataToken)
+    {
+        $this->dataToken= $dataToken;
+
+        return $this;
+    }
+
+    /**
+     * Get dataToken
+     *
+     * @return string
+     */
+    public function getDataToken()
+    {
+        return $this->dataToken;
     }
 }

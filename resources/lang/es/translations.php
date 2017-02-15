@@ -83,5 +83,6 @@ return [
     'file' => 'FICHERO',
     'sensitivedatainfo' => 'Datos de Informacion Delicada',
     'groupinfo' =>'Información de Grupo',
-    'userinfo' => 'Información de Usuario'
+    'userinfo' => 'Información de Usuario',
+    'authenticate' => 'Inserte la contraseña de desencriptación:'
 ];

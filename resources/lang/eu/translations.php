@@ -83,5 +83,6 @@ return [
     'file' => 'FITXATEGIA',
     'sensitivedatainfo' => 'Kontuzko Informazioaren Datuak',
     'groupinfo' =>'Taldearen Informazioa',
-    'userinfo' => 'Erabiltzailearen Informazioa'
+    'userinfo' => 'Erabiltzailearen Informazioa',
+    'authenticate' => 'Desenkriptatze pasahitza sartu:'
 ];
