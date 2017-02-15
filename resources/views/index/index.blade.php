@@ -20,7 +20,7 @@
           </div>
           @endforeach
           @endif
-          <a href="/data/new"><button type="button" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-plus"></span> {{trans('translations.new')}}</button></a>
+          <a href="/data/new" class="nav navbar-right top-nav"><button type="button" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-plus"></span> {{trans('translations.new')}}</button></a>
           <form method="post" action="/data/search" accept-charset="UTF-8" style="display:inline">
             <input type="text" name="search" placeholder={{trans('translations.searchplaceholder')}}>
             <input type="submit" value={{trans('translations.submit')}}>
@@ -57,34 +57,34 @@
                 {{ $data->getUser()->getName() }}
               </td>
               <td>
-
-                    <form class="delete" method="GET" action="/data/delete/{{$data->getId()}}" accept-charset="UTF-8" style="display:inline">
                       <button type="button" data-toggle="modal" data-button-action="view" data-data-id="{{$data->getId()}}"  class="btn btn-success"
                       form-action="show" onclick="decryptionPass(this)" title={{trans('translations.view')}}><span class="glyphicon glyphicon-search"></button>
                       @if ($data->getUser()->getId()==$user->getId())
                       <button type="button" onclick="decryptionPass(this)" data-button-action="edit" data-data-id="{{$data->getId()}}" data-toggle="modal" class="btn btn-primary"  data-id=""
                       data-title="" title={{trans('translations.edit')}}>
                       <span class="glyphicon glyphicon-pencil"></button>
-                        <button class="btn btn-danger" value="Delete" type="submit" data-toggle="modal" title={{trans('translations.delete')}}>
+                        <button onclick="decryptionPass(this)" data-button-action="delete" data-data-id="{{$data->getId()}}" class="btn btn-danger" value="Delete" type="submit" data-toggle="modal" title={{trans('translations.delete')}}>
                           @else
                           <button disabled type="button" class="btn btn-primary" title={{trans('translations.edit')}}>
                             <span class="glyphicon glyphicon-pencil"></button></a>
-                              <button disabled class="btn btn-danger" value="Delete" type="submit" data-toggle="modal" title={{trans('translations.delete')}}>
+                              <button disabled class="btn btn-danger" data-toggle="modal" title={{trans('translations.delete')}}>
                                 @endif
                                 <span class="glyphicon glyphicon-trash"></span>
                               </button>
-                            </form>
 
                           </a>
                         </td>
                       </tr>
                       @endforeach
                     </table>
+                    </div>
                     @if ($datas)
-                    {!!$datas->render()!!}
+                        {!!$datas->render()!!}
+                        <a href="/data/new" class="nav navbar-right top-nav"><button type="button" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-plus"></span> {{trans('translations.new')}}</button></a>
+
                     @endIf
                     @else
-                  </div>
+
                   <a href="admin/generateSalt"><button type="button" class="btn btn-success"
                     formaction="show">GENERATE SALT</button></a>
                     @endif
@@ -111,7 +111,7 @@
                   <input type="hidden" name="action" id="dataAction" value="" />
                 </div>
                 <div class="modal-body">
-                  <label>Insert User Password:</label>
+                  <label>{{trans('translations.authenticate')}}</label>
                   {!! Form::password('password', ['class'=> 'form-control', 'required' => 'required', 'autofocus' => 'autofocus']) !!}
                 </div>
                 <div class="modal-footer">
@@ -136,6 +136,8 @@ function decryptionPass(identifier) {
     }else if (action == "view"){
       $('#passModal').find('input[name="action"]').val('view');
         //document.getElementById('passForm').action = '/data/view';
+    }else if (action == "delete"){
+        $('#passModal').find('input[name="action"]').val('delete');
     }
     $('#passModal').modal('show')
 }

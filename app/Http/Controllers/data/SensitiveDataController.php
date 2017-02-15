@@ -18,7 +18,7 @@ use Illuminate\Pagination\Paginator as Paginator;
 use Illuminate\Pagination\LengthAwarePaginator as LengthAwarePaginator;
 use Illuminate\Support\Collection as Collection;
 use Validator;
-use Route;
+use Input;
 
 
 class SensitiveDataController extends Controller
@@ -40,23 +40,16 @@ class SensitiveDataController extends Controller
         return strcmp(spl_object_hash($a), spl_object_hash($b));
     }
 
-    protected function sensitiveDataEdit(Request $request)
+    protected function sensitiveDataEdit($id,$dataToken)
     {
-        //$request->request() = $request->session()->get('_old_input');
-        dd($request);
-        if($request->session()->get('_old_input'))
-        {
-          $request->request->add($request->session()->get('_old_input'));
-        }
-
-        //dd($request);
-        $inputs = $request->session()->get('_old_input');
-        $id =$inputs['id'];
-        //$this->confirmPassword($request);
-    	  $data = $this->em->find("Behigorri\Entities\SensitiveData",$id);
+    	$data = $this->em->find("Behigorri\Entities\SensitiveData",$id);
         $loggedUser = Auth::user();
-        if ($data && $data->getUser()->getId()==$loggedUser->getId() && $inputs['dataToken'] == $loggedUser->getDataToken())
+        if (isset($dataToken) && isset($id) && $data && $data->getUser()->getId()==$loggedUser->getId() && $dataToken == $loggedUser->getDataToken())
         {
+            //$loggedUser->setDataToken($dataToken['dataToken']);
+            $loggedUser->setDataToken($this->createDataToken()['dataToken']);
+            $this->em->persist($loggedUser);
+  	        $this->em->flush();
             $filteredGroups=[];
             if($data->getUser()->getId() == $loggedUser->getId())
             {
@@ -250,12 +243,15 @@ class SensitiveDataController extends Controller
         return redirect('/');
     }
 
-    protected function sensitiveDataDelete($id)
+    protected function sensitiveDataDelete($id,$dataToken)
     {
     	$data = $this->em->find("Behigorri\Entities\SensitiveData",$id);
         $loggedUser = Auth::user();
-        if ($data->getUser()->getId()==$loggedUser->getId())
+        if (isset($dataToken) && isset($id) && $data->getUser()->getId()==$loggedUser->getId() && $dataToken == $loggedUser->getDataToken())
         {
+            $loggedUser->setDataToken($this->createDataToken()['dataToken']);
+            $this->em->persist($loggedUser);
+            $this->em->flush();
 
             $groups = $data->getGroups();
             foreach ($groups as $group){
@@ -287,15 +283,16 @@ class SensitiveDataController extends Controller
     	]);
     }
 
-    protected function sensitiveDataView(Request $request)
+    protected function sensitiveDataView($id,$dataToken)
     {
-      $inputs = $request->session()->get('_old_input');
-      $id =$inputs['id'];
-    //$this->confirmPassword($request);
     $loggedUser = Auth::user();
     $data = $this->em->find("Behigorri\Entities\SensitiveData",$id);
-    if ($data && $loggedUser->canBeViewSenstiveData($id) && $inputs['dataToken'] == $loggedUser->getDataToken())
+    if (isset($dataToken) && isset($id) && $data && $loggedUser->canBeViewSenstiveData($id) && $dataToken == $loggedUser->getDataToken())
     {
+        //$loggedUser->setDataToken($dataToken['dataToken']);
+        $loggedUser->setDataToken($this->createDataToken()['dataToken']);
+        $this->em->persist($loggedUser);
+        $this->em->flush();
             $owner = $data->getUser();
             $this->setPaths($id);
             if (file_exists($this->path))
@@ -530,37 +527,42 @@ class SensitiveDataController extends Controller
    {
      //dd($request);
      $loggedUser = Auth::user();
-     if(!password_verify( $request->input('password'),$loggedUser->getDecryptPassword()))
+     if($loggedUser->canBeViewSenstiveData($request->input('id')))
      {
-       return redirect()->back()->withErrors(array('error' => 'incorrect password'));
-     }
-     $dataToken = ['dataToken' => '' . md5(microtime().rand()) . ''];
-     $validator = $this->tokeValidator($dataToken);
+         if(!password_verify( $request->input('password'),$loggedUser->getDecryptPassword()))
+         {
+           return redirect()->back()->withErrors(array('error' => 'incorrect password'));
+         }
+         $dataToken = $this->createDataToken();
+         $loggedUser->setDataToken($dataToken['dataToken']);
+         //$request->all()['dataToken'] = $dataToken['dataToken'];
+         $request->request->set('dataToken', $dataToken['dataToken']);
+         $this->em->persist($loggedUser);
+         $this->em->flush();
+         if($request->input('action')=='edit')
+         {
+           //return redirect('/data/edit/' . $dataToken['dataToken'])->withInput(Input::except('password','action'));
+           return redirect()->route('DataEdit', ['id' => $request->input('id'), 'dataToken' => $dataToken['dataToken']]);
+           //return redirect()->route('/data/edit/{token?}')->with($request->all());
+           //return redirect('/data/edit/' . $dataToken['dataToken'])->with('id',1);
+         }elseif ($request->input('action')=='view')
+         {
+            // return redirect('/data/view/' . $dataToken['dataToken'])->withInput(Input::except('password','action'));
+            return redirect()->route('DataView', ['id' => $request->input('id'), 'dataToken' => $dataToken['dataToken']]);
+        }elseif ($request->input('action')=='delete')
+        {
+            return redirect()->route('DataDelete', ['id' => $request->input('id'), 'dataToken' => $dataToken['dataToken']]);
+        }else{
+           return redirect()->back();
+         }
 
-     while ($validator->fails()) {
-        $dataToken = $this->createDataToken();
-        $validator = $this->tokeValidator($dataToken);
-     }
-     $loggedUser->setDataToken($dataToken['dataToken']);
-     //$request->all()['dataToken'] = $dataToken['dataToken'];
-     $request->request->set('dataToken', $dataToken['dataToken']);
-     $this->generateArray($request);
-     $this->em->persist($loggedUser);
-     $this->em->flush();
-     if($request->input('action')=='edit')
-     {
-       return redirect('/data/edit/' . $dataToken['dataToken'])->withInput($request->all());
-       //return redirect()->route('/data/edit/{token?}')->with($request->all());
-       //return redirect('/data/edit/' . $dataToken['dataToken'])->with('id',1);
-     }elseif ($request->input('action')=='view')
-     {
-        return redirect('/data/view/' . $dataToken['dataToken'])->withInput($request->all());
      }else{
        return redirect()->back();
      }
+
    }
 
-   private function tokeValidator(array $data)
+   private function tokenValidator(array $data)
    {
        return Validator::make($data, [
            'dataToken' => 'required|max:355|unique:User',
@@ -569,7 +571,14 @@ class SensitiveDataController extends Controller
 
    private function createDataToken()
    {
-      return md5(microtime().rand());
+       $dataToken = ['dataToken' => '' . md5(microtime().rand()) . ''];
+       $validator = $this->tokenValidator($dataToken);
+
+       while ($validator->fails()) {
+          $dataToken = md5(microtime().rand());
+          $validator = $this->tokeValidator($dataToken);
+       }
+      return  $dataToken;
    }
 
    private function generateArray($request)

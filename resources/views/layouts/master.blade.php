@@ -73,10 +73,5 @@
 
         <!-- Dialog show event handler -->
       </body>
-      <script>
-        $(".delete").on("submit", function(){
-            return confirm('{!!trans('translations.deleteitem')!!}');
-        });
-      </script>
 
 </html>
