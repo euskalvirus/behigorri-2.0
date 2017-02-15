@@ -14,11 +14,8 @@ use ParagonIE\Halite\File;
 use ParagonIE\Halite\KeyFactory;
 use Illuminate\Http\Response;
 use ParagonIE\Halite\Symmetric\Crypto as Symmetric;
-use Illuminate\Pagination\Paginator as Paginator;
-use Illuminate\Pagination\LengthAwarePaginator as LengthAwarePaginator;
 use Illuminate\Support\Collection as Collection;
 use Validator;
-use Input;
 
 
 class SensitiveDataController extends Controller
@@ -112,7 +109,6 @@ class SensitiveDataController extends Controller
 
     protected function sensitiveDataSave(Request $request)
     {
-
 	        $loggedUser = Auth::user();
 	        $data = new SensitiveData();
 	        $data->setName($this->repository->avoidSqlInjection($request->input('name')));
@@ -199,9 +195,9 @@ class SensitiveDataController extends Controller
     {
     	$loggedUser = Auth::user();
     	$data = $this->em->find("Behigorri\Entities\SensitiveData",$request->input('id'));
-        if ($data && $data->getUser()->getId()==$loggedUser->getId())
+        if ($data && $data->getUser()->getId()==$loggedUser->getId() && $loggedUser->getDataToken()==$request->input('dataToken'))
         {
-
+          $loggedUser->setDataToken($this->createDataToken()['dataToken']);
         	$data->setName($this->repository->avoidSqlInjection($request->input('name')));
             $data->setUpdatedAt($mysqltime = date("Y-m-d H:i:s"));
 	        $newGroups=$request->input('groups', []);
@@ -222,23 +218,40 @@ class SensitiveDataController extends Controller
 	        $data = $this->updateTags($request->input('tags'),$data);
 	        $this->em->persist($data);
 	        $this->em->flush();
-	        if(!$data->gethasFile())
-		    {
-		        $this->setPaths($request->input('id'));
-		        if (!file_exists($this->path)) {
-		            mkdir($this->path, 0777, true);
-		        }
-		        $sensitiveDataText  = fopen($this->filePath , "w") or die("Unable to open file!");
-		        $keyFactoryFile  = fopen(storage_path() . '/' . 'encryption.key', "w") or die("Unable to open file!");
-		        fwrite($keyFactoryFile  , $loggedUser->getSalt());
-		        fclose($keyFactoryFile );
-		        $encryptionKey = KeyFactory::loadEncryptionKey(storage_path() . '/' . 'encryption.key');
-		        $ciphertext = Symmetric::encrypt($request->input('text'), $encryptionKey);
-		        fwrite($sensitiveDataText , $ciphertext);
-		        fclose($sensitiveDataText );
-		        unlink(storage_path() . '/' . 'encryption.key');
-		    }
+	        $this->setPaths($request->input('id'));
+	        if (!file_exists($this->path)) {
+	            mkdir($this->path, 0777, true);
+		      }
+		      $sensitiveDataText  = fopen($this->filePath , "w") or die("Unable to open file!");
+		      $keyFactoryFile  = fopen(storage_path() . '/' . 'encryption.key', "w") or die("Unable to open file!");
+	        fwrite($keyFactoryFile  , $loggedUser->getSalt());
+	        fclose($keyFactoryFile );
+	        $encryptionKey = KeyFactory::loadEncryptionKey(storage_path() . '/' . 'encryption.key');
+	        $ciphertext = Symmetric::encrypt($request->input('text'), $encryptionKey);
+		      fwrite($sensitiveDataText , $ciphertext);
+	        fclose($sensitiveDataText );
 
+          if($request->file('dataFile')){
+
+            $file = $request->file('dataFile');
+            $fileName= $file->getClientOriginalName();
+            $file->move($this->path, $fileName);
+            $outputFile  = fopen($this->filePath . '.0' , "w") or die("Unable to open file!");
+            //dd($outputFile);
+            $keyFactoryFile  = fopen(storage_path() . '/' . 'encryption.key', "w") or die("Unable to open file!");
+            fwrite($keyFactoryFile  , $loggedUser->getSalt());
+            fclose($keyFactoryFile );
+            $encryptionKey = KeyFactory::loadEncryptionKey(storage_path() . '/' . 'encryption.key');
+            File::encrypt($this->path . '/' . $fileName, $outputFile, $encryptionKey);
+            fclose($outputFile);
+            unlink($this->path . '/' . $fileName);
+            $data->setHasFile(true);
+            $data->setFileName(pathinfo($fileName, PATHINFO_FILENAME));
+            $data->setFileExtension(pathinfo($fileName, PATHINFO_EXTENSION));
+            $this->em->persist($data);
+            $this->em->flush();
+
+          }
       }
         return redirect('/');
     }
@@ -289,7 +302,6 @@ class SensitiveDataController extends Controller
     $data = $this->em->find("Behigorri\Entities\SensitiveData",$id);
     if (isset($dataToken) && isset($id) && $data && $loggedUser->canBeViewSenstiveData($id) && $dataToken == $loggedUser->getDataToken())
     {
-        //$loggedUser->setDataToken($dataToken['dataToken']);
         $loggedUser->setDataToken($this->createDataToken()['dataToken']);
         $this->em->persist($loggedUser);
         $this->em->flush();
@@ -414,28 +426,9 @@ class SensitiveDataController extends Controller
       				unset($datas[$id]);
       			}
       		}
-      		$searchDatas = $this->paginate($datas,15);
-      	}else{
-      		$searchDatas = $this->paginate($datas,15);
       	}
+        $searchDatas = $this->repository->paginate($datas);
       	return $this->returnSearchView($searchDatas);
-    }
-
-    private function paginate($items,$perPage)
-    {
-    	if($items)
-    	{
-    		$pageStart = \Request::get('page', 1);
-    		// Start displaying items from this number;
-    		$offSet = ($pageStart * $perPage) - $perPage;
-    		// Get only the items you need using array_slice
-    		$itemsForCurrentPage = array_slice($items, $offSet, $perPage, true);
-
-    		return new LengthAwarePaginator($itemsForCurrentPage, count($items), $perPage,Paginator::resolveCurrentPage(), array('path' => Paginator::resolveCurrentPath()));
-    	}else{
-    		return [];
-    	}
-
     }
 
     private function similarInArray($data, $array)
@@ -454,7 +447,7 @@ class SensitiveDataController extends Controller
    {
    		$loggedUser = Auth::user();
    		$datas = $loggedUser->getSensitiveDataByTag($tag);
-   		$searchDatas = $this->paginate($datas,15);
+   		$searchDatas = $this->repository->paginate($datas,15);
    		return $this->returnSearchView($searchDatas);
    }
 
@@ -463,7 +456,7 @@ class SensitiveDataController extends Controller
    	$loggedUser =Auth::user();
    	$sensitivedatas = $loggedUser->getUniqueSensitiveData();
    	$dataTags = $this->repository->getTags($sensitivedatas);
-    $datas = $this->paginate($sensitivedatas,15);
+    $datas = $this->repository->paginate($sensitivedatas);
     if($loggedUser->getGod() || $loggedUser->getUserActive())
     {
       return view(trans('index.index'))->with([
@@ -502,19 +495,6 @@ class SensitiveDataController extends Controller
          return response()->download(storage_path() . '/' . $fileName)->deleteFileAfterSend(true);
          fclose($outputFile);
          unlink(storage_path() . '/' . 'encryption.key');
-
-
-           /*$keyFactoryFile  = fopen(storage_path() . '/' . 'encryption.key', "w") or die("Unable to open file!");
-           fwrite($keyFactoryFile  , $owner->getSalt());
-           fclose($keyFactoryFile );
-           //dd($this->path . '/' . $this->fileName . '.0');
-           $encryptionKey = KeyFactory::loadEncryptionKey(storage_path() . '/' . 'encryption.key');
-           //$outputFile = fopen(storage_path() . '/' . $data->getFileName() .'.'. $data->getFileExtension() , "w") or die("Unable to open file!");
-           //$inputFile  = fopen($this->path . '/' . $this->fileName . '.0', "w") or die("Unable to open file!");
-           File::decrypt($this->path . '/' . $this->fileName . '.0', storage_path() . '/' . $data->getFileName() .'.'. $data->getFileExtension(), $encryptionKey);
-           return response()->download(storage_path() . '/' . $data->getFileName() .'.'. $data->getFileExtension())->deleteFileAfterSend(true);
-           //fclose($outputFile);
-           unlink(storage_path() . '/' . 'encryption.key');*/
         }
 
      }else{

@@ -70,7 +70,7 @@
 					</div>
 
 					@if ($user->getId() == $data->getUser()->getId())
-					<a href="/data/edit/{{$data->getId()}}"><button type="button" class="btn  btn-success">{{trans('translations.edit')}}</button></a>
+					<a href="/data/edit/{{$data->getId()}}/{{$user->getDataToken()}}"><button type="button" class="btn  btn-success">{{trans('translations.edit')}}</button></a>
 					@endif
 					<a href="/"><button type="button" class="btn btn-danger">{{trans('translations.return')}}</button></a>
 				</div>

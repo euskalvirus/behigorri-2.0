@@ -12,8 +12,6 @@ use Mail;
 use ParagonIE\Halite\KeyFactory;
 use ParagonIE\Halite\Symmetric\EncryptionKey;
 use Illuminate\Support\Facades\DB as DB;
-use Illuminate\Pagination\Paginator as Paginator;
-use Illuminate\Pagination\LengthAwarePaginator as LengthAwarePaginator;
 use Illuminate\Support\Collection as Collection;
 
 
@@ -33,7 +31,8 @@ class UserAdministrationController extends Controller
     {
         $loggedUser = Auth::user();
         //$users = $this->repository->findBy(['god' => false]);
-        $users = $this->paginate($this->repository->findAll(),15);
+        $users = $this->repository->paginate($this->repository->findAll());
+        //$users = $this->paginate($this->repository->findAll(),15);
         //$users = DB::table('User')->paginate(15);
        	//dd($users);
         if($loggedUser->getGod())
@@ -399,7 +398,7 @@ class UserAdministrationController extends Controller
      	{
      		$search['name'] = $request->input('search');
     		$result = $this->repository->search($search);
-    		$users = $this->paginate($result,15);
+    		$users = $this->repository->paginate($result);
     		//dd($users);
     		return view('god.users')->with([
     				'user' => $loggedUser,
@@ -410,17 +409,6 @@ class UserAdministrationController extends Controller
      	} else {
      		return redirect('/');
      	}
-     }
-     public function paginate($items,$perPage)
-     {
-     	$pageStart = \Request::get('page', 1);
-     	// Start displaying items from this number;
-     	$offSet = ($pageStart * $perPage) - $perPage;
-
-     	// Get only the items you need using array_slice
-     	$itemsForCurrentPage = array_slice($items, $offSet, $perPage, true);
-
-     	return new LengthAwarePaginator($itemsForCurrentPage, count($items), $perPage,Paginator::resolveCurrentPage(), array('path' => Paginator::resolveCurrentPath()));
      }
 
      private function infoChangeValidator(array $data, $previousEmail)

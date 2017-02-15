@@ -81,7 +81,6 @@
                     @if ($datas)
                         {!!$datas->render()!!}
                         <a href="/data/new" class="nav navbar-right top-nav"><button type="button" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-plus"></span> {{trans('translations.new')}}</button></a>
-
                     @endIf
                     @else
 

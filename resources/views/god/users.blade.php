@@ -16,7 +16,7 @@
             </li>
           </ol>
 
-          <a href="/admin/user/new"><button type="button" class="btn btn-default btn-sm">{{trans('translations.new')}}</button></a>
+          <a href="/admin/user/new" class="nav navbar-right top-nav"><button type="button" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-plus"></span> {{trans('translations.new')}}</button></a>
           <form method="post" action="/admin/user/search" accept-charset="UTF-8" style="display:inline">
             <input type="text" name="search" placeholder={{trans('translations.searchplaceholder')}}>
             <input type="submit" value={{trans('translations.submit')}}>
@@ -69,8 +69,9 @@
               </tr>
               @endforeach
             </table>
-            {!!$datas->render()!!}
           </div>
+            {!!$datas->render()!!}
+          <a href="/admin/user/new" class="nav navbar-right top-nav"><button type="button" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-plus"></span> {{trans('translations.new')}}</button></a>
         </div>
       </div>
     </div>

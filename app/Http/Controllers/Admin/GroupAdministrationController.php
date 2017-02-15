@@ -9,8 +9,6 @@ use App\Http\Controllers\Controller;
 use Doctrine\ORM\EntityManager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB as DB;
-use Illuminate\Pagination\Paginator as Paginator;
-use Illuminate\Pagination\LengthAwarePaginator as LengthAwarePaginator;
 use Illuminate\Support\Collection as Collection;
 
 class GroupAdministrationController extends Controller
@@ -29,7 +27,8 @@ class GroupAdministrationController extends Controller
         $loggedUser = Auth::user();
         //$groups = $this->em->getRepository('Behigorri\Entities\Group');
         //$groups = $users = DB::table('Group')->paginate(15);
-        $groups = $this->paginate($this->repository->findAll(),15);
+        //$groups = $this->paginate($this->repository->findAll(),15);
+        $groups = $this->repository->paginate($this->repository->findAll());
         if($loggedUser->getGod())
         {
             return view('god.groups')->with([
@@ -240,7 +239,7 @@ class GroupAdministrationController extends Controller
     	{
     		$search['name'] = $request->input('search');
     		$result = $this->repository->search($search);
-    		$groups = $this->paginate($result,15);
+    		$groups = $this->repository->paginate($result);
     		return view('god.groups')->with([
     				'user' => $loggedUser,
     				'title' => 'BEHIGORRI PASSWORD MANAGER',
@@ -250,17 +249,6 @@ class GroupAdministrationController extends Controller
     		return redirect('/');
     	}
 
-    }
-    private function paginate($items,$perPage)
-    {
-    	$pageStart = \Request::get('page', 1);
-    	// Start displaying items from this number;
-    	$offSet = ($pageStart * $perPage) - $perPage;
-
-    	// Get only the items you need using array_slice
-    	$itemsForCurrentPage = array_slice($items, $offSet, $perPage, true);
-
-    	return new LengthAwarePaginator($itemsForCurrentPage, count($items), $perPage,Paginator::resolveCurrentPage(), array('path' => Paginator::resolveCurrentPath()));
     }
 
 }

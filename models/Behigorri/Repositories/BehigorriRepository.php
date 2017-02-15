@@ -2,6 +2,8 @@
 namespace Behigorri\Repositories;
 
 use Doctrine\ORM\EntityRepository;
+use Illuminate\Pagination\LengthAwarePaginator as LengthAwarePaginator;
+use Illuminate\Pagination\Paginator as Paginator;
 
 class BehigorriRepository extends EntityRepository
 {
@@ -73,6 +75,18 @@ class BehigorriRepository extends EntityRepository
          );
       }
 
+      public function paginate($items)
+      {
+        $perPage =12;
+        $pageStart = \Request::get('page', 1);
+       // Start displaying items from this number;
+        $offSet = ($pageStart * $perPage) - $perPage;
+
+       // Get only the items you need using array_slice
+        $itemsForCurrentPage = array_slice($items, $offSet, $perPage, true);
+
+        return new LengthAwarePaginator($itemsForCurrentPage, count($items), $perPage,Paginator::resolveCurrentPage(), array('path' => Paginator::resolveCurrentPath()));
+      }
 
 
 }
