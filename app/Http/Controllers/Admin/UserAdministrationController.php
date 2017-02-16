@@ -107,7 +107,7 @@ class UserAdministrationController extends Controller
 
     private function sendEmailReminder(Request $request, $id)
     {
-        dd(Config::get('app.url'));
+
         $loggedUser = Auth::user();
         $userName = $request['name'];
         $userEmail = $request['email'];
