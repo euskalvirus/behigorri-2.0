@@ -13,6 +13,7 @@ use ParagonIE\Halite\KeyFactory;
 use ParagonIE\Halite\Symmetric\EncryptionKey;
 use Illuminate\Support\Facades\DB as DB;
 use Illuminate\Support\Collection as Collection;
+use Config;
 
 
 class UserAdministrationController extends Controller
@@ -113,7 +114,7 @@ class UserAdministrationController extends Controller
         $dPass = $request['decryptPassword'];
         //$generatedKey = "http://localhost:8000/activation/". sha1(mt_rand(1000000,9999999).time().$loggedUser);
         $key = sha1(mt_rand(1000000,9999999).time().$userEmail);
-        $generatedKey = env('WEB_HOST', 'http://localhost:8800/activation/') . $key;
+        $generatedKey = env('WEB_HOST', Config::get('app.url')). '/activation/' . $key;
         Mail::send('activation', ['activationCode' => $generatedKey, 'password' => $pass, 'decryptPassword' => $dPass], function ($m) use ($loggedUser, $userName, $userEmail) {
           $m->from($loggedUser->getEmail(),'Behigorri Password Manager');
           $m->to($userEmail, $userName)->subject('Activation Email!');
