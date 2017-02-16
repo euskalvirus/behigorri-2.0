@@ -116,7 +116,8 @@ class UserAdministrationController extends Controller
         $generatedKey = env('WEB_HOST', 'http://localhost:8800/activation/') . $key;
         Mail::send('activation', ['activationCode' => $generatedKey, 'password' => $pass, 'decryptPassword' => $dPass], function ($m) use ($loggedUser, $userName, $userEmail) {
           $m->from($loggedUser->getEmail(),'Behigorri Password Manager');
-            $m->to('euskalvirus@gmail.com', 'alain')->subject('Activation Email!');
+          $m->to($userEmail, $userName)->subject('Activation Email!');
+            //$m->to('euskalvirus@gmail.com', 'alain')->subject('Activation Email!');
             //$m->to($userEmail, $userName)->subject('Activation Email!');
         });
         return $key;
@@ -365,8 +366,8 @@ class UserAdministrationController extends Controller
         $userEmail = $user->getEmail();
         Mail::send('passwordUpdate', ['pass' => $pass], function ($m) use ($loggedUser, $userName, $userEmail) {
           $m->from($loggedUser->getEmail(),'Behigorri Password Manager');
-            $m->to('euskalvirus@gmail.com', $userName)->subject('Password Update!');
-            //$m->to($userEmail, $userName)->subject('Activation Email!');
+          $m->to($userEmail, $userName)->subject('Password Update!');
+            //$m->to('euskalvirus@gmail.com', $userName)->subject('Password Update!');
         });
     }
 
@@ -438,7 +439,6 @@ class UserAdministrationController extends Controller
         if(!password_verify($request['password'], $user->getPassword()))
         {
           return redirect()->back()->withErrors(array('error' => 'incorrect password'));
-
         }
         $validator = $this->decryptPasswordChangeValidator($request->all());
         if ($validator->fails()) {
