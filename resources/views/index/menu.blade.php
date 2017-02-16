@@ -46,9 +46,17 @@
   <li class="dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> {{ trans('translations.languague') }} <b class="caret"></b></a>
     <ul class="dropdown-menu">
-      <li>
-        <a href="/edit/profile"><i class="fa fa-fw fa-user"></i> {{ trans('translations.editprofile') }}</a>
-      </li>
+        @foreach ($langs as $lang)
+        @if($locale !== $lang)
+        <li>
+          <a href="/{{$lang}}/"><i class="fa fa-fw fa-user"></i> {{$lang}}</a>
+        </li>
+        @else
+        <li>
+            {{$lang}}
+        </li>
+        @endif
+        @endforeach
       <!--<li>
       <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
     </li>
