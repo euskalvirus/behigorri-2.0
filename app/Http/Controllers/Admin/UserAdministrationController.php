@@ -125,10 +125,10 @@ class UserAdministrationController extends Controller
     public function editUser($id)
     {
         $loggedUser = Auth::user();
-
-        if($loggedUser->getGod() || $loggedUser->getId()==$id)
+        $user = $this->repository->find($id);
+        if(($loggedUser->getGod() || $loggedUser->getId()==$id) && $user)
         {
-        	$user = $this->repository->find($id);
+
         	$filteredGroups=$this->getUserFilteredGroups($id, $user);
             return view('god.userEdit')->with([
                 'user' => $loggedUser,
@@ -250,7 +250,8 @@ class UserAdministrationController extends Controller
     protected function viewUser($id)
     {
     	$loggedUser = Auth::user();
-    	if($loggedUser->getGod())
+        $user = $this->repository->find($id);
+    	if($loggedUser->getGod() && $user)
     	{
     		$user = $this->repository->find($id);
     		$filteredGroups=$this->getUserFilteredGroups($id, $user);
