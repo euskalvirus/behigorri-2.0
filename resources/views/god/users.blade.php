@@ -55,7 +55,7 @@
                   <span class="glyphicon glyphicon-pencil"></span>
                 </button></a>
                 <form class="delete" method="GET" action="/admin/user/delete/{{$data->getId()}}"accept-charset="UTF-8" style="display:inline">
-                  @if($data->getId()==$user->getId())
+                  @if($data->getId()==$user->getId()  || $data->getGod())
                   <button class="btn btn-danger" disabled  type="submit" title={{trans('translations.delete')}}>
                     @else
                     <button class="btn btn-danger" type="submit" data-toggle="modal"
