@@ -107,6 +107,7 @@ class UserAdministrationController extends Controller
 
     private function sendEmailReminder(Request $request, $id)
     {
+        dd(Config::get('app.url'));
         $loggedUser = Auth::user();
         $userName = $request['name'];
         $userEmail = $request['email'];
@@ -114,7 +115,7 @@ class UserAdministrationController extends Controller
         $dPass = $request['decryptPassword'];
         //$generatedKey = "http://localhost:8000/activation/". sha1(mt_rand(1000000,9999999).time().$loggedUser);
         $key = sha1(mt_rand(1000000,9999999).time().$userEmail);
-        $generatedKey = env('WEB_HOST', Config::get('app.url')). '/activation/' . $key;
+        $generatedKey =  Config::get('app.url') . '/activation/' . $key;
         Mail::send('activation', ['activationCode' => $generatedKey, 'password' => $pass, 'decryptPassword' => $dPass], function ($m) use ($loggedUser, $userName, $userEmail) {
           $m->from($loggedUser->getEmail(),'Behigorri Password Manager');
           $m->to($userEmail, $userName)->subject('Activation Email!');
