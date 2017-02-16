@@ -48,7 +48,7 @@ return [
     'erroractivation' => 'La cuenta de usuario no esta activada, resiva tu email para la activación!',
     'rememberme' => 'Recordar',
     'login' => 'Iniciar Sesión',
-    'activationok' => 'ha sidoactivada',
+    'activationok' => 'ha sido activada',
     'activationbefore' => 'Cuenta activada anteriormente',
     'status' => 'ESTADO',
     'activated' => 'ACTIVADO',
@@ -84,5 +84,6 @@ return [
     'sensitivedatainfo' => 'Datos de Informacion Delicada',
     'groupinfo' =>'Información de Grupo',
     'userinfo' => 'Información de Usuario',
-    'authenticate' => 'Inserte la contraseña de desencriptación:'
+    'authenticate' => 'Inserte la contraseña de desencriptación:',
+    'selectLanguage' => "Seleccione Idioma"
 ];

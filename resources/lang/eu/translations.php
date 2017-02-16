@@ -84,5 +84,6 @@ return [
     'sensitivedatainfo' => 'Kontuzko Informazioaren Datuak',
     'groupinfo' =>'Taldearen Informazioa',
     'userinfo' => 'Erabiltzailearen Informazioa',
-    'authenticate' => 'Desenkriptatze pasahitza sartu:'
+    'authenticate' => 'Desenkriptatze pasahitza sartu:',
+    'selectLanguage' => "Aukeratu Hizkuntza"
 ];
