@@ -20,6 +20,7 @@
           </div>
           @endforeach
           @endif
+          @if ($user->getSalt()!=Null)
           <a href="/data/new" class="nav navbar-right top-nav"><button type="button" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-plus"></span> {{trans('translations.new')}}</button></a>
           <form method="post" action="/data/search" accept-charset="UTF-8" style="display:inline">
             <input type="text" name="search" placeholder={{trans('translations.searchplaceholder')}}>
@@ -41,7 +42,7 @@
               <th>{{trans('translations.action')}}</th>
 
             </tr>
-            @if ($user->getSalt()!=Null)
+
 
             @foreach ($datas as $data)
             <tr>
