@@ -11,6 +11,7 @@
 <?php $langs =Config::get('app.locales');
 $locale =App::getLocale(); ?>
 <!-- Top Menu Items -->
+<div  class="collapse navbar-collapse navbar-ex1-collapse">
 <ul class="nav navbar-right top-nav">
   <li class="dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> {{ $user->getEmail() }} <b class="caret"></b></a>
@@ -27,20 +28,21 @@ $locale =App::getLocale(); ?>
 </ul>
 <ul class="nav navbar-right top-nav">
   <li class="dropdown">
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> {{ trans('translations.selectLanguage') }} <b class="caret"></b></a>
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-letter"></i> {{ trans('translations.selectLanguage') }} <b class="caret"></b></a>
     <ul class="dropdown-menu">
 
         @foreach ($langs as $shortLang => $lang)
-        @if($locale !== $lang)
+        @if($locale !== $shortLang)
         <li>
           <a href="/{{$shortLang}}/"><i class="fa fa-fw fa-language "></i> {{trans('translations.'.$lang )}}</a>
         </li>
         @else
-        <li>
-            <a> <i class="fa fa-fw fa-language "></i> {{$lang}}</a>
+        <li class="disabled">
+            <a> <i class="fa fa-fw fa-language "></i> {{trans('translations.'.$lang )}}</a>
         </li>
         @endif
         @endforeach
 </ul>
 </li>
 </ul>
+</div>

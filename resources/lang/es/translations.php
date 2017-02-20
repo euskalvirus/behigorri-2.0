@@ -85,5 +85,8 @@ return [
     'groupinfo' =>'Información de Grupo',
     'userinfo' => 'Información de Usuario',
     'authenticate' => 'Inserte la contraseña de desencriptación:',
-    'selectLanguage' => "Seleccione Idioma"
+    'selectLanguage' => "Idioma",
+    'English' => 'Ingles',
+    'Basque' => 'Vasco',
+    'Spanish' => 'Español'
 ];

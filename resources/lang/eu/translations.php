@@ -85,5 +85,8 @@ return [
     'groupinfo' =>'Taldearen Informazioa',
     'userinfo' => 'Erabiltzailearen Informazioa',
     'authenticate' => 'Desenkriptatze pasahitza sartu:',
-    'selectLanguage' => "Aukeratu Hizkuntza"
+    'selectLanguage' => "Hizkuntza",
+    'English' => 'Ingelera',
+    'Basque' => 'Euskara',
+    'Spanish' => 'Gaztelania'
 ];

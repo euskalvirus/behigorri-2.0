@@ -85,5 +85,8 @@ return [
     'groupinfo' =>'Group Information',
     'userinfo' => 'User Information',
     'authenticate' => 'Insert decryption password:',
-    'selectLanguage' => "Select Language"
+    'selectLanguage' => "Language",
+    'English' => 'English',
+    'Basque' => 'Basque',
+    'Spanish' => 'Spanish'
 ];
