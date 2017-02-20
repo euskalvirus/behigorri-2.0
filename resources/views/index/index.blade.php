@@ -21,7 +21,7 @@
           @endforeach
           @endif
           @if ($user->getSalt()!=Null)
-          <a href="/data/new" class="nav navbar-right top-nav"><button type="button" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-plus"></span> {{trans('translations.new')}}</button></a>
+          <a href="/data/new" class="nav navbar-right top-nav"><button type="button" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-plus"></span> {{trans('translations.newData')}}</button></a>
           <form method="post" action="/data/search" accept-charset="UTF-8" style="display:inline">
             <input type="text" name="search" placeholder={{trans('translations.searchplaceholder')}}>
             <input type="submit" value={{trans('translations.submit')}}>
@@ -81,7 +81,7 @@
                     </div>
                     @if ($datas)
                         {!!$datas->render()!!}
-                        <a href="/data/new" class="nav navbar-right top-nav"><button type="button" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-plus"></span> {{trans('translations.new')}}</button></a>
+                        <a href="/data/new" class="nav navbar-right top-nav"><button type="button" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-plus"></span> {{trans('translations.newData')}}</button></a>
                     @endIf
                     @else
 

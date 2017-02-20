@@ -5,7 +5,6 @@
     <div class="row">
       <div class="col-lg-12">
         <div>
-          <!--  <?php var_dump(App::getLocale() . '  ' . Session::get('locale'));?>-->
           <h1 class="page-header">{{trans('translations.userlist')}}</h1>
           <ol class="breadcrumb">
             <li>
@@ -16,7 +15,7 @@
             </li>
           </ol>
 
-          <a href="/admin/user/new" class="nav navbar-right top-nav"><button type="button" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-plus"></span> {{trans('translations.new')}}</button></a>
+          <a href="/admin/user/new" class="nav navbar-right top-nav"><button type="button" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-plus"></span> {{trans('translations.newUser')}}</button></a>
           <form method="post" action="/admin/user/search" accept-charset="UTF-8" style="display:inline">
             <input type="text" name="search" placeholder={{trans('translations.searchplaceholder')}}>
             <input type="submit" value={{trans('translations.submit')}}>
@@ -71,7 +70,7 @@
             </table>
           </div>
             {!!$datas->render()!!}
-          <a href="/admin/user/new" class="nav navbar-right top-nav"><button type="button" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-plus"></span> {{trans('translations.new')}}</button></a>
+          <a href="/admin/user/new" class="nav navbar-right top-nav"><button type="button" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-plus"></span> {{trans('translations.newUser')}}</button></a>
         </div>
       </div>
     </div>
