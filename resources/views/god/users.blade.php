@@ -8,7 +8,7 @@
           <h1 class="page-header">{{trans('translations.userlist')}}</h1>
           <ol class="breadcrumb">
             <li>
-              <i class="fa fa-dashboard"></i>  <a href="/">{{trans('translations.dashboard')}}</a>
+              <i class="fa fa-dashboard"></i>  <a class="tags" href="/">{{trans('translations.dashboard')}}</a>
             </li>
             <li class="active">
               <i class="fa fa-table"></i> {{trans('translations.useradministration')}}
@@ -22,7 +22,7 @@
           </form>
         </div><br>
         <div class="panel panel-default">
-          <table width="100%" class="table table-striped table-bordered table-hover" id="dataTable">
+          <table width="100%" class="table table-striped table-bordered " id="dataTable">
             <thead>
             <tr bgcolor="#EDEDED">
               <th>{{trans('translations.name')}}</th>

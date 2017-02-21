@@ -8,7 +8,7 @@
 					<h1 class="page-header">{{trans('translations.userdata')}}:</h1>
 					<ol class="breadcrumb">
 						<li>
-							<i class="fa fa-table"></i> <a href="/">{{trans('translations.dashboard')}}</a>
+							<i class="fa fa-table"></i> <a class="tags" href="/">{{trans('translations.dashboard')}}</a>
 						</li>
 						<li class="active">
 							<i class="fa fa-edit"></i> {{trans('translations.editdata')}}
@@ -45,7 +45,7 @@
 
 							<label for="DATAFILE">{{trans('translations.file')}}</label>
 							@if ($data->getHasFile())
-								<a href="/data/download/{{$data->getId()}}">
+								<a class="tags" href="/data/download/{{$data->getId()}}">
 									<input type="TEXT" class="form-control" value="{{$data->getFIlename()}}.{{$data->getFileExtension()}}" readonly >
 								</a>
 							@endif
@@ -92,7 +92,7 @@
 						$('.upload-form' ).submit();
 					}
 
-
+				}
 			}
 
 			</script>

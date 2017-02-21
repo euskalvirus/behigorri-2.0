@@ -8,10 +8,10 @@
           <h1 class="page-header">{{trans('translations.viewgroup')}}:</h1>
             <ol class="breadcrumb">
               <li>
-                <i class="fa fa-dashboard"></i>  <a href="/">{{trans('translations.dashboard')}}</a>
+                <i class="fa fa-dashboard"></i>  <a class="tags" href="/">{{trans('translations.dashboard')}}</a>
               </li>
               <li>
-                <i class="fa fa-table"></i> <a href="/admin/group">{{trans('translations.groupadministration')}}</a>
+                <i class="fa fa-table"></i> <a class="tags" href="/admin/group">{{trans('translations.groupadministration')}}</a>
               </li>
               <li class="active">
                 <i class="fa fa-edit"></i> {{trans('translations.viewgroup')}}

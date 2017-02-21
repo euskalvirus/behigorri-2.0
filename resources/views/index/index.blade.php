@@ -27,7 +27,7 @@
           @if($tags)
           {{trans('translations.tagsearch')}}:
           @foreach ($tags as $tag)
-          <a href="/data/searchTag/{{$tag->getName()}}">{{$tag->getName()}}</a>,
+          <a class="tags" href="/data/searchTag/{{$tag->getName()}}">{{$tag->getName()}}</a>,
           @endforeach
           @endif
         </div ><br>
@@ -48,7 +48,7 @@
               <td>
                 @if($data->getTags())
                 @foreach($data->getTags() as $tag)
-                <a href="/data/searchTag/{{$tag->getName()}}">{{$tag->getName()}},</a>
+                <a class="tags" href="/data/searchTag/{{$tag->getName()}}">{{$tag->getName()}},</a>
                 @endforeach
                 @endif
               </td>

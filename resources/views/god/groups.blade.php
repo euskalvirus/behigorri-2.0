@@ -8,7 +8,7 @@
           <h1 class="page-header">{{trans('translations.grouplist')}}</h1>
           <ol class="breadcrumb">
             <li>
-              <i class="fa fa-dashboard"></i>  <a href="/">{{trans('translations.dashboard')}}</a>
+              <i class="fa fa-dashboard"></i>  <a class="tags" href="/">{{trans('translations.dashboard')}}</a>
             </li>
             <li class="active">
               <i class="fa fa-table"></i> {{trans('translations.groupadministration')}}

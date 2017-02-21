@@ -8,7 +8,7 @@
 					<h1 class="page-header">{{trans('translations.userdata')}}:</h1>
 					<ol class="breadcrumb">
 						<li>
-							<i class="fa fa-table"></i> <a href="/">{{trans('translations.dashboard')}}</a>
+							<i class="fa fa-table"></i> <a class="tags" href="/">{{trans('translations.dashboard')}}</a>
 						</li>
 						<li class="active">
 							<i class="fa fa-edit"></i> {{trans('translations.newdata')}}

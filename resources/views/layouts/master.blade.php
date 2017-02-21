@@ -3,6 +3,8 @@
     <head>
         <link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}" />
         <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.css') }}" />
+        <!-- jQuery -->
+        <script src="{{ asset('js/jquery.min.js') }}"></script>
 
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-route.min.js"></script>
@@ -64,8 +66,7 @@
         </div>
         <!-- /#wrapper -->
 
-        <!-- jQuery -->
-        <script src="{{ asset('js/jquery.min.js') }}"></script>
+
 
         <!-- Bootstrap Core JavaScript -->
         <script src="{{ asset('js/bootstrap.min.js') }}"></script>
@@ -73,7 +74,7 @@
         <!-- Morris Charts JavaScript -->
         <script src="{{ asset('js/plugins/morris/raphael.min.js')}}"></script>
         <script src="{{ asset('js/plugins/morris/morris.min.js')}}"></script>
-        <script src="{{ asset('js/plugins/morris/morris-data.js')}}"></script>
+
 
         <!-- Metis Menu Plugin JavaScript -->
     <script src="{{ asset('js/metisMenu.min.js')}}"></script>
