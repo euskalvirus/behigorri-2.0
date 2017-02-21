@@ -1,5 +1,5 @@
-<div class="navbar-default sidebar navbar-inverse" role="navigation" id="sidebar">
-    <div class="sidebar-nav navbar-collapse">
+<div class="navbar-default sidebar navbar-inverse navbar-collapse collapse" role="navigation" id="sidebar">
+    <div class="nav navbar-nav side-nav">
         <ul class="nav" id="side-menu">
           <li class="{{ Request::path()=='/' ? 'active' : '' }}" id="dashboard">
               <a href="/"><i class="fa fa-fw fa-table"></i> {{ trans('translations.dashboard') }}</a>

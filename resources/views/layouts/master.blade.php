@@ -4,6 +4,11 @@
         <link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}" />
         <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.css') }}" />
         <!-- jQuery -->
+        <link rel="stylesheet" type="text/css"  href="{{ asset('css/metisMenu.min.css') }}" />
+        <link rel="stylesheet" type="text/css"  href="{{ asset('css/bootstrap.min.css') }}" />
+        <link rel="stylesheet" type="text/css"  href="{{ asset('css/sb-admin-2.css') }}" />
+        <link rel="stylesheet" type="text/css"  href="{{ asset('css/plugins/morris.css') }}" />
+        <link rel="stylesheet" type="text/css" href="{{ asset('font-awesome/css/font-awesome.min.css') }}" />
         <script src="{{ asset('js/jquery.min.js') }}"></script>
 
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
@@ -11,11 +16,7 @@
         <script src="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.min.js"></script>
       <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.css" />
 
-      <link rel="stylesheet" type="text/css"  href="{{ asset('css/metisMenu.min.css') }}" />
-      <link rel="stylesheet" type="text/css"  href="{{ asset('css/bootstrap.min.css') }}" />
-      <link rel="stylesheet" type="text/css"  href="{{ asset('css/sb-admin-2.css') }}" />
-      <link rel="stylesheet" type="text/css"  href="{{ asset('css/plugins/morris.css') }}" />
-      <link rel="stylesheet" type="text/css" href="{{ asset('font-awesome/css/font-awesome.min.css') }}" />
+
 
 
       <!-- DataTables CSS -->
