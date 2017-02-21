@@ -22,15 +22,16 @@
           </form>
         </div><br>
         <div class="panel panel-default">
-          <table width="100%" class="table table-striped table-bordered table-hover">
-
+          <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+            <thead>
             <tr bgcolor="#EDEDED">
               <th>{{trans('translations.name')}}</th>
               <th>{{trans('translations.email')}}</th>
               <th>{{trans('translations.status')}}</th>
               <th>{{trans('translations.action')}}</th>
-
             </tr>
+          </thead>
+          <tbody>
             @foreach ($datas as $data)
             <tr >
               <td>{{ $data->getName() }}</td>
@@ -68,6 +69,7 @@
                 </td>
               </tr>
               @endforeach
+            </tbody>
             </table>
           </div>
             {!!$datas->render()!!}

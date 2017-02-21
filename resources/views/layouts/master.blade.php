@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="{{ asset('css/app.css') }}" />
-        <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}" />
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}" />
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.css') }}" />
 
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-route.min.js"></script>
         <script src="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.min.js"></script>
-      <link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.css" />
+      <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.css" />
 
-      <link rel="stylesheet" href="{{ asset('css/metisMenu.min.css') }}" />
-      <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
-      <link rel="stylesheet" href="{{ asset('css/sb-admin-2.css') }}" />
-      <link rel="stylesheet" href="{{ asset('css/plugins/morris.css') }}" />
+      <link rel="stylesheet" type="text/css"  href="{{ asset('css/metisMenu.min.css') }}" />
+      <link rel="stylesheet" type="text/css"  href="{{ asset('css/bootstrap.min.css') }}" />
+      <link rel="stylesheet" type="text/css"  href="{{ asset('css/sb-admin-2.css') }}" />
+      <link rel="stylesheet" type="text/css"  href="{{ asset('css/plugins/morris.css') }}" />
       <link rel="stylesheet" type="text/css" href="{{ asset('font-awesome/css/font-awesome.min.css') }}" />
 
 
       <!-- DataTables CSS -->
-      <link href="../vendor/datatables-plugins/dataTables.bootstrap.css" rel="stylesheet">
+      <link href="datatables-plugins/dataTables.bootstrap.css" rel="stylesheet">
 
       <!-- DataTables Responsive CSS -->
-      <link href="../vendor/datatables-responsive/dataTables.responsive.css" rel="stylesheet">
+      <link href="datatables-responsive/dataTables.responsive.css" rel="stylesheet">
       <style type="text/css">
         .bootstrap-tagsinput {
           width: 100%;
@@ -82,9 +82,9 @@
         <script src="{{ asset('js/sb-admin-2.js') }}"></script>
 
         <!-- DataTables JavaScript -->
-        <script src="../vendor/datatables/js/jquery.dataTables.min.js"></script>
-        <script src="../vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>
-        <script src="../vendor/datatables-responsive/dataTables.responsive.js"></script>
+        <script src="{{ asset('datatables/js/jquery.dataTables.min.js')}}"></script>
+        <script src="{{ asset('datatables-plugins/dataTables.bootstrap.min.js')}}"></script>
+        <script src="{{ asset('datatables-responsive/dataTables.responsive.js')}}"></script>
         <script>
         $(document).ready(function() {
             $('#dataTables-example').DataTable({
