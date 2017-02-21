@@ -4,9 +4,7 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-lg-12">
-
         <div>
-
           <h1 class="page-header">{{trans('translations.filelist')}}</h1>
           <ol class="breadcrumb">
             <li class="active">
