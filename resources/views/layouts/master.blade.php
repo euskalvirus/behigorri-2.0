@@ -24,7 +24,7 @@
       </style>
       <meta charset="utf-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=1">
+      <meta name="viewport" content="width=device-width, initial-scale=0, maximum-scale=1, user-scalable=1">
       <meta name="description" content="">
       <meta name="author" content="">
 
@@ -47,7 +47,7 @@
         </div>  -->
         <div id="wrapper">
             <!-- Navigation -->
-        <nav class="navbar navbar-inverse navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
               @include('index.menu')
               @include( ($user->getGod()) ? 'god.godMenuSidebar' : 'user.userMenuSidebar')
             </nav>
