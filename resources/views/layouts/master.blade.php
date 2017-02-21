@@ -47,7 +47,7 @@
         </div>  -->
         <div id="wrapper">
             <!-- Navigation -->
-        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <nav class="navbar navbar-inverse navbar-static-top" role="navigation" style="margin-bottom: 0">
               @include('index.menu')
               @include( ($user->getGod()) ? 'god.godMenuSidebar' : 'user.userMenuSidebar')
             </nav>

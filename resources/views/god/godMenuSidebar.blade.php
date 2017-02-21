@@ -1,4 +1,4 @@
-<div class="navbar-default sidebar" role="navigation">
+<div class="navbar-default sidebar navbar-inverse " role="navigation">
     <div class="sidebar-nav navbar-collapse">
         <ul class="nav" id="side-menu">
           <li class="{{ Request::path()=='/' ? 'active' : '' }}" id="dashboard">
