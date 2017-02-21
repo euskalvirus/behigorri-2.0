@@ -17,10 +17,10 @@
 
 
       <!-- DataTables CSS -->
-      <link href="datatables-plugins/dataTables.bootstrap.css" rel="stylesheet">
+      <link href="{{ asset('datatables-plugins/dataTables.bootstrap.css') }}" rel="stylesheet">
 
       <!-- DataTables Responsive CSS -->
-      <link href="datatables-responsive/dataTables.responsive.css" rel="stylesheet">
+      <link href="{{ asset('datatables-responsive/dataTables.responsive.css') }}" rel="stylesheet">
       <style type="text/css">
         .bootstrap-tagsinput {
           width: 100%;
@@ -87,7 +87,7 @@
         <script src="{{ asset('datatables-responsive/dataTables.responsive.js')}}"></script>
         <script>
         $(document).ready(function() {
-            $('#dataTables-example').DataTable({
+            $('#dataTable').DataTable({
                 responsive: true
             });
         });

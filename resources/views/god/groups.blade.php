@@ -21,13 +21,15 @@
           </form>
         </div><br>
         <div class="panel panel-default">
-        <table class="table">
+          <table width="100%" class="table table-striped table-bordered table-hover" id="dataTable">
+            <thead>
           <tr bgcolor="#EDEDED">
             <th>{{trans('translations.name')}}</th>
             <!--<th>{{trans('translations.action')}}</th>-->
             <th>{{trans('translations.action')}}</th>
-
           </tr>
+        </thead>
+        <tbody>
           @foreach ($datas as $data)
           <tr>
             <td>{{ $data->getName() }}</td>
@@ -46,6 +48,7 @@
                 </td>
               </tr>
               @endforeach
+            </tbody>
             </table>
           </div>
           @if ($datas)

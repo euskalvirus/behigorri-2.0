@@ -22,7 +22,7 @@
           </form>
         </div><br>
         <div class="panel panel-default">
-          <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+          <table width="100%" class="table table-striped table-bordered table-hover" id="dataTable">
             <thead>
             <tr bgcolor="#EDEDED">
               <th>{{trans('translations.name')}}</th>
@@ -65,7 +65,6 @@
                     <span class="glyphicon glyphicon-trash"></span>
                   </button>
                 </form>
-
                 </td>
               </tr>
               @endforeach
