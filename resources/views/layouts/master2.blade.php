@@ -3,15 +3,13 @@
     <head>
         <link rel="stylesheet" href="{{ asset('css/app.css') }}" />
         <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}" />
-
+        <script src="{{ asset('js/jquery.js') }}"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-route.min.js"></script>
         <script src="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.min.js"></script>
       <link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.css" />
-
-      <link rel="stylesheet" href="{{ asset('css/metisMenu.min.css') }}" />
       <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
-      <link rel="stylesheet" href="{{ asset('css/sb-admin-2.css') }}" />
+      <link rel="stylesheet" href="{{ asset('css/sb-admin.css') }}" />
       <link rel="stylesheet" href="{{ asset('css/plugins/morris.css') }}" />
       <link rel="stylesheet" type="text/css" href="{{ asset('font-awesome/css/font-awesome.min.css') }}" />
       <style type="text/css">
@@ -47,7 +45,7 @@
         </div>  -->
         <div id="wrapper">
             <!-- Navigation -->
-        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
               @include('index.menu')
               @include( ($user->getGod()) ? 'god.godMenuSidebar' : 'user.userMenuSidebar')
             </nav>
@@ -58,7 +56,7 @@
         <!-- /#wrapper -->
 
         <!-- jQuery -->
-        <script src="{{ asset('js/jquery.min.js') }}"></script>
+        <script src="{{ asset('js/jquery.js') }}"></script>
 
         <!-- Bootstrap Core JavaScript -->
         <script src="{{ asset('js/bootstrap.min.js') }}"></script>
@@ -68,11 +66,7 @@
         <script src="{{ asset('js/plugins/morris/morris.min.js')}}"></script>
         <script src="{{ asset('js/plugins/morris/morris-data.js')}}"></script>
 
-        <!-- Metis Menu Plugin JavaScript -->
-    <script src="{{ asset('js/metisMenu.min.js')}}"></script>
-
-        <!-- Custom Theme JavaScript -->
-        <script src="{{ asset('js/sb-admin-2.js') }}"></script>
+        <!-- Dialog show event handler -->
       </body>
 
 </html>
