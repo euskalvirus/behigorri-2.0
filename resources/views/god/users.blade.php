@@ -22,7 +22,8 @@
           </form>
         </div><br>
         <div class="panel panel-default">
-          <table class="table" >
+          <table width="100%" class="table table-striped table-bordered table-hover">
+
             <tr bgcolor="#EDEDED">
               <th>{{trans('translations.name')}}</th>
               <th>{{trans('translations.email')}}</th>
