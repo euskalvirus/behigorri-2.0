@@ -14,6 +14,13 @@
       <link rel="stylesheet" href="{{ asset('css/sb-admin-2.css') }}" />
       <link rel="stylesheet" href="{{ asset('css/plugins/morris.css') }}" />
       <link rel="stylesheet" type="text/css" href="{{ asset('font-awesome/css/font-awesome.min.css') }}" />
+
+
+      <!-- DataTables CSS -->
+      <link href="../vendor/datatables-plugins/dataTables.bootstrap.css" rel="stylesheet">
+
+      <!-- DataTables Responsive CSS -->
+      <link href="../vendor/datatables-responsive/dataTables.responsive.css" rel="stylesheet">
       <style type="text/css">
         .bootstrap-tagsinput {
           width: 100%;
