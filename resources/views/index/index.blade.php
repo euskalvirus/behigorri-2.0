@@ -34,6 +34,7 @@
           @endif
         </div ><br>
         <div class="panel panel-default">
+          <div class="table-responsive">
           <table class="table">
             <tr bgcolor="#EDEDED">
               <th>{{trans('translations.name')}}</th>
@@ -78,6 +79,7 @@
                       </tr>
                       @endforeach
                     </table>
+                    </div>
                     </div>
                     @if ($datas)
                         {!!$datas->render()!!}
