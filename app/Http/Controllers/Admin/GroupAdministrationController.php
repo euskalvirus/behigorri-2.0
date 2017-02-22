@@ -97,15 +97,14 @@ class GroupAdministrationController extends Controller
     }
     private function validator(array $data, $groupName)
     {
-        if($groupName!=='' && $data['name'] !== $groupName)
+        if(!empty($groupName) && $data['name'] !== $groupName)
         {
-
     	       return Validator::make($data, [
     			            'name' => 'required|max:255|unique:Group'
     	              ], $this->repository->getValitationMessages());
         } else{
             return Validator::make($data, [
-                         'name' => 'required|max:255'
+                         'name' => 'required|max:255|unique:Group'
                    ], $this->repository->getValitationMessages());
         }
     }

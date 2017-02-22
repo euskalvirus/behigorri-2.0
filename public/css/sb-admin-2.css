@@ -82,6 +82,11 @@ body {
 }
 .sidebar ul li a.active {
   background-color: #444;
+  pointer-events: none;
+  cursor: default;
+}
+.sidebar ul li.focus {
+  background-color: red;
 }
 .sidebar .arrow {
   float: right;
@@ -434,4 +439,17 @@ table.dataTable thead .sorting:after {
     border-right-width: 14px;
     border-left-width: 0;
   }
+}
+#dataTable_length {
+    display: none;
+}
+#dataTable_filter{
+    display: none;
+}
+#dataTable_info{
+    display: none;
+}
+
+#dataTable_paginate{
+    display: none;
 }
