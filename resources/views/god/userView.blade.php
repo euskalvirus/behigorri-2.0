@@ -44,7 +44,7 @@
             <select  class="form-control" multiple="multiple" readonly name="groups[]">
               @foreach ($groups as $id => $group) :
               @if ($group['active'])
-              <option  disabled value={{$id}}>{{$group['name']}}</option>
+              <option  disabled>{{$group['name']}}</option>
               @endif
               @endforeach
             </select>

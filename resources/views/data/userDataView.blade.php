@@ -50,15 +50,11 @@
 					</div>
 
 
-					@if ($groups!=null)
+					@if ($data->getGroup())
 					<div class="form-group">
 						<label for="GROUP">{{trans('translations.groups')}}</label>
-						<select  class="form-control" multiple="multiple" readonly name="groups[]">
-							@foreach ($groups as $id => $group) :
-							@if ($group['active'])
-							<option  disabled value={{$id}}>{{$group['name']}}</option>
-							@endif
-							@endforeach
+						<select  class="form-control" readonly disabled>
+							<option selected disabled value="{{$data->getGroup()->getId()}}">{{$data->getGroup()->getName()}}</option>
 						</select>
 					</div>
 					@endif

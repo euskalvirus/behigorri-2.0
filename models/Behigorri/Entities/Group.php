@@ -42,9 +42,14 @@ class Group
     private $users;
 
     /**
-     * @ORM\ManyToMany(targetEntity="SensitiveData", mappedBy="groups")
+     * @ORM\OneToMany(targetEntity="SensitiveData", mappedBy="group")
      */
     private $sensitiveDatas;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="SensitiveData", mappedBy="groups")
+     */
+    /*private $sensitiveDatas;*/
 
     public function __construct() {
         $this->users = new ArrayCollection();
@@ -60,6 +65,24 @@ class Group
      * @ORM\Column(type="string", length=300, nullable=true)
      */
     private $updatedAt;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=false)
+     * @var string
+     */
+    private $password;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=355, nullable=true)
+     */
+    private $publicKey;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=355, nullable=true)
+     */
+    private $privateKey;
 
     /**
      * Get id
@@ -234,4 +257,78 @@ class Group
     {
         return $this->sensitiveDatas;
     }
+
+    /**
+     * Set password
+     *
+     * @param string $password
+     *
+     * @return Group
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Get password
+     *
+     * @return string
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    /**
+     * Set publicKey
+     *
+     * @param string $publicKey
+     *
+     * @return Group
+     */
+    public function setPublicKey($publicKey)
+    {
+        $this->publicKey= $publicKey;
+
+        return $this;
+    }
+
+    /**
+     * Get publicKey
+     *
+     * @return string
+     */
+    public function getPublicKey()
+    {
+        return $this->publicKey;
+    }
+
+    /**
+     * Set privateKey
+     *
+     * @param string $privateKey
+     *
+     * @return Group
+     */
+    public function setPrivateKey($publicKey)
+    {
+        $this->privateKey= $privateKey;
+
+        return $this;
+    }
+
+    /**
+     * Get privateKey
+     *
+     * @return string
+     */
+    public function getPrivateKey()
+    {
+        return $this->privateKey;
+    }
+
+
 }

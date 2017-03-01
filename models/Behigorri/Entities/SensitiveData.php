@@ -45,6 +45,12 @@ class SensitiveData
     private $tags;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Group", inversedBy="sensitiveDatas")
+     * @ORM\JoinColumn(name="groupId", referencedColumnName="id", nullable=true)
+     */
+    private $group;
+
+    /**
      * @ORM\ManyToMany(targetEntity="Group", inversedBy="sensitiveDatas")
      * @ORM\JoinTable(name="SensitiveDataGroup")
      */
@@ -219,6 +225,30 @@ class SensitiveData
     public function getTags()
     {
         return $this->tags;
+    }
+
+    /**
+     * Set group
+     *
+     * @param \Behigorri\Entities\Group $group
+     *
+     * @return Group
+     */
+    public function setGroup(\Behigorri\Entities\Group $group = null)
+    {
+        $this->group = $group;
+
+        return $this;
+    }
+
+    /**
+     * Get group
+     *
+     * @return \Behigorri\Entities\Group
+     */
+    public function getGroup()
+    {
+        return $this->group;
     }
 
     /**

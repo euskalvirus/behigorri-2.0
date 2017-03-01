@@ -21,7 +21,8 @@
             <input type="submit" value={{trans('translations.submit')}}>
           </form>
         </div><br>
-        <div class="panel panel-default">
+        <!--<div class="panel panel-default"> -->
+        <div>
           <table width="100%" class="table table-striped table-bordered " id="dataTable">
             <thead>
             <tr bgcolor="#EDEDED">

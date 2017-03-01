@@ -40,7 +40,8 @@
 						</div>
 						<div class="form-group">
 							<label for="GROUP">{{trans('translations.groups')}}</label>
-							<select class="form-control" multiple="multiple" name="groups[]">
+							<select class="form-control" name="group">
+								<option disabled selected value=null>{{trans('translations.none')}}</option>
 								@foreach ($groups as $group)
 								<option value="{{$group->getId()}}">{{$group->getName()}}</option>
 								@endforeach

@@ -27,7 +27,7 @@
 
             <div class="form-group">
               <label for="NAME">{{trans('translations.name')}}</label>
-              <input type="TEXT" class="form-control" readonly name="name" value={{$group->getName()}} placeholder="Name">
+              <input type="TEXT" class="form-control" readonly name="name" value="{{$group->getName()}}" placeholder="Name">
             </div>
 
 
@@ -36,7 +36,7 @@
               <label for="GROUP">{{trans('translations.users')}}</label><p>
                 <select  class="form-control" multiple="multiple" readonly name="updatedUsers[]">
                   @foreach ($users as $id => $groupUser) :
-                  <option disabled value={{$id}}>{{$groupUser['name']}}</option>
+                  <option disabled>{{$groupUser['name']}}</option>
                   @endforeach
                 </select>
               </div>

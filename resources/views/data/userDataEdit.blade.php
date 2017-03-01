@@ -52,20 +52,21 @@
 							<input  class="upload-file" type="file" name="dataFile" id="dataFile">
 						</div>
 
-						@if ($groups!=null)
 						<div class="form-group">
 							<label for="GROUP">{{trans('translations.groups')}}</label>
-							<select class="form-control" multiple="multiple" name="groups[]">
-								@foreach ($groups as $id => $group) :
-								@if ($group['active'])
-								<option selected="selected" value={{$id}}>{{$group['name']}}</option>
-								@else:
-								<option value={{$id}}>{{$group['name']}}</option>
+							<select class="form-control" name="group">
+								@if ($data->getGroup())
+									<option selected="selected" value="{{$data->getGroup()->getId()}}">{{$data->getGroup()->getName()}}</option>
+									<option value=null>{{trans('translations.none')}}</option>
+								@else
+									<option selected value=null>{{trans('translations.none')}}</option>
 								@endif
+								@foreach ($groups as $id => $group) :
+										<option value={{$id}}>{{$group['name']}}</option>
 								@endforeach
 							</select>
 						</div>
-						@endif
+
 
 						<div class="form-group">
 							<label for="TAGS">TAGS</label>

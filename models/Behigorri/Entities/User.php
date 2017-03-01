@@ -506,6 +506,7 @@ class User implements AuthenticatableContract, CanResetPasswordContract, Authori
                     $sensitiveDatas[$data->getId()] = $data;
                 }
             }
+
         }
 
 
@@ -521,7 +522,7 @@ class User implements AuthenticatableContract, CanResetPasswordContract, Authori
 
     public function canBeViewSenstiveData($id)
     {
-        foreach ($this->getUniqueSensitiveData()as $data)
+        foreach ($this->getUniqueSensitiveData() as $data)
         {
             if($data->getId() == $id)
             {

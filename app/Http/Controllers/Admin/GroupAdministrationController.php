@@ -120,6 +120,12 @@ class GroupAdministrationController extends Controller
     		{
     			$group->removeUser($user);
     		}
+        $datas = $group->getSensitiveDatas();
+        foreach ($datas as $data)
+    		{
+    			$data->setGroup(null);
+    		}
+        $this->em->persist($group);
     		$this->em->remove($group);
     		$this->em->flush();
     	}

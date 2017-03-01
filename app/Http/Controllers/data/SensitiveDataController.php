@@ -52,7 +52,7 @@ class SensitiveDataController extends Controller
             {
                 $groups = $data->getGroups();
                 $userGroups =  $loggedUser->getGroups();
-                foreach($groups as $group)
+                /*foreach($groups as $group)
                 {
                     $filteredGroups[$group->getId()]=[
                         'name' => $group->getName(),
@@ -66,6 +66,14 @@ class SensitiveDataController extends Controller
                         $filteredGroups[$group->getId()]=[
                             'name' => $group->getName(),
                             'active' => false
+                        ];
+                    }
+                }*/
+                foreach($userGroups as $group)
+                {
+                    if ($data->getGroup()->getId() != $group->getId()){
+                        $filteredGroups[$group->getId()]=[
+                            'name' => $group->getName()
                         ];
                     }
                 }
@@ -117,15 +125,17 @@ class SensitiveDataController extends Controller
           $data->setUpdatedAt($mysqltime = date("Y-m-d H:i:s"));
 	        $data->setHasFile(false);
 	        $groups=$request->input('groups');
-	        if($groups == null){
+	        /*if($groups == null){
 	            $groups = [];
 	        }
 	        foreach ($groups as $groupId)
 	        {
 	            $group= $this->em->find("Behigorri\Entities\Group", $groupId);
 	            $data->addGroup($group);
-	        }
+	        }*/
 
+          $group= $this->em->find("Behigorri\Entities\Group", $request->input('group'));
+	        $data->setGroup($group);
 	        $this->em->persist($data);
 	        $this->em->flush();
 
@@ -200,7 +210,7 @@ class SensitiveDataController extends Controller
           $loggedUser->setDataToken($this->createDataToken()['dataToken']);
         	$data->setName($this->repository->avoidSqlInjection($request->input('name')));
             $data->setUpdatedAt($mysqltime = date("Y-m-d H:i:s"));
-	        $newGroups=$request->input('groups', []);
+	        /*$newGroups=$request->input('group');
 	        foreach($data->getGroups() as $group)
 	        {
 	            if(in_array($group->getId(),$newGroups)){
@@ -214,7 +224,9 @@ class SensitiveDataController extends Controller
 	        {
 	            $group= $this->em->find("Behigorri\Entities\Group", $groupId);
 	            $data->addGroup($group);
-	        }
+	        }*/
+          $group= $this->em->find("Behigorri\Entities\Group", $request->input('group'));
+          $data->setGroup($group);
 	        $data = $this->updateTags($request->input('tags'),$data);
 	        $this->em->persist($data);
 	        $this->em->flush();
@@ -266,10 +278,10 @@ class SensitiveDataController extends Controller
             $this->em->persist($loggedUser);
             $this->em->flush();
 
-            $groups = $data->getGroups();
+            /*$groups = $data->getGroups();
             foreach ($groups as $group){
                 $data->removeGroup($group);
-            }
+            }*/
             $this->setPaths($id);
             if (file_exists($this->filePath)) {
                 unlink($this->filePath);
@@ -324,7 +336,6 @@ class SensitiveDataController extends Controller
                           'user' => $loggedUser,
                           'title' => 'WELLCOME SIMPLE USER',
                           'data' => $data,
-                          'groups' => '',
                           'text'=> $decrypted,
                           'tags' => $this->getTagsStrings($data->getTags())
                     ]);

@@ -39,21 +39,32 @@
             <label>{{trans('translations.email')}}</label>
             {!! Form::email('email', $data->getEmail(), ['class'=> 'form-control', 'required' => 'required', 'disabled' => 'disabled']) !!}
           </div>
-          @if($user->getGod())
           @if ($groups!=null)
-          <div class="form-group">
-            <label for="GROUP">{{trans('translations.groups')}}</label>
-            <select  class="form-control" multiple="multiple" name="groups[]">
-              @foreach ($groups as $id => $group) :
-              @if ($group['active'])
-              <option selected="selected" value={{$id}}>{{$group['name']}}</option>
-              @else:
-              <option value={{$id}}>{{$group['name']}}</option>
-              @endif
-              @endforeach
-            </select>
-          </div>
-          @endif
+            @if($user->getGod())
+              <div class="form-group">
+                <label for="GROUP">{{trans('translations.groups')}}</label>
+                <select  class="form-control" multiple="multiple" name="groups[]">
+                  @foreach ($groups as $id => $group) :
+                    @if ($group['active'])
+                      <option selected="selected" value={{$id}}>{{$group['name']}}</option>
+                    @else:
+                      <option value="{{$id}}>{{$group['name']}}"</option>
+                    @endif
+                  @endforeach
+                </select>
+              </div>
+            @else
+              <div class="form-group">
+                <label for="GROUP">{{trans('translations.groups')}}</label>
+                <select readonly  class="form-control" multiple="multiple" name="groups[]">
+                @foreach ($groups as $id => $group) :
+                  @if ($group['active'])
+                    <option value={{$id}}>{{$group['name']}}</option>
+                  @endif
+                @endforeach
+              </select>
+            </div>
+            @endif
           @endif
 
           <div>
