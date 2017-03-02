@@ -15,7 +15,9 @@ class Version20170301184918 extends AbstractMigration
      */
      public function up(Schema $schema)
      {
-         // this up() migration is auto-generated, please modify it to your needs
+          // this up() migration is auto-generated, please modify it to your needs
+         $this->addSql('ALTER TABLE SensitiveData ADD groupId INT UNSIGNED DEFAULT NULL');
+         $this->addSql('ALTER TABLE SensitiveData ADD CONSTRAINT FK_72C22283EFFFFA86 FOREIGN KEY (groupId) REFERENCES `Group` (id)');
          $this->addSql('ALTER TABLE `Group` ADD (password VARCHAR(255) NOT NULL, publicKey VARCHAR(355) NOT NULL, privateKey VARCHAR(355) NOT NULL)');
      }
 
@@ -25,6 +27,8 @@ class Version20170301184918 extends AbstractMigration
      public function down(Schema $schema)
      {
          // this down() migration is auto-generated, please modify it to your needs
+         $this->addSql('ALTER TABLE SensitiveData DROP FOREIGN KEY FK_72C22283EFFFFA86');
+         $this->addSql('ALTER TABLE SensitiveData DROP groupId');
          $this->addSql('ALTER TABLE `Group` DROP password, publicKey, privateKey');
      }
 }
