@@ -71,11 +71,12 @@ class SensitiveDataController extends Controller
                 }*/
                 foreach($userGroups as $group)
                 {
-                    if ($data->getGroup()->getId() != $group->getId()){
-                        $filteredGroups[$group->getId()]=[
-                            'name' => $group->getName()
-                        ];
+                    if ($data->getGroup() && $data->getGroup()->getId() == $group->getId()){
+
                     }
+                    $filteredGroups[$group->getId()]=[
+                        'name' => $group->getName()
+                    ];
                 }
             }
             $sensitiveDataText = '';
