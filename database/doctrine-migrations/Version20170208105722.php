@@ -26,6 +26,7 @@ class Version20170208105722 extends AbstractMigration
     public function down(Schema $schema)
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE SensitiveData DROP fileName, fileExtension');
+        $this->addSql('ALTER TABLE SensitiveData DROP fileName');
+        $this->addSql('ALTER TABLE SensitiveData DROP fileExtension');
     }
 }

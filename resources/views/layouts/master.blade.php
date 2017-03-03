@@ -1,5 +1,13 @@
 <!DOCTYPE html>
 <html>
+<?php
+//Desable back button's cache from browser
+header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+header("Cache-Control: no-store, no-cache, must-revalidate"); // HTTP/1.1
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache"); // HTTP/1.0
+header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
+?>
     <head>
         <link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}" />
         <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.css') }}" />
@@ -93,6 +101,25 @@
                 responsive: true
             });
         });
+        </script>
+        <script>
+        function decryptionPass(identifier) {
+        id = $(identifier).data('data-id');
+        action = $(identifier).data('button-action');
+        console.log(action);
+        $('#passModal').find('input[name="id"]').val(id);
+        if(action == "edit" || action == "view" || action == "delete" || action == "downloadFile" )
+        {
+        	$('#passModal').find('input[name="action"]').val(action);
+        	$('#passModal').modal('show');
+        }
+        }
+        function submitDownload() {
+        	console.log('111111111');
+        		$('#passForm').submit();
+        		$('#passModal').find('input[name="password"]').val("");
+        		$('#passModal').modal('hide');
+        }
         </script>
       </body>
 

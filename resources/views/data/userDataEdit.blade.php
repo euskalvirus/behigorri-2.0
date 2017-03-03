@@ -45,9 +45,9 @@
 
 							<label for="DATAFILE">{{trans('translations.file')}}</label>
 							@if ($data->getHasFile())
-								<a class="tags" href="/data/download/{{$data->getId()}}">
-									<input type="TEXT" class="form-control" value="{{$data->getFIlename()}}.{{$data->getFileExtension()}}" readonly >
-								</a>
+								<input type="TEXT" class="form-control" value="{{$data->getFIlename()}}.{{$data->getFileExtension()}}" readonly >
+								<button type="button" data-toggle="modal" data-button-action="downloadFile" data-data-id="{{$data->getId()}}"  class="btn btn-success"
+								form-action="show" onclick="decryptionPass(this)" title={{trans('translations.downloadFile')}}><span class="glyphicon glyphicon-download"></button>
 							@endif
 							<input  class="upload-file" type="file" name="dataFile" id="dataFile">
 						</div>
@@ -73,14 +73,46 @@
 							<input type="text" name="tags" class="form-control"
 							data-role="tagsinput" value="{{$tags}}" />
 						</div>
-						<button type="submit" onclick="submit1()" class="btn  btn-success">{{trans('translations.save')}}</button>
+						<button type="submit" onclick="fileValidation()" class="btn  btn-success">{{trans('translations.save')}}</button>
 						<a href="/"><button type="button" class="btn btn-danger">{{trans('translations.return')}}</button></a>
 					</form>
 				</div>
 			</div>
+
+			<div class="modal fade" id="passModal"
+			tabindex="-1" role="dialog"
+			aria-labelledby="favoritesModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close"
+						data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title"
+						id="favoritesModalLabel">{{trans('translations.authenticate')}}</h4>
+					</div>
+					{!! Form::open(['id'=>'passForm', 'url' => '/data/confirmPassword', 'class' => 'form', 'method' => 'post']) !!}
+					<div class="form-group">
+						<input type="hidden" name="id" id="dataId" value="" />
+						<input type="hidden" name="action" id="dataAction" value="" />
+					</div>
+					<div class="modal-body">
+						<label>{{trans('translations.authenticate')}}</label>
+						{!! Form::password('password', ['class'=> 'form-control', 'required' => 'required', 'autofocus' => 'autofocus']) !!}
+					</div>
+					<div class="modal-footer">
+						{!! Form::button(trans('translations.save'),['class' => 'btn  btn-success', "onClick"=>"submitDownload()"]) !!}
+						<button type="button" data-dismiss="modal" class="btn btn-danger">{{trans('translations.return')}}</button></a>
+					</div>
+					{!! Form::close() !!}
+				</div>
+			</div>
+		</div>
+
 			<script>
 
-			function submit1() {
+			function fileValidation() {
 				var maxSize="15728640"
 				var fileInput = $('.upload-file');
 				//var maxSize = fileInput.data('data-max-size');

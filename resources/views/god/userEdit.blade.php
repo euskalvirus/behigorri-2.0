@@ -48,7 +48,7 @@
                     @if ($group['active'])
                       <option selected="selected" value={{$id}}>{{$group['name']}}</option>
                     @else:
-                      <option value="{{$id}}>{{$group['name']}}"</option>
+                      <option value="{{$id}}">{{$group['name']}}</option>
                     @endif
                   @endforeach
                 </select>

@@ -70,19 +70,13 @@ class Group
      * @ORM\Column(type="string", length=255, nullable=false)
      * @var string
      */
-    private $password;
+    private $decryptPassword;
 
     /**
      * @var string
      * @ORM\Column(type="string", length=355, nullable=true)
      */
-    private $publicKey;
-
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=355, nullable=true)
-     */
-    private $privateKey;
+    private $salt;
 
     /**
      * Get id
@@ -259,76 +253,53 @@ class Group
     }
 
     /**
-     * Set password
+     * Set decryptPassword
      *
-     * @param string $password
+     * @param string $decryptPassword
      *
      * @return Group
      */
-    public function setPassword($password)
+    public function setDecryptPassword($decryptPassword)
     {
-        $this->password = $password;
+        $this->decryptPassword = $decryptPassword;
 
         return $this;
     }
 
     /**
-     * Get password
+     * Get decryptPassword
      *
      * @return string
      */
-    public function getPassword()
+    public function getDecryptPassword()
     {
-        return $this->password;
+        return $this->decryptPassword;
     }
 
     /**
-     * Set publicKey
+     * Set salt
      *
-     * @param string $publicKey
+     * @param string $salt
      *
      * @return Group
      */
-    public function setPublicKey($publicKey)
+    public function setSalt($salt)
     {
-        $this->publicKey= $publicKey;
+        $this->salt= $salt;
 
         return $this;
     }
 
     /**
-     * Get publicKey
+     * Get salt
      *
      * @return string
      */
-    public function getPublicKey()
+    public function getSalt()
     {
-        return $this->publicKey;
+        return $this->salt;
     }
 
-    /**
-     * Set privateKey
-     *
-     * @param string $privateKey
-     *
-     * @return Group
-     */
-    public function setPrivateKey($publicKey)
-    {
-        $this->privateKey= $privateKey;
-
-        return $this;
-    }
-
-    /**
-     * Get privateKey
-     *
-     * @return string
-     */
-    public function getPrivateKey()
-    {
-        return $this->privateKey;
-    }
 
 
 }

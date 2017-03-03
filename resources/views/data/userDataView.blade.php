@@ -41,9 +41,9 @@
 					<div class="form-group">
 						<label for="DATAFILE">{{trans('translations.file')}}</label>
 						@if ($data->getHasFile())
-							<a class="tags" href="/data/download/{{$data->getId()}}">
-								<input type="TEXT" class="form-control" name="owner" value="{{$data->getFIlename()}}.{{$data->getFileExtension()}}" readonly >
-							</a>
+							<input type="TEXT" class="form-control" name="owner" value="{{$data->getFIlename()}}.{{$data->getFileExtension()}}" readonly >
+							<button type="button" data-toggle="modal" data-button-action="downloadFile" data-data-id="{{$data->getId()}}"  class="btn btn-success"
+							form-action="show" onclick="decryptionPass(this)" title={{trans('translations.downloadFile')}}><span class="glyphicon glyphicon-download"></button>
 						@else
 								<input type="TEXT" class="form-control" name="owner" value="" readonly >
 						@endif
@@ -68,7 +68,43 @@
 					@if ($user->getId() == $data->getUser()->getId())
 					<a href="/data/edit/{{$data->getId()}}/{{$user->getDataToken()}}"><button type="button" class="btn  btn-success">{{trans('translations.edit')}}</button></a>
 					@endif
+				<!--<a href="/"><button type="button" class="btn btn-danger">{{trans('translations.return')}}</button></a>-->
 					<a href="/"><button type="button" class="btn btn-danger">{{trans('translations.return')}}</button></a>
 				</div>
 				</div>
-					@endsection
+
+
+
+
+				<div class="modal fade" id="passModal"
+				tabindex="-1" role="dialog"
+				aria-labelledby="favoritesModalLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close"
+							data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span></button>
+							<h4 class="modal-title"
+							id="favoritesModalLabel">{{trans('translations.authenticate')}}</h4>
+						</div>
+						{!! Form::open(['id'=>'passForm', 'url' => '/data/confirmPassword', 'class' => 'form', 'method' => 'post']) !!}
+						<div class="form-group">
+							<input type="hidden" name="id" id="dataId" value="" />
+							<input type="hidden" name="action" id="dataAction" value="" />
+						</div>
+						<div class="modal-body">
+							<label>{{trans('translations.authenticate')}}</label>
+							{!! Form::password('password', ['class'=> 'form-control', 'required' => 'required', 'autofocus' => 'autofocus']) !!}
+						</div>
+						<div class="modal-footer">
+							{!! Form::button(trans('translations.save'),['class' => 'btn  btn-success', "onClick"=>"submitDownload()"]) !!}
+							<button type="button" data-dismiss="modal" class="btn btn-danger">{{trans('translations.return')}}</button></a>
+						</div>
+						{!! Form::close() !!}
+					</div>
+				</div>
+			</div>
+
+@endsection

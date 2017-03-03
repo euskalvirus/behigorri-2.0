@@ -10,6 +10,10 @@ use Doctrine\ORM\EntityManager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB as DB;
 use Illuminate\Support\Collection as Collection;
+use ParagonIE\Halite\KeyFactory;
+use ParagonIE\Halite\Symmetric\EncryptionKey;
+use ParagonIE\Halite\EncryptionKeyPair;
+use ParagonIE\Halite\Symmetric\Crypto as Symmetric;
 
 class GroupAdministrationController extends Controller
 {
@@ -73,8 +77,8 @@ class GroupAdministrationController extends Controller
     	    }
     	  $group = new Group();
     	  $group->setName($this->repository->avoidSqlInjection($request->input('name')));
-          $group->setCreatedAt($mysqltime = date("Y-m-d H:i:s"));
-          $group->setUpdatedAt($mysqltime = date("Y-m-d H:i:s"));
+        $group->setCreatedAt($mysqltime = date("Y-m-d H:i:s"));
+        $group->setUpdatedAt($mysqltime = date("Y-m-d H:i:s"));
     	  $users=$request->input('users');
     		if($users == null){
     		    $users = [];
@@ -84,6 +88,14 @@ class GroupAdministrationController extends Controller
     		    $user= $this->em->find("Behigorri\Entities\user", $userId);
     		    $user->addGroup($group);
     	  }
+
+        $salt = \Sodium\randombytes_buf(\Sodium\CRYPTO_SECRETBOX_KEYBYTES);
+        $keyFactoryFile  = fopen(storage_path() . '/group.key', "w") or die("Unable to open file!");
+        fwrite($keyFactoryFile  , $salt);
+        fclose($keyFactoryFile );
+        $encryptionKey = KeyFactory::deriveEncryptionKey('123456', $salt);
+        $group->setDecryptPassword(bcrypt('123456'));
+        $group->setSalt($salt);
     	  $this->em->persist($group);
     	  $this->em->flush();
 
@@ -104,7 +116,7 @@ class GroupAdministrationController extends Controller
     	              ], $this->repository->getValitationMessages());
         } else{
             return Validator::make($data, [
-                         'name' => 'required|max:255|unique:Group'
+                         'name' => 'required|max:255'
                    ], $this->repository->getValitationMessages());
         }
     }
@@ -213,6 +225,7 @@ class GroupAdministrationController extends Controller
     {
     	$loggedUser = Auth::user();
     	$group = $this->repository->find($id);
+      dd($group->getPublicKey());
       //$group = $this->em->find("Behigorri\Entities\Group",$id);
     	if($loggedUser->getGod() && $group)
     	{

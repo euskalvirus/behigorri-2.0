@@ -25,6 +25,8 @@ class Version20170301184918 extends AbstractMigration
      public function down(Schema $schema)
      {
          // this down() migration is auto-generated, please modify it to your needs
-         $this->addSql('ALTER TABLE `Group` DROP password, publicKey, privateKey');
+         $this->addSql('ALTER TABLE `Group` DROP password');
+         $this->addSql('ALTER TABLE `Group` DROP publicKey');
+         $this->addSql('ALTER TABLE `Group` DROP privateKey');
      }
 }

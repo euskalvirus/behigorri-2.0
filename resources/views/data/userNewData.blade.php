@@ -48,6 +48,10 @@
 							</select>
 						</div>
 						<div class="form-group">
+							<label for="PASSWORD">{{trans('translations.decryptpassword')}}</label>
+							<input type="password" class="form-control" name="password"  required>
+						</div>
+						<div class="form-group">
 							<label for="TAGS">{{trans('translations.tags')}}</label>
 							<input type="text" name="tags" class="form-control"
 							data-role="tagsinput" />

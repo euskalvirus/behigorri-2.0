@@ -16,6 +16,7 @@ use Illuminate\Http\Response;
 use ParagonIE\Halite\Symmetric\Crypto as Symmetric;
 use Illuminate\Support\Collection as Collection;
 use Validator;
+use Session;
 
 
 class SensitiveDataController extends Controller
@@ -25,6 +26,7 @@ class SensitiveDataController extends Controller
     protected $filePath;
     protected $fileName;
     protected $userRepo;
+    private $pass;
 
     public function __construct(EntityManager $EntityManager, Request $request)
     {
@@ -48,47 +50,36 @@ class SensitiveDataController extends Controller
             $this->em->persist($loggedUser);
   	        $this->em->flush();
             $filteredGroups=[];
-            if($data->getUser()->getId() == $loggedUser->getId())
+            $userGroups =  $loggedUser->getGroups();
+            foreach($userGroups as $group)
             {
-                $groups = $data->getGroups();
-                $userGroups =  $loggedUser->getGroups();
-                /*foreach($groups as $group)
-                {
-                    $filteredGroups[$group->getId()]=[
-                        'name' => $group->getName(),
-                        'active' => true
-                    ];
+                if ($data->getGroup() && $data->getGroup()->getId() != $group->getId()){
+                  $filteredGroups[$group->getId()]=[
+                      'name' => $group->getName()
+                  ];
                 }
 
-                foreach($userGroups as $group)
-                {
-                    if (!isset($filteredGroups[$group->getId()])){
-                        $filteredGroups[$group->getId()]=[
-                            'name' => $group->getName(),
-                            'active' => false
-                        ];
-                    }
-                }*/
-                foreach($userGroups as $group)
-                {
-                    if ($data->getGroup() && $data->getGroup()->getId() == $group->getId()){
-
-                    }
-                    $filteredGroups[$group->getId()]=[
-                        'name' => $group->getName()
-                    ];
-                }
             }
+            $encryptionKey;
+            if($data->getGroup()!=null){
+              //$salt  = fopen(storage_path() . '/group.key', "r") or die("Unable to open file!");
+              $salt = file_get_contents(storage_path() . '/group.key');
+              $encryptionKey = KeyFactory::deriveEncryptionKey(Session::get('pass'), $salt);
+            }else{
+                $keyFactoryFile  = fopen(storage_path() . '/' . 'encryption.key', "w") or die("Unable to open file!");
+      	        fwrite($keyFactoryFile  , $loggedUser->getSalt());
+      	        fclose($keyFactoryFile );
+                $encryptionKey = KeyFactory::loadEncryptionKey(storage_path() . '/' . 'encryption.key');
+            }
+            Session::forget('pass');
             $sensitiveDataText = '';
             $this->setPaths($id);
             if (file_exists($this->path)) {
                 $sensitiveDataText = file_get_contents($this->filePath);
-                $keyFactoryFile  = fopen(storage_path() . '/' . 'encryption.key', "w") or die("Unable to open file!");
-                fwrite($keyFactoryFile  , $loggedUser->getSalt());
-                fclose($keyFactoryFile );
-                $encryptionKey = KeyFactory::loadEncryptionKey(storage_path() . '/' . 'encryption.key');
                 $decrypted = Symmetric::decrypt($sensitiveDataText, $encryptionKey);
-                unlink(storage_path() . '/' . 'encryption.key');
+                if($data->getGroup()==null){
+                  unlink(storage_path() . '/' . 'encryption.key');
+                }
             }
             	return view('data.userDataEdit')->with([
             			'user' => $loggedUser,
@@ -134,8 +125,28 @@ class SensitiveDataController extends Controller
 	            $group= $this->em->find("Behigorri\Entities\Group", $groupId);
 	            $data->addGroup($group);
 	        }*/
+          $encryptionKey;
+          if($request->input('group')!= null){
+            $group= $this->em->find("Behigorri\Entities\Group", $request->input('group'));
+            if(!password_verify($request->input('password'), $group->getDecryptPassword()))
+            {
+              return redirect()->back()->withErrors(array('error' => 'incorrect group decryption password'));
+            }
+            //$salt  = fopen(storage_path() . '/group.key', "r") or die("Unable to open file!");
+            $salt = file_get_contents(storage_path() . '/group.key');
+            $encryptionKey = KeyFactory::deriveEncryptionKey($request->input('password'), $salt);
+          }else{
+            if(!password_verify($request->input('password'), $loggedUser->getDecryptPassword()))
+            {
+              return redirect()->back()->withErrors(array('error' => 'incorrect group decryption password'));
+            }
+              $group= null;
+              $keyFactoryFile  = fopen(storage_path() . '/' . 'encryption.key', "w") or die("Unable to open file!");
+    	        fwrite($keyFactoryFile  , $loggedUser->getSalt());
+    	        fclose($keyFactoryFile );
+              $encryptionKey = KeyFactory::loadEncryptionKey(storage_path() . '/' . 'encryption.key');
+          }
 
-          $group= $this->em->find("Behigorri\Entities\Group", $request->input('group'));
 	        $data->setGroup($group);
 	        $this->em->persist($data);
 	        $this->em->flush();
@@ -144,7 +155,40 @@ class SensitiveDataController extends Controller
 	        if (!file_exists($this->path)) {
 	            mkdir($this->path, 0777, true);
 	        }
-	        //var_dump($this->filePath);exit;
+
+          $sensitiveDataText  = fopen($this->filePath , "w") or die("Unable to open file!");
+          $ciphertext = Symmetric::encrypt($request->input('text'), $encryptionKey);
+	        fwrite($sensitiveDataText , $ciphertext);
+	        fclose($sensitiveDataText );
+
+          if($request->file('dataFile')){
+
+            $file = $request->file('dataFile');
+      		  $fileName= $file->getClientOriginalName();
+            $file->move($this->path, $fileName);
+            $outputFile  = fopen($this->filePath . '.0' , "w") or die("Unable to open file!");
+            File::encrypt($this->path . '/' . $fileName, $outputFile, $encryptionKey);
+            fclose($outputFile);
+            unlink($this->path . '/' . $fileName);
+            $data->setHasFile(true);
+            $data->setFileName(pathinfo($fileName, PATHINFO_FILENAME));
+            $data->setFileExtension(pathinfo($fileName, PATHINFO_EXTENSION));
+            $this->em->persist($data);
+  	        $this->em->flush();
+
+          }
+          if($request->input('group')== null){
+            unlink(storage_path() . '/' . 'encryption.key');
+          }
+	        $dataWithTags = $this->splitAndCreateTags($request->input('tags'),$data);
+	        $this->em->persist($dataWithTags);
+	        $this->em->flush();
+
+          return redirect('/');
+
+
+
+/*
 	        $sensitiveDataText  = fopen($this->filePath , "w") or die("Unable to open file!");
 	        $keyFactoryFile  = fopen(storage_path() . '/' . 'encryption.key', "w") or die("Unable to open file!");
 	        fwrite($keyFactoryFile  , $loggedUser->getSalt());
@@ -177,13 +221,12 @@ class SensitiveDataController extends Controller
 
           }
 
-
 	        unlink(storage_path() . '/' . 'encryption.key');
 	        $dataWithTags = $this->splitAndCreateTags($request->input('tags'),$data);
 	        $this->em->persist($dataWithTags);
 	        $this->em->flush();
 
-        return redirect('/');
+        return redirect('/');*/
     }
 
     private function setPaths($id){
@@ -265,6 +308,7 @@ class SensitiveDataController extends Controller
             $this->em->flush();
 
           }
+          unlink(storage_path() . '/' . 'encryption.key');
       }
         return redirect('/');
     }
@@ -322,17 +366,28 @@ class SensitiveDataController extends Controller
             $this->setPaths($id);
             if (file_exists($this->path))
             {
+              $encryptionKey;
+              if($data->getGroup()!=null){
+                //$salt  = fopen(storage_path() . '/group.key', "r") or die("Unable to open file!");
+                $salt = file_get_contents(storage_path() . '/group.key');
+                $encryptionKey = KeyFactory::deriveEncryptionKey(Session::get('pass'), $salt);
+              }else{
+                  $keyFactoryFile  = fopen(storage_path() . '/' . 'encryption.key', "w") or die("Unable to open file!");
+                  fwrite($keyFactoryFile  , $loggedUser->getSalt());
+                  fclose($keyFactoryFile );
+                  $encryptionKey = KeyFactory::loadEncryptionKey(storage_path() . '/' . 'encryption.key');
+              }
+              Session::forget('pass');
                     $file=null;
                     if ($data->gethasFile())
                     {
                         $file = $data->getFileName() .'.'. $data->getFileExtension();
                     }
                     $sensitiveDataText = file_get_contents($this->filePath);
-                    $keyFactoryFile  = fopen(storage_path() . '/' . 'encryption.key', "w") or die("Unable to open file!");
-                    fwrite($keyFactoryFile  , $owner->getSalt());
-                    fclose($keyFactoryFile );
-                    $encryptionKey = KeyFactory::loadEncryptionKey(storage_path() . '/' . 'encryption.key');
                     $decrypted = Symmetric::decrypt($sensitiveDataText, $encryptionKey);
+                    if($data->getGroup()==null){
+                      unlink(storage_path() . '/' . 'encryption.key');
+                    }
                     return view('data.userDataView')->with([
                           'user' => $loggedUser,
                           'title' => 'WELLCOME SIMPLE USER',
@@ -484,17 +539,30 @@ class SensitiveDataController extends Controller
     }
    }
 
-   public function sensitiveDataDownload($id)
+   public function sensitiveDataDownload($id,$dataToken)
    {
      $loggedUser = Auth::user();
      $data = $this->em->find("Behigorri\Entities\SensitiveData",$id);
-     if ($data && $loggedUser->canBeViewSenstiveData($id))
+     if (isset($dataToken) && isset($id) && $data && $loggedUser->canBeViewSenstiveData($id) && $dataToken == $loggedUser->getDataToken() )
      {
+       $loggedUser->setDataToken($this->createDataToken()['dataToken']);
+       $this->em->persist($loggedUser);
+       $this->em->flush();
        $owner = $data->getUser();
        $this->setPaths($id);
        if (file_exists($this->path))
        {
-
+         if($data->getGroup()!=null){
+           //$salt  = fopen(storage_path() . '/group.key', "r") or die("Unable to open file!");
+           $salt = file_get_contents(storage_path() . '/group.key');
+           $encryptionKey = KeyFactory::deriveEncryptionKey(Session::get('pass'), $salt);
+         }else{
+             $keyFactoryFile  = fopen(storage_path() . '/' . 'encryption.key', "w") or die("Unable to open file!");
+             fwrite($keyFactoryFile  , $loggedUser->getSalt());
+             fclose($keyFactoryFile );
+             $encryptionKey = KeyFactory::loadEncryptionKey(storage_path() . '/' . 'encryption.key');
+         }
+         Session::forget('pass');
 
          $keyFactoryFile  = fopen(storage_path() . '/' . 'encryption.key', "w") or die("Unable to open file!");
          fwrite($keyFactoryFile  , $owner->getSalt());
@@ -504,10 +572,14 @@ class SensitiveDataController extends Controller
 
          $outputFile  = fopen(storage_path() . '/' . $fileName, "w+") or die("Unable to open file!");
          File::decrypt($this->path . '/' . $this->fileName .'.0', storage_path() . '/' . $fileName, $encryptionKey);
-         return response()->download(storage_path() . '/' . $fileName)->deleteFileAfterSend(true);
          fclose($outputFile);
-         unlink(storage_path() . '/' . 'encryption.key');
+         if($data->getGroup()==null){
+           unlink(storage_path() . '/' . 'encryption.key');
+         }
+
+         return response()->download(storage_path() . '/' . $fileName)->deleteFileAfterSend(true);
         }
+
 
      }else{
        return redirect('/');
@@ -519,12 +591,14 @@ class SensitiveDataController extends Controller
    {
      //dd($request);
      $loggedUser = Auth::user();
+
      if($loggedUser->canBeViewSenstiveData($request->input('id')))
      {
-         if(!password_verify( $request->input('password'),$loggedUser->getDecryptPassword()))
-         {
-           return redirect()->back()->withErrors(array('error' => 'incorrect password'));
-         }
+       $data = $this->em->find("Behigorri\Entities\SensitiveData",$request->input('id'));
+        $verifycation = $this->verifyPassword($request->all());
+        if(isset($verifycation['error'])){
+          return redirect()->back()->withErrors($verifycation);
+        }
          $dataToken = $this->createDataToken();
          $loggedUser->setDataToken($dataToken['dataToken']);
          //$request->all()['dataToken'] = $dataToken['dataToken'];
@@ -534,16 +608,23 @@ class SensitiveDataController extends Controller
          if($request->input('action')=='edit')
          {
            //return redirect('/data/edit/' . $dataToken['dataToken'])->withInput(Input::except('password','action'));
+           Session::put('pass', $request->input('password'));
            return redirect()->route('DataEdit', ['id' => $request->input('id'), 'dataToken' => $dataToken['dataToken']]);
            //return redirect()->route('/data/edit/{token?}')->with($request->all());
            //return redirect('/data/edit/' . $dataToken['dataToken'])->with('id',1);
          }elseif ($request->input('action')=='view')
          {
+           Session::put('pass', $request->input('password'));
             // return redirect('/data/view/' . $dataToken['dataToken'])->withInput(Input::except('password','action'));
             return redirect()->route('DataView', ['id' => $request->input('id'), 'dataToken' => $dataToken['dataToken']]);
         }elseif ($request->input('action')=='delete')
         {
             return redirect()->route('DataDelete', ['id' => $request->input('id'), 'dataToken' => $dataToken['dataToken']]);
+        }elseif($request->input('action')=='downloadFile')
+        {
+          Session::put('pass', $request->input('password'));
+           // return redirect('/data/view/' . $dataToken['dataToken'])->withInput(Input::except('password','action'));
+           return redirect()->route('downloadFile', ['id' => $request->input('id'), 'dataToken' => $dataToken['dataToken']]);
         }else{
            return redirect()->back();
          }
@@ -552,6 +633,25 @@ class SensitiveDataController extends Controller
        return redirect()->back();
      }
 
+   }
+
+   private function verifyPassword(Array $request)
+   {
+
+     $loggedUser = Auth::user();
+      $data = $this->em->find("Behigorri\Entities\SensitiveData",$request['id']);
+
+      if($data->getGroup()){
+        if(!password_verify( $request['password'],$data->getGroup()->getDecryptPassword()))
+        {
+          return array('error' => 'incorrect group decryption password');
+        }
+      }else{
+        if(!password_verify( $request['password'],$loggedUser->getDecryptPassword()))
+        {
+          return array('error' => 'incorrect user decription password');
+        }
+      }
    }
 
    private function tokenValidator(array $data)

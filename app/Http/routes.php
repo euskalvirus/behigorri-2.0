@@ -54,7 +54,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('data/view/{id}/{token}', ['as' => 'DataView', 'uses' => 'data\SensitiveDataController@sensitiveDataView']);
     Route::post('data/search', 'data\SensitiveDataController@sensitiveDataSearch');
     Route::get('data/searchTag/{name}', 'data\SensitiveDataController@sensitiveDataSearchByTag');
-    Route::get('data/download/{id}', 'data\SensitiveDataController@sensitiveDataDownload');
+    Route::get('data/download/{id}/{token}', ['as' => 'downloadFile', 'uses' => 'data\SensitiveDataController@sensitiveDataDownload']);
+    //Route::get('data/download/{id}', 'data\SensitiveDataController@sensitiveDataDownload');
     Route::post('data/confirmPassword', 'data\SensitiveDataController@confirmPassword');
 
 
