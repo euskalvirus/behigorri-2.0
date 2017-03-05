@@ -77,7 +77,7 @@ class BehigorriRepository extends EntityRepository
 
       public function paginate($items)
       {
-        $perPage =12;
+        $perPage =20;
         $pageStart = \Request::get('page', 1);
        // Start displaying items from this number;
         $offSet = ($pageStart * $perPage) - $perPage;

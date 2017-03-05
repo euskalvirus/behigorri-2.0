@@ -347,8 +347,15 @@ class UserAdministrationController extends Controller
                 $user->setUpdatedAt($mysqltime = date("Y-m-d H:i:s"));
     			$this->em->persist($user);
     			$this->em->flush();
-          if($loggedUser->getGod())
+          if($loggedUser->getGod() && $loggedUser->getId() != $user->getId())
           {
+            $sensitiveDatas = $user->getSensitiveDatas();
+            foreach($sensitiveDatas as $data){
+              if($data->getGroup()==null)
+              {
+                $this->em->remove($data);
+              }
+            }
             $this->sendPasswordUpdateReminder($loggedUser,$user,$pass);
           }
     			return redirect('/admin/user');

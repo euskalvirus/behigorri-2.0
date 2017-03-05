@@ -26,7 +26,6 @@ class SensitiveDataController extends Controller
   protected $filePath;
   protected $fileName;
   protected $userRepo;
-  private $pass;
 
   public function __construct(EntityManager $EntityManager, Request $request)
   {
@@ -45,14 +44,11 @@ class SensitiveDataController extends Controller
       $loggedUser = Auth::user();
       if (isset($dataToken) && isset($id) && $data && $data->getUser()->getId()==$loggedUser->getId() && $dataToken == $loggedUser->getDataToken())
       {
-          //$loggedUser->setDataToken($dataToken['dataToken']);
           $loggedUser->setDataToken($this->createDataToken()['dataToken']);
           $this->em->persist($loggedUser);
 	        $this->em->flush();
           $filteredGroups=[];
           $userGroups =  $loggedUser->getGroups();
-          //$userGroups = $this->getUserFilteredGroups($loggedUser->getId(), $loggedUser);
-          //dd($userGroups);
           foreach($userGroups as $group)
           {
               if (($data->getGroup() && $data->getGroup()->getId() != $group->getId()) || !$data->getGroup()){
@@ -60,13 +56,9 @@ class SensitiveDataController extends Controller
                     'name' => $group->getName()
                 ];
               }
-
           }
-          //dd($filteredGroups);
           $encryptionKey;
           if($data->getGroup()!=null){
-            //$salt  = fopen(storage_path() . '/group.key', "r") or die("Unable to open file!");
-            //dd($data->getGroup()->getSalt());
             $salt = $group->getSalt();
             $encryptionKey = KeyFactory::deriveEncryptionKey(Session::get('pass'), $salt);
           }else{
@@ -93,7 +85,6 @@ class SensitiveDataController extends Controller
         return redirect('/');
       }
   }
-
 
   public function newSensitiveData()
   {
@@ -132,7 +123,6 @@ class SensitiveDataController extends Controller
           {
             return redirect()->back()->withErrors(array('error' => 'incorrect group decryption password'));
           }
-          //$salt  = fopen(storage_path() . '/group.key', "r") or die("Unable to open file!");
           $salt = $group->getSalt();
           $encryptionKey = KeyFactory::deriveEncryptionKey($request->input('password'), $salt);
         }else{
@@ -307,7 +297,7 @@ class SensitiveDataController extends Controller
           if(!password_verify($oldPassword, $data->getUser()->getDecryptPassword()))
           {
             //return redirect()->back()->withErrors(array('error' => 'incorrect user file decryption password'));
-            return redirect('/')withErrors(array('error' => 'incorrect user file decryption password'));
+            return redirect('/')->withErrors(array('error' => 'incorrect user file decryption password'));
 
           }
           $oldSalt = $data->getUser()->getSalt();

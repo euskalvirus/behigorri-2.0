@@ -19,6 +19,9 @@ class GroupAdministrationController extends Controller
 {
     protected $repository;
     protected $em;
+    protected $path;
+    protected $filePath;
+    protected $fileName;
 
     public function __construct(EntityManager $em)
     {
@@ -29,9 +32,6 @@ class GroupAdministrationController extends Controller
     public function groupAdministration()
     {
         $loggedUser = Auth::user();
-        //$groups = $this->em->getRepository('Behigorri\Entities\Group');
-        //$groups = $users = DB::table('Group')->paginate(15);
-        //$groups = $this->paginate($this->repository->findAll(),15);
         $groups = $this->repository->paginate($this->repository->findAll());
         if($loggedUser->getGod())
         {
@@ -58,7 +58,6 @@ class GroupAdministrationController extends Controller
     				'users' => $data
     		]);
     	} else {
-    		//return redirect()->back();
     		return redirect('/');
     	}
     }
@@ -91,8 +90,8 @@ class GroupAdministrationController extends Controller
 
         $salt = \Sodium\randombytes_buf(\Sodium\CRYPTO_SECRETBOX_KEYBYTES);
         $salt2= random_bytes(32);
+        //to has password with salt and create a difficult way to know the password
         $salt3 = hash("sha256", '123123' . $salt);
-        //var_dump($salt);exit();
         $keyFactoryFile  = fopen(storage_path() . '/group.key', "w") or die("Unable to open file!");
         fwrite($keyFactoryFile  , $salt);
         fclose($keyFactoryFile );
@@ -101,13 +100,10 @@ class GroupAdministrationController extends Controller
         $group->setSalt($salt);
     	  $this->em->persist($group);
     	  $this->em->flush();
-
-
     	  return redirect('/admin/group');
      }else{
       return redirect('/');
      }
-    	//return redirect()->back();
 
     }
     private function validator(array $data, $groupName)
@@ -136,8 +132,10 @@ class GroupAdministrationController extends Controller
     			$group->removeUser($user);
     		}
         $datas = $group->getSensitiveDatas();
+        //THIS WAY ALL SENSITIVEDATAS SAHRED ON THE GROUP ARE DELETED
         foreach ($datas as $data)
     		{
+          $this->sensitiveDataDelete($data);
     			$data->setGroup(null);
     		}
         $this->em->persist($group);
@@ -146,6 +144,34 @@ class GroupAdministrationController extends Controller
     	}
     	return redirect('/admin/group');
 
+    }
+    private function sensitiveDataDelete($data)
+    {
+        $this->setPaths($data->getId());
+        if (file_exists($this->filePath)) {
+            unlink($this->filePath);
+        }
+        if($data->getHasFIle() && file_exists($this->filePath .'.0'))
+        {
+            unlink($this->filePath .'.0');
+        }
+        $this->em->remove($data);
+        $this->em->flush();
+    }
+    private function setPaths($id){
+        $this->path = storage_path() . '/' . $this->idToPath($id);
+        $this->filePath = $this->path . '/' . substr($id,-1);
+    }
+
+    private function idToPath($id) {
+        if ($id < 10) {
+        	$this->fileName = $id;
+            return "0/" . $id;
+        }
+        $idArray = str_split((string)$id);
+        $this->fileName = end($idArray);
+        array_pop($idArray);
+        return implode('/', $idArray);
     }
 
     protected function groupEdit($id)
@@ -191,7 +217,6 @@ class GroupAdministrationController extends Controller
     {
     	$loggedUser = Auth::user();
     	$group = $this->repository->find($request->input('id'));
-      //$group = $this->em->find("Behigorri\Entities\Group",$request->input('id'));
     	if($loggedUser->getGod() && $group)
     	{
             $validator = $this->validator($request->all(), $group->getName());
@@ -228,8 +253,6 @@ class GroupAdministrationController extends Controller
     {
     	$loggedUser = Auth::user();
     	$group = $this->repository->find($id);
-      dd($group->getPublicKey());
-      //$group = $this->em->find("Behigorri\Entities\Group",$id);
     	if($loggedUser->getGod() && $group)
     	{
     		$groupUsers = $group->getUsers();
