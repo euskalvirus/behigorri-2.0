@@ -58,8 +58,8 @@ class SensitiveDataController extends Controller
               }
           }
           $encryptionKey;
-          if($data->getGroup()!=null){
-            $salt = $group->getSalt();
+          if($data->getGroup()!==null){
+            $salt = $data->getGroup()->getSalt();
             $encryptionKey = KeyFactory::deriveEncryptionKey(Session::get('pass'), $salt);
           }else{
             $salt = $loggedUser->getSalt();
@@ -117,7 +117,7 @@ class SensitiveDataController extends Controller
         }*/
         $group = null;
         $encryptionKey;
-        if($request->input('group')!= 'null'){
+        if($request->input('group') !== null){
           $group= $this->em->find("Behigorri\Entities\Group", $request->input('group'));
           if(!password_verify($request->input('password'), $group->getDecryptPassword()))
           {
@@ -246,7 +246,7 @@ class SensitiveDataController extends Controller
       $newPassword;
       if($request->input('newPassword') !== ''){
         $newPassword = $request->input('newPassword');
-        if($data->getGroup()!= null)
+        if($data->getGroup()!== null)
         {
           if(!password_verify($oldPassword, $data->getGroup()->getDecryptPassword()))
           {
@@ -262,8 +262,7 @@ class SensitiveDataController extends Controller
           }
           $oldSalt = $data->getUser()->getSalt();
         }
-
-        if($request->input('group')== 'null')
+        if($request->input('group') === "null")
         {
           if(!password_verify($request->input('newPassword'), $data->getUser()->getDecryptPassword()))
           {
@@ -284,7 +283,7 @@ class SensitiveDataController extends Controller
         }
       }else{
         $newPassword = $request->input('oldPassword');
-        if($data->getGroup() != null)
+        if($data->getGroup() !== null)
         {
           if(password_verify($oldPassword, $data->getGroup()->getDecryptPassword()))
           {
@@ -304,10 +303,10 @@ class SensitiveDataController extends Controller
           $newSalt = $data->getUser()->getSalt();
         }
       }
-
+      var_dump($oldPassword .', '. $oldSalt);
+      var_dump($newPassword .', '. $newSalt);
       $newEncryptionKey = KeyFactory::deriveEncryptionKey($newPassword, $newSalt);
       $oldEncryptionKey = KeyFactory::deriveEncryptionKey($oldPassword, $oldSalt);
-
       $data = $this->updateTags($request->input('tags'),$data);
       $this->setPaths($request->input('id'));
       if (!file_exists($this->path)) {

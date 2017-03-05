@@ -39,6 +39,7 @@ return [
     'password' => 'CONTRASEÑA',
     'passconfirm' => 'CONFIRMAR CONTRASEÑA',
     'owner' => 'DUEÑO',
+    'ownerGroup' => 'DUEÑO/GRUPO',
     'text' => 'TEXTO',
     'groups' => 'GRUPO',
     'none' => '-- Seleccione un grupo --',
@@ -92,5 +93,5 @@ return [
     'English' => 'Ingles',
     'Basque' => 'Vasco',
     'Spanish' => 'Español',
-    'newDecryptPassword' => 'NUEVA CONTRASEÑA DE DESENCRIPTAR',
+    'newDecryptPassword' => 'NUEVA CONTRASEÑA DE DESENCRIPTAR'
 ];

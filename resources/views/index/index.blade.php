@@ -37,7 +37,7 @@
             <tr bgcolor="#EDEDED">
               <th>{{trans('translations.name')}}</th>
               <th>{{trans('translations.tags')}}</th>
-              <th>{{trans('translations.owner')}}</th>
+              <th>{{trans('translations.ownerGroup')}}</th>
               <th>{{trans('translations.action')}}</th>
             </tr>
           </thead>
@@ -54,6 +54,8 @@
               </td>
               <td>
                 {{ $data->getUser()->getName() }}
+                @if($data->getGroup())/{{ $data->getGroup()->getName() }}
+                @endif
               </td>
               <td>
                       <button type="button" data-toggle="modal" data-button-action="view" data-data-id="{{$data->getId()}}"  class="btn btn-success"

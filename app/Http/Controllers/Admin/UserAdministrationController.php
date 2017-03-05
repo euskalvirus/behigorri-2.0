@@ -14,7 +14,10 @@ use ParagonIE\Halite\Symmetric\EncryptionKey;
 use Illuminate\Support\Facades\DB as DB;
 use Illuminate\Support\Collection as Collection;
 use Config;
-
+use Crypt;
+use ParagonIE\Halite\File;
+use Illuminate\Http\Response;
+use ParagonIE\Halite\Symmetric\Crypto as Symmetric;
 
 class UserAdministrationController extends Controller
 {
@@ -162,20 +165,23 @@ class UserAdministrationController extends Controller
     	$user->setActivationCode($activationCode);
     	$user->setCreatedAt($mysqltime = date("Y-m-d H:i:s"));
     	$user->setUpdatedAt($mysqltime = date("Y-m-d H:i:s"));
-    	$salt = random_bytes(32);
+    	$salt = $this->repository->saltGenerator();
     	$user->setSalt($salt);
       $user->setDecryptPassword(bcrypt($data['decryptPassword']));
     	return $user;
     }
 
     private function idToPath($id) {
-    	if ($id < 10) {
-    		return "0/" . $id;
-    	}
-    	$idArray = str_split((string)$id);
-    	array_pop($idArray);
-    	return implode('/', $idArray);
+        if ($id < 10) {
+          $this->fileName = $id;
+            return "0/" . $id;
+        }
+        $idArray = str_split((string)$id);
+        $this->fileName = end($idArray);
+        array_pop($idArray);
+        return implode('/', $idArray);
     }
+
 
     protected function userDelete($id)
     {
@@ -206,6 +212,10 @@ class UserAdministrationController extends Controller
     			if (file_exists($this->filePath)) {
     				unlink($this->filePath);
     			}
+          if($data->getHasFIle()  && file_exists($this->filePath .'.0'))
+          {
+            unlink($this->filePath . '.0');
+          }
     			$this->em->remove($data);
     		}
     		$this->em->remove($user);
@@ -340,29 +350,18 @@ class UserAdministrationController extends Controller
                     $request, $validator
                 );
             }
-    		$pass=$request['password'];
-    		$passConfirm=$request['password_confirmation'];
-    		if($pass==$passConfirm){
     			$user->setPassword(bcrypt($pass));
-                $user->setUpdatedAt($mysqltime = date("Y-m-d H:i:s"));
+          $user->setUpdatedAt($mysqltime = date("Y-m-d H:i:s"));
     			$this->em->persist($user);
     			$this->em->flush();
-          if($loggedUser->getGod() && $loggedUser->getId() != $user->getId())
+          if($loggedUser->getGod() && $loggedUser->getId()!= $user->getId())
           {
-            $sensitiveDatas = $user->getSensitiveDatas();
-            foreach($sensitiveDatas as $data){
-              if($data->getGroup()==null)
-              {
-                $this->em->remove($data);
-              }
-            }
             $this->sendPasswordUpdateReminder($loggedUser,$user,$pass);
           }
+
     			return redirect('/admin/user');
-    		}
-
     	}
-
+      return redirect()->back();
     }
 
     private function sendPasswordUpdateReminder($loggedUser,$user,$pass)
@@ -385,9 +384,9 @@ class UserAdministrationController extends Controller
      protected function generateSalt()
      {
      	$loggedUser = Auth::user();
-     	if($loggedUser->getGod())
+     	if(!$loggedUser->getGod() || $loggedUser->getSalt())
      	{
-     		$salt = random_bytes(32);
+     		$salt = $this->repository->saltGenerator();
      		$loggedUser->setSalt($salt);
         $loggedUser->setUpdatedAt($mysqltime = date("Y-m-d H:i:s"));
      		$this->em->persist($loggedUser);
@@ -435,13 +434,11 @@ class UserAdministrationController extends Controller
      public function userDecryptPasswordUpdate(Request $request)
      {
        $loggedUser = Auth::user();
-     	$user = $this->em->find("Behigorri\Entities\User",$request->input('id'));
-     	if($loggedUser->getId()== $user->getId())
+     	if($loggedUser->getId()== $request->input('id'))
      	{
-        //dd(!password_verify($request['password'], $user->getPassword()));
-        if(!password_verify($request['password'], $user->getPassword()))
+        if(!password_verify($request['password'], $loggedUser->getDecryptPassword()))
         {
-          return redirect()->back()->withErrors(array('error' => 'incorrect password'));
+          return redirect()->back()->withErrors(array('error' => 'incorrect user encrypt password'));
         }
         $validator = $this->decryptPasswordChangeValidator($request->all());
         if ($validator->fails()) {
@@ -449,15 +446,47 @@ class UserAdministrationController extends Controller
               $request, $validator
           );
         }
+        $salt = $loggedUser->getSalt();
+        $newEncryptionKey = KeyFactory::deriveEncryptionKey($request['decryptpassword'], $salt);
+        $oldEncryptionKey = KeyFactory::deriveEncryptionKey($request['password'], $salt);
+        foreach($loggedUser->getSensitiveDatas() as $data)
+        {
+          if($data->getGroup() === null)
+          {
+            $this->setPaths($data->getId());
+            $sensitiveDataText = file_get_contents($this->filePath);
+            $decrypted = Symmetric::decrypt($sensitiveDataText, $oldEncryptionKey);
+            $sensitiveDataText  = fopen($this->filePath , "w") or die("Unable to open file!");
+            $ciphertext = Symmetric::encrypt($decrypted, $newEncryptionKey);
+            fwrite($sensitiveDataText , $ciphertext);
+            fclose($sensitiveDataText );
+            if($request->file('dataFile')){
+              $fileName= $data->getFileName() .'.'. $data->getFileExtension();
+              $inputFile  = fopen(storage_path() . '/' . $fileName, "w+") or die("Unable to open file!");
+              File::decrypt($this->path . '/' . $this->fileName .'.0', storage_path() . '/' . $fileName, $oldEncryptionKey);
+              fclose($inputFile);
+              $outputFile  = fopen($this->filePath . '.0' , "w") or die("Unable to open file!");
+              File::encrypt(storage_path() . '/' . $fileName, $outputFile, $newEncryptionKey);
+              fclose($outputFile);
+              unlink(storage_path() . '/' . $fileName);
+            }
+          }
+        }
      		$pass=$request['decryptpassword_confirmation'];
      		$passConfirm=$request['decryptpassword_confirmation'];
-   			$user->setDecryptPassword(bcrypt($pass));
-        $user->setUpdatedAt($mysqltime = date("Y-m-d H:i:s"));
-     		$this->em->persist($user);
+   			$loggedUser->setDecryptPassword(bcrypt($pass));
+        $loggedUser->setUpdatedAt($mysqltime = date("Y-m-d H:i:s"));
+     		$this->em->persist($loggedUser);
      		$this->em->flush();
      		return redirect('/admin/user');
      }
    }
+
+   private function setPaths($id){
+       $this->path = storage_path() . '/' . $this->idToPath($id);
+       $this->filePath = $this->path . '/' . substr($id,-1);
+   }
+
 
      private function decryptPasswordChangeValidator(array $data)
      {

@@ -39,6 +39,7 @@ return [
     'password' => 'PASAHITZA',
     'passconfirm' => 'PASAHITZA BAIEZTATU',
     'owner' => 'JABEA',
+    'ownerGroup' => 'JABEA/TALDEA',
     'text' => 'TEXTUA',
     'groups' => 'TALDEA',
     'none' => '-- Aukeratu talde bat --',
@@ -92,5 +93,5 @@ return [
     'English' => 'Ingelera',
     'Basque' => 'Euskara',
     'Spanish' => 'Gaztelania',
-    'newDecryptPassword' => 'DESENKRIPTATZE PASAHITZA BERRIA',
+    'newDecryptPassword' => 'DESENKRIPTATZE PASAHITZA BERRIA'
 ];

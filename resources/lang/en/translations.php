@@ -39,6 +39,7 @@ return [
     'password' => 'PASSWORD',
     'passconfirm' => 'PASSWORD CONFIRMATION',
     'owner' => 'OWNER',
+    'ownerGroup' => 'OWNER/GROUP',
     'text' => 'TEXT',
     'groups' => 'GROUP',
     'none' => '-- Select a group --',
@@ -92,5 +93,5 @@ return [
     'English' => 'English',
     'Basque' => 'Basque',
     'Spanish' => 'Spanish',
-    'newDecryptPassword' => 'NEW DECRYPT PASSWORD',
+    'newDecryptPassword' => 'NEW DECRYPT PASSWORD'
 ];

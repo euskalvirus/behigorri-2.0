@@ -35,6 +35,10 @@
             {!! Form::input('text', 'name', '', ['class'=> 'form-control', 'required' => 'required', 'autofocus'=>'autofocus']) !!}
           </div>
           <div class="form-group">
+            <label>{{trans('translations.password')}}</label>
+            {!! Form::password('password', ['class'=> 'form-control', 'required' => 'required' ]) !!}
+          </div>
+          <div class="form-group">
             <label for="USER">{{trans('translations.users')}}</label>
             <select class="form-control" multiple="multiple" name="users[]">
               @foreach ($users as $groupUser)

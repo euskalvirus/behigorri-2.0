@@ -79,6 +79,7 @@ class GroupAdministrationController extends Controller
         $group->setCreatedAt($mysqltime = date("Y-m-d H:i:s"));
         $group->setUpdatedAt($mysqltime = date("Y-m-d H:i:s"));
     	  $users=$request->input('users');
+        $password =$request->input('password');
     		if($users == null){
     		    $users = [];
     	     }
@@ -89,14 +90,14 @@ class GroupAdministrationController extends Controller
     	  }
 
         $salt = \Sodium\randombytes_buf(\Sodium\CRYPTO_SECRETBOX_KEYBYTES);
-        $salt2= random_bytes(32);
+        $salt2= $this->repository->saltGenerator();
         //to has password with salt and create a difficult way to know the password
-        $salt3 = hash("sha256", '123123' . $salt);
+        $salt3 = hash("sha256", $password . $salt);
         $keyFactoryFile  = fopen(storage_path() . '/group.key', "w") or die("Unable to open file!");
         fwrite($keyFactoryFile  , $salt);
         fclose($keyFactoryFile );
-        $encryptionKey = KeyFactory::deriveEncryptionKey('123123', $salt2);
-        $group->setDecryptPassword(bcrypt('123123'));
+        $encryptionKey = KeyFactory::deriveEncryptionKey($password, $salt2);
+        $group->setDecryptPassword(bcrypt($password));
         $group->setSalt($salt);
     	  $this->em->persist($group);
     	  $this->em->flush();
@@ -113,10 +114,15 @@ class GroupAdministrationController extends Controller
     	       return Validator::make($data, [
     			            'name' => 'required|max:255|unique:Group'
     	              ], $this->repository->getValitationMessages());
-        } else{
+        } elseif(empty($groupName)){
             return Validator::make($data, [
-                         'name' => 'required|max:255'
+                         'name' => 'required|max:255|unique:Group',
+                         'password' => 'required|min:6',
                    ], $this->repository->getValitationMessages());
+        }else{
+          return Validator::make($data, [
+                       'name' => 'required|max:255'
+                 ], $this->repository->getValitationMessages());
         }
     }
 

@@ -4,6 +4,7 @@ namespace Behigorri\Repositories;
 use Doctrine\ORM\EntityRepository;
 use Illuminate\Pagination\LengthAwarePaginator as LengthAwarePaginator;
 use Illuminate\Pagination\Paginator as Paginator;
+use Validator;
 
 class BehigorriRepository extends EntityRepository
 {
@@ -71,7 +72,8 @@ class BehigorriRepository extends EntityRepository
               'decryptpassword.confirmed' => trans('translations.decryptPasswordConfirmed'),
               'decryptpassword.min' => trans('translations.decryptPasswordMin'),
               'decryptpassword_Confirmation.required' => trans('translations.decryptPasswordConfirmationRequired'),
-              'decryptpassword_Confirmation.same' => trans('translations.decryptPasswordConfirmationSame')
+              'decryptpassword_Confirmation.same' => trans('translations.decryptPasswordConfirmationSame'),
+              'salt.unique' => trans('translations.saltlUnique'),
          );
       }
 
@@ -86,6 +88,25 @@ class BehigorriRepository extends EntityRepository
         $itemsForCurrentPage = array_slice($items, $offSet, $perPage, true);
 
         return new LengthAwarePaginator($itemsForCurrentPage, count($items), $perPage,Paginator::resolveCurrentPage(), array('path' => Paginator::resolveCurrentPath()));
+      }
+
+      private function saltValidator(array $salt)
+      {
+          return Validator::make($salt, [
+              'salt' => 'required|max:355|unique:User',
+          ], $this->getValitationMessages());
+      }
+
+
+      public function saltGenerator()
+      {
+        $salt = ['salt' => '' . random_bytes(32) . ''];
+        $validator = $this->saltValidator($salt);
+        while ($validator->fails()) {
+          $salt = ['salt' => '' . random_bytes(32) . ''];
+          $validator = $this->saltValidator($salt);
+        }
+  	  	return $salt['salt'];
       }
 
 
