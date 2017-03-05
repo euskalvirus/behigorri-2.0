@@ -162,10 +162,7 @@ class UserAdministrationController extends Controller
     	$user->setActivationCode($activationCode);
     	$user->setCreatedAt($mysqltime = date("Y-m-d H:i:s"));
     	$user->setUpdatedAt($mysqltime = date("Y-m-d H:i:s"));
-    	$key = KeyFactory::generateEncryptionKey();
-    	KeyFactory::save($key, storage_path() . '/' . 'encryption.key');
-    	$salt = file_get_contents(storage_path() . '/' . 'encryption.key');
-    	unlink(storage_path() . '/' . 'encryption.key');
+    	$salt = random_bytes(32);
     	$user->setSalt($salt);
       $user->setDecryptPassword(bcrypt($data['decryptPassword']));
     	return $user;
@@ -383,12 +380,9 @@ class UserAdministrationController extends Controller
      	$loggedUser = Auth::user();
      	if($loggedUser->getGod())
      	{
-     		$key = KeyFactory::generateEncryptionKey();
-     		KeyFactory::save($key, storage_path() . '/' . 'encryption.key');
-     		$salt = file_get_contents(storage_path() . '/' . 'encryption.key');
-     		unlink(storage_path() . '/' . 'encryption.key');
+     		$salt = random_bytes(32);
      		$loggedUser->setSalt($salt);
-            $loggedUser->setUpdatedAt($mysqltime = date("Y-m-d H:i:s"));
+        $loggedUser->setUpdatedAt($mysqltime = date("Y-m-d H:i:s"));
      		$this->em->persist($loggedUser);
      		$this->em->flush();
      	}

@@ -91,5 +91,6 @@ return [
     'selectLanguage' => "Hizkuntza",
     'English' => 'Ingelera',
     'Basque' => 'Euskara',
-    'Spanish' => 'Gaztelania'
+    'Spanish' => 'Gaztelania',
+    'newDecryptPassword' => 'DESENKRIPTATZE PASAHITZA BERRIA',
 ];

@@ -90,11 +90,14 @@ class GroupAdministrationController extends Controller
     	  }
 
         $salt = \Sodium\randombytes_buf(\Sodium\CRYPTO_SECRETBOX_KEYBYTES);
+        $salt2= random_bytes(32);
+        $salt3 = hash("sha256", '123123' . $salt);
+        //var_dump($salt);exit();
         $keyFactoryFile  = fopen(storage_path() . '/group.key', "w") or die("Unable to open file!");
         fwrite($keyFactoryFile  , $salt);
         fclose($keyFactoryFile );
-        $encryptionKey = KeyFactory::deriveEncryptionKey('123456', $salt);
-        $group->setDecryptPassword(bcrypt('123456'));
+        $encryptionKey = KeyFactory::deriveEncryptionKey('123123', $salt2);
+        $group->setDecryptPassword(bcrypt('123123'));
         $group->setSalt($salt);
     	  $this->em->persist($group);
     	  $this->em->flush();

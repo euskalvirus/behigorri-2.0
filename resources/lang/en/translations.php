@@ -91,5 +91,6 @@ return [
     'selectLanguage' => "Language",
     'English' => 'English',
     'Basque' => 'Basque',
-    'Spanish' => 'Spanish'
+    'Spanish' => 'Spanish',
+    'newDecryptPassword' => 'NEW DECRYPT PASSWORD',
 ];

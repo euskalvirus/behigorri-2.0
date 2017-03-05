@@ -51,23 +51,28 @@
 							@endif
 							<input  class="upload-file" type="file" name="dataFile" id="dataFile">
 						</div>
-
 						<div class="form-group">
 							<label for="GROUP">{{trans('translations.groups')}}</label>
 							<select class="form-control" name="group">
 								@if ($data->getGroup())
-									<option selected="selected" value="{{$data->getGroup()->getId()}}">{{$data->getGroup()->getName()}}</option>
-									<option value=null>{{trans('translations.none')}}</option>
+									<option  onClick="hideDiv()" selected="selected" value="{{$data->getGroup()->getId()}}">{{$data->getGroup()->getName()}}</option>
+									<option value=null onClick="showDiv()">{{trans('translations.none')}}</option>
 								@else
-									<option selected value=null>{{trans('translations.none')}}</option>
+									<option selected onClick="hideDiv()" value=null>{{trans('translations.none')}}</option>
 								@endif
 								@foreach ($groups as $id => $group) :
-										<option value={{$id}}>{{$group['name']}}</option>
+										<option value={{$id}} onClick="showDiv()">{{$group['name']}}</option>
 								@endforeach
 							</select>
 						</div>
-
-
+						<div class="form-group">
+							<label for="oldPassword">{{trans('translations.decryptpassword')}}</label>
+							<input type="PASSWORD" name="oldPassword" class="form-control">
+						</div>
+						<div id="hidden_div" class="form-group" style="display: none;">
+								<label for="newPassword">{{trans('translations.newDecryptPassword')}}</label>
+								<input id="newPass" type="PASSWORD" name="newPassword" class="form-control">
+						</div>
 						<div class="form-group">
 							<label for="TAGS">TAGS</label>
 							<input type="text" name="tags" class="form-control"
@@ -126,6 +131,16 @@
 					}
 
 				}
+			}
+
+			function showDiv(){
+				$('#newPass').prop('required', true);
+				$('#hidden_div').show();
+			}
+
+			function hideDiv(){
+				$('#newPass').prop('required', false);
+				$('#hidden_div').hide();
 			}
 
 			</script>

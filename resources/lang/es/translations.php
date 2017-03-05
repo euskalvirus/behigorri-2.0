@@ -91,5 +91,6 @@ return [
     'selectLanguage' => "Idioma",
     'English' => 'Ingles',
     'Basque' => 'Vasco',
-    'Spanish' => 'Español'
+    'Spanish' => 'Español',
+    'newDecryptPassword' => 'NUEVA CONTRASEÑA DE DESENCRIPTAR',
 ];
