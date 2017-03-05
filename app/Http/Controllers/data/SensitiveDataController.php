@@ -260,13 +260,15 @@ class SensitiveDataController extends Controller
         {
           if(!password_verify($oldPassword, $data->getGroup()->getDecryptPassword()))
           {
-            return redirect()->back()->withErrors(array('error' => 'incorrect file decryption password'));
+            //return redirect()->back()->withErrors(array('error' => 'incorrect file decryption password'));
+            return redirect('/')->withErrors(array('error' => 'incorrect file decryption password'));
           }
           $oldSalt = $data->getGroup()->getSalt();
         }else{
           if(!password_verify($oldPassword, $data->getUser()->getDecryptPassword()))
           {
-            return redirect()->back()->withErrors(array('error' => 'incorrect file decryption password'));
+            //return redirect()->back()->withErrors(array('error' => 'incorrect file decryption password'));
+              return redirect('/')->withErrors(array('error' => 'incorrect file decryption password'));
           }
           $oldSalt = $data->getUser()->getSalt();
         }
@@ -275,7 +277,8 @@ class SensitiveDataController extends Controller
         {
           if(!password_verify($request->input('newPassword'), $data->getUser()->getDecryptPassword()))
           {
-            return redirect()->back()->withErrors(array('error' => 'incorrect user new file decryption password'));
+            //return redirect()->back()->withErrors(array('error' => 'incorrect user new file decryption password'));
+            return redirect('/')->withErrors(array('error' => 'incorrect user new file decryption password'));
           }
           $data->setGroup(null);
           $newSalt = $data->getUser()->getSalt();
@@ -283,7 +286,8 @@ class SensitiveDataController extends Controller
           $newGroup = $this->em->find("Behigorri\Entities\Group",$request->input('group'));
           if(!password_verify($request->input('newPassword'), $newGroup->getDecryptPassword()))
           {
-            return redirect()->back()->withErrors(array('error' => 'incorrect new group decryption password'));
+            //return redirect()->back()->withErrors(array('error' => 'incorrect new group decryption password'));
+            return redirect('/')->withErrors(array('error' => 'incorrect new group decryption password'));
           }
           $data->setGroup($newGroup);
           $newSalt = $newGroup->getSalt();
@@ -294,14 +298,17 @@ class SensitiveDataController extends Controller
         {
           if(password_verify($oldPassword, $data->getGroup()->getDecryptPassword()))
           {
-            return redirect()->back()->withErrors(array('error' => 'incorrect user file decryption password'));
+            //return redirect()->back()->withErrors(array('error' => 'incorrect user file decryption password'));
+            return redirect('/')->withErrors(array('error' => 'incorrect user file decryption password'));
           }
           $oldSalt = $data->getGroup()->getSalt();
           $newSalt = $data->getGroup()->getSalt();
         }else{
           if(!password_verify($oldPassword, $data->getUser()->getDecryptPassword()))
           {
-            return redirect()->back()->withErrors(array('error' => 'incorrect user file decryption password'));
+            //return redirect()->back()->withErrors(array('error' => 'incorrect user file decryption password'));
+            return redirect('/')withErrors(array('error' => 'incorrect user file decryption password'));
+
           }
           $oldSalt = $data->getUser()->getSalt();
           $newSalt = $data->getUser()->getSalt();
@@ -340,7 +347,6 @@ class SensitiveDataController extends Controller
         fclose($inputFile);
         $outputFile  = fopen($this->filePath . '.0' , "w") or die("Unable to open file!");
         File::encrypt(storage_path() . '/' . $fileName, $outputFile, $newEncryptionKey);
-
         fclose($outputFile);
         unlink(storage_path() . '/' . $fileName);
 
