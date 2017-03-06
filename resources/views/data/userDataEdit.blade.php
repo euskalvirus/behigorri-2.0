@@ -67,7 +67,7 @@
 						</div>
 						<div class="form-group">
 							<label for="oldPassword">{{trans('translations.decryptpassword')}}</label>
-							<input type="PASSWORD" name="oldPassword" class="form-control">
+							<input type="PASSWORD" name="oldPassword" class="form-control" >
 						</div>
 						<div id="hidden_div" class="form-group" style="display: none;">
 								<label for="newPassword">{{trans('translations.newDecryptPassword')}}</label>

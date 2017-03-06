@@ -236,32 +236,33 @@ class SensitiveDataController extends Controller
     $data = $this->em->find("Behigorri\Entities\SensitiveData",$request->input('id'));
     if ($data && $data->getUser()->getId()==$loggedUser->getId() && $loggedUser->getDataToken()==$request->input('dataToken'))
     {
+      $oldPassword=$request->input('oldPassword');
+      $oldSalt;
+      if($data->getGroup()!== null)
+      {
+        if(!password_verify($oldPassword, $data->getGroup()->getDecryptPassword()))
+        {
+          //return redirect()->back()->withErrors(array('error' => 'incorrect file decryption password'));
+          return redirect('/')->withErrors(array('error' => 'incorrect file decryption password'));
+        }
+        $oldSalt = $data->getGroup()->getSalt();
+      }else{
+        if(!password_verify($oldPassword, $data->getUser()->getDecryptPassword()))
+        {
+          //return redirect()->back()->withErrors(array('error' => 'incorrect file decryption password'));
+            return redirect('/')->withErrors(array('error' => 'incorrect file decryption password'));
+        }
+        $oldSalt = $data->getUser()->getSalt();
+      }
       $loggedUser->setDataToken($this->createDataToken()['dataToken']);
       $data->setName($this->repository->avoidSqlInjection($request->input('name')));
       $data->setUpdatedAt($mysqltime = date("Y-m-d H:i:s"));
-      $oldSalt;
+
       $newSalt;
       $newGroup;
-      $oldPassword=$request->input('oldPassword');
       $newPassword;
       if($request->input('newPassword') !== ''){
         $newPassword = $request->input('newPassword');
-        if($data->getGroup()!== null)
-        {
-          if(!password_verify($oldPassword, $data->getGroup()->getDecryptPassword()))
-          {
-            //return redirect()->back()->withErrors(array('error' => 'incorrect file decryption password'));
-            return redirect('/')->withErrors(array('error' => 'incorrect file decryption password'));
-          }
-          $oldSalt = $data->getGroup()->getSalt();
-        }else{
-          if(!password_verify($oldPassword, $data->getUser()->getDecryptPassword()))
-          {
-            //return redirect()->back()->withErrors(array('error' => 'incorrect file decryption password'));
-              return redirect('/')->withErrors(array('error' => 'incorrect file decryption password'));
-          }
-          $oldSalt = $data->getUser()->getSalt();
-        }
         if($request->input('group') === "null")
         {
           if(!password_verify($request->input('newPassword'), $data->getUser()->getDecryptPassword()))
@@ -303,8 +304,6 @@ class SensitiveDataController extends Controller
           $newSalt = $data->getUser()->getSalt();
         }
       }
-      var_dump($oldPassword .', '. $oldSalt);
-      var_dump($newPassword .', '. $newSalt);
       $newEncryptionKey = KeyFactory::deriveEncryptionKey($newPassword, $newSalt);
       $oldEncryptionKey = KeyFactory::deriveEncryptionKey($oldPassword, $oldSalt);
       $data = $this->updateTags($request->input('tags'),$data);
