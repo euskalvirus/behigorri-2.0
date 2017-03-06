@@ -384,7 +384,7 @@ class UserAdministrationController extends Controller
      protected function generateSalt()
      {
      	$loggedUser = Auth::user();
-     	if(!$loggedUser->getGod() || $loggedUser->getSalt())
+     	if($loggedUser->getGod() || !$loggedUser->getSalt())
      	{
      		$salt = $this->repository->saltGenerator();
      		$loggedUser->setSalt($salt);
