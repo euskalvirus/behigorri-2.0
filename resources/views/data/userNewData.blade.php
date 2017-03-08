@@ -78,7 +78,7 @@
 					}else{
 						$('.upload-form' ).submit();
 					}
-
+				}
 
 			}
 

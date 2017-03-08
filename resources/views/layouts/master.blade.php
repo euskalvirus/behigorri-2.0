@@ -112,10 +112,10 @@ header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
         {
         	$('#passModal').find('input[name="action"]').val(action);
         	$('#passModal').modal('show');
+            $.mobile.changePage( "#passModal", { transition: "pop" });
         }
         }
         function submitDownload() {
-        	console.log('111111111');
         		$('#passForm').submit();
         		$('#passModal').find('input[name="password"]').val("");
         		$('#passModal').modal('hide');
