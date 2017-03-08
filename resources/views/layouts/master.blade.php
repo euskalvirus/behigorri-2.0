@@ -104,16 +104,15 @@ header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
         </script>
         <script>
         function decryptionPass(identifier) {
-        id = $(identifier).data('data-id');
-        action = $(identifier).data('button-action');
-        console.log(action);
-        $('#passModal').find('input[name="id"]').val(id);
-        if(action == "edit" || action == "view" || action == "delete" || action == "downloadFile" )
-        {
-        	$('#passModal').find('input[name="action"]').val(action);
-        	$('#passModal').modal('show');
-            $.mobile.changePage( "#passModal", { transition: "pop" });
-        }
+            id = $(identifier).data('data-id');
+            action = $(identifier).data('button-action');
+            console.log(action);
+            $('#passModal').find('input[name="id"]').val(id);
+            if(action == "edit" || action == "view" || action == "delete" || action == "downloadFile" )
+            {
+        	       $('#passModal').find('input[name="action"]').val(action);
+        	       $('#passModal').modal('show');
+            }
         }
         function submitDownload() {
         		$('#passForm').submit();

@@ -136,6 +136,7 @@
 			function showDiv(){
 				$('#newPass').prop('required', true);
 				$('#hidden_div').show();
+				$.mobile.changePage( "#hidden_div", { transition: "pop" });
 			}
 
 			function hideDiv(){
