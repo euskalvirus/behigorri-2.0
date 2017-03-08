@@ -93,9 +93,6 @@ class GroupAdministrationController extends Controller
         $salt2= $this->repository->saltGenerator();
         //to has password with salt and create a difficult way to know the password
         $salt3 = hash("sha256", $password . $salt);
-        $keyFactoryFile  = fopen(storage_path() . '/group.key', "w") or die("Unable to open file!");
-        fwrite($keyFactoryFile  , $salt);
-        fclose($keyFactoryFile );
         $encryptionKey = KeyFactory::deriveEncryptionKey($password, $salt2);
         $group->setDecryptPassword(bcrypt($password));
         $group->setSalt($salt);

@@ -21,7 +21,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('admin/user/edit/{id}', 'Admin\UserAdministrationController@editUser');
     Route::get('admin/user/view/{id}', 'Admin\UserAdministrationController@viewUser');
     Route::get('admin/user/new', 'Admin\UserAdministrationController@newUser');
-    Route::post('admin/user/new/register', ['as' => 'doRegistration', 'uses' => 'Admin\UserAdministrationController@register']);
+    //Route::post('admin/user/new/register', ['as' => 'doRegistration', 'uses' => 'Admin\UserAdministrationController@register']);
     Route::get('admin/user/delete/{id}', 'Admin\UserAdministrationController@userDelete');
     Route::post('admin/user/update', ['as' => 'updateUser', 'uses' => 'Admin\UserAdministrationController@userUpdate']);
     Route::post('admin/user/updatePassword', ['as' => 'updateUserPassword', 'uses' => 'Admin\UserAdministrationController@userPasswordUpdate']);
@@ -48,13 +48,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('data/edit/{id}/{token}', ['as' => 'DataEdit', 'uses' => 'data\SensitiveDataController@sensitiveDataEdit']);
     Route::get('data/new', 'data\SensitiveDataController@newSensitiveData');
     Route::post('data/save', 'data\SensitiveDataController@sensitiveDataSave');
-    Route::post('data/saveFile', 'data\SensitiveDataController@sensitiveDataFileSave');
+    //Route::post('data/saveFile', 'data\SensitiveDataController@sensitiveDataFileSave');
     Route::post('data/update', 'data\SensitiveDataController@sensitiveDataUpdate');
-    Route::get('data/delete/{id}/{token?}', ['as' => 'DataDelete', 'uses' => 'data\SensitiveDataController@sensitiveDataDelete']);
+    //Route::get('data/delete/{id}/{token?}', ['as' => 'DataDelete', 'uses' => 'data\SensitiveDataController@sensitiveDataDelete']);
     Route::get('data/view/{id}/{token}', ['as' => 'DataView', 'uses' => 'data\SensitiveDataController@sensitiveDataView']);
     Route::post('data/search', 'data\SensitiveDataController@sensitiveDataSearch');
     Route::get('data/searchTag/{name}', 'data\SensitiveDataController@sensitiveDataSearchByTag');
-    Route::get('data/download/{id}/{token}', ['as' => 'downloadFile', 'uses' => 'data\SensitiveDataController@sensitiveDataDownload']);
+    //Route::get('data/download/{id}/{token}', ['as' => 'downloadFile', 'uses' => 'data\SensitiveDataController@sensitiveDataDownload']);
     //Route::get('data/download/{id}', 'data\SensitiveDataController@sensitiveDataDownload');
     Route::post('data/confirmPassword', 'data\SensitiveDataController@confirmPassword');
 

@@ -79,7 +79,6 @@
 						$('.upload-form' ).submit();
 					}
 				}
-
 			}
 
 			</script>
