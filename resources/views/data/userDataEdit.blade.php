@@ -134,9 +134,9 @@
 			}
 
 			function showDiv(){
+				$('#newPass').prop('style', 'display: none;');
 				$('#newPass').prop('required', true);
 				$('#hidden_div').show();
-				$('#newPass').prop('style', 'display: none;');
 			}
 
 			function hideDiv(){

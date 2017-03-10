@@ -610,6 +610,7 @@ class SensitiveDataController extends Controller
 //IN PROGRESS!!!!!!!!!!!!!!!
  private function decryptDataTextandCreateFile($id,$password, $dataToken)
  {
+   $loggedUser = Auth::user();
      $salt;
      $encryptionKey;
      $data = $this->em->find("Behigorri\Entities\SensitiveData",$id);

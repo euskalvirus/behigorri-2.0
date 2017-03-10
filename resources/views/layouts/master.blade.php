@@ -9,6 +9,12 @@ header("Pragma: no-cache"); // HTTP/1.0
 header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
 ?>
     <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=0, maximum-scale=1, user-scalable=1">
+      <meta name="description" content="">
+      <meta name="author" content="">
+      
         <link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}" />
         <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.css') }}" />
         <!-- jQuery -->
@@ -18,8 +24,8 @@ header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
         <link rel="stylesheet" type="text/css"  href="{{ asset('css/plugins/morris.css') }}" />
         <link rel="stylesheet" type="text/css" href="{{ asset('font-awesome/css/font-awesome.min.css') }}" />
         <script src="{{ asset('js/jquery.min.js') }}"></script>
-
-        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+        <script src="{{ asset('js/angular.min.js') }}"></script>
+        <!--<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>-->
         <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-route.min.js"></script>
         <script src="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.min.js"></script>
       <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.css" />
@@ -40,11 +46,7 @@ header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
           line-height: 2 !important;
       }
       </style>
-      <meta charset="utf-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <meta name="viewport" content="width=device-width, initial-scale=0, maximum-scale=1, user-scalable=1">
-      <meta name="description" content="">
-      <meta name="author" content="">
+
 
       <title>SB Admin - Behigorri Password Manager</title>
 
