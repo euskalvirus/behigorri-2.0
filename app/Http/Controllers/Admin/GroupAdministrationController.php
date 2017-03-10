@@ -202,7 +202,6 @@ class GroupAdministrationController extends Controller
     						'name' => $user->getName(),
     						'active' => false
     				];
-
     			}
     		}
     		return view('god.groupEdit')->with([
@@ -213,7 +212,6 @@ class GroupAdministrationController extends Controller
             ]);
     	}
     	return redirect('/');
-
     }
 
     protected function groupUpdate(Request $request)
@@ -295,7 +293,5 @@ class GroupAdministrationController extends Controller
     	}else{
     		return redirect('/');
     	}
-
     }
-
 }

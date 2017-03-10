@@ -34,11 +34,9 @@ class UserAdministrationController extends Controller
     public function userAdministration()
     {
         $loggedUser = Auth::user();
-        //$users = $this->repository->findBy(['god' => false]);
         $users = $this->repository->paginate($this->repository->findAll());
         //$users = $this->paginate($this->repository->findAll(),15);
         //$users = DB::table('User')->paginate(15);
-       	//dd($users);
         if($loggedUser->getGod())
         {
             return view('god.users')->with([
@@ -219,17 +217,16 @@ class UserAdministrationController extends Controller
     			$this->em->remove($data);
     		}
     		$this->em->remove($user);
-            $this->em->flush();
+        $this->em->flush();
     	}
     	return redirect('/admin/user');
     	//return redirect()->back();
 
     }
 
-    protected function activeUser($activationcode){
-
+    protected function activeUser($activationcode)
+    {
     	$user = $this->repository->findBy(['activationCode' => $activationcode]);
-    	//var_dump($user);exit;
     	if($user==null)
     	{
     		return redirect('/');
@@ -242,16 +239,13 @@ class UserAdministrationController extends Controller
     		return view('auth.login')->with([
     				'user' => $user[0]->getEmail(),
     				'title' => 'BEHIGORRI PASSWORD MANAGER',
-    				//'data' => 'User account activation done'
-                    'data' => trans('translations.activationok')
+            'data' => trans('translations.activationok')
     		]);
-
     	}else{
     		return view('auth.login')->with([
     				'user' => '',
     				'title' => 'BEHIGORRI PASSWORD MANAGER',
-    				//'data' => 'User account has been activated before'
-                    'data' => trans('translations.activationbefore')
+            'data' => trans('translations.activationbefore')
     		]);
 
     	}
@@ -274,7 +268,6 @@ class UserAdministrationController extends Controller
     		]);
     	}else {
     		return redirect('/');
-    		//return redirect()->back();
     	}
     }
 
@@ -323,7 +316,6 @@ class UserAdministrationController extends Controller
     				$user->removeGroup($group);
     			}
     		}
-
     		foreach($newGroups as $groupId)
     		{
     			$group= $this->em->find("Behigorri\Entities\Group", $groupId);
@@ -335,7 +327,6 @@ class UserAdministrationController extends Controller
     		$this->em->flush();
     		return redirect('/admin/user');
     	}
-
     }
 
     protected  function  userPasswordUpdate(Request $request)
@@ -358,7 +349,6 @@ class UserAdministrationController extends Controller
           {
             $this->sendPasswordUpdateReminder($loggedUser,$user,$pass);
           }
-
     			return redirect('/admin/user');
     	}
       return redirect()->back();
@@ -403,7 +393,6 @@ class UserAdministrationController extends Controller
      		$search['name'] = $request->input('search');
     		$result = $this->repository->search($search);
     		$users = $this->repository->paginate($result);
-    		//dd($users);
     		return view('god.users')->with([
     				'user' => $loggedUser,
     				'title' => 'BEHIGORRI PASSWORD MANAGER',
@@ -471,14 +460,11 @@ class UserAdministrationController extends Controller
        $this->filePath = $this->path . '/' . substr($id,-1);
    }
 
-
      private function decryptPasswordChangeValidator(array $data)
      {
          return Validator::make($data, [
              'decryptpassword' => 'required|confirmed|min:6',
              'decryptpassword_confirmation' => 'required'
-             //'password_confirmation' => 'required|same:password'
          ], $this->repository->getValitationMessages());
      }
-
 }

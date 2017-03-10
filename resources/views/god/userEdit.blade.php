@@ -102,15 +102,15 @@
           {!! Form::open(['route'=>'updateUserDecryptPassword', 'class' => 'form']) !!}
           {!!Form::hidden('id', $data->getId(), array('id' => 'invisible_id'))!!}
           <div class="form-group">
-            <label>{{trans('translations.password')}}</label>
+            <label>{{trans('translations.decryptpassword')}}</label>
             {!! Form::password('password', ['class'=> 'form-control', 'required' => 'required' ]) !!}
           </div>
           <div class="form-group">
-            <label>{{trans('translations.decryptpassword')}}</label>
+            <label>{{trans('translations.newdecryptpassword')}}</label>
             {!! Form::password('decryptpassword', ['class'=> 'form-control', 'required' => 'required' ]) !!}
           </div>
           <div class="form-group">
-            <label>{{trans('translations.decryptpassconfirm')}}</label>
+            <label>{{trans('translations.newdecryptpassconfirm')}}</label>
             {!! Form::password('decryptpassword_confirmation', ['class'=> 'form-control', 'required' => 'required']) !!}
           </div>
           <div>
