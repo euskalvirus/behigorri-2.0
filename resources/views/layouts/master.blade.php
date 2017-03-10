@@ -11,11 +11,11 @@ header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
     <head>
       <meta charset="utf-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <meta name="viewport" content="width=device-width, initial-scale=0, maximum-scale=1, user-scalable=1">
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=1">
       <meta name="description" content="">
       <meta name="author" content="">
-      
-        <link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}" />
+
+        <!--<link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}" />-->
         <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.css') }}" />
         <!-- jQuery -->
         <link rel="stylesheet" type="text/css"  href="{{ asset('css/metisMenu.min.css') }}" />
