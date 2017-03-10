@@ -69,8 +69,8 @@ class UserAdministrationController extends Controller
         $loggedUser = Auth::user();
         if($loggedUser->getGod())
         {
-            $request['password'] = str_random(6);
-            $request['decryptPassword'] = str_random(6);
+            $request['password'] = str_random(12);
+            $request['decryptPassword'] = str_random(12);
             $validator = $this->validator($request->all());
 
             if ($validator->fails()) {
@@ -414,7 +414,7 @@ class UserAdministrationController extends Controller
      private function passwordChangeValidator(array $data)
      {
          return Validator::make($data, [
-             'password' => 'required|confirmed|min:6',
+             'password' => 'required|confirmed|min:12|max:255|alpha_num',
              'password_confirmation' => 'required'
              //'password_confirmation' => 'required|same:password'
          ], $this->repository->getValitationMessages());
@@ -463,7 +463,7 @@ class UserAdministrationController extends Controller
      private function decryptPasswordChangeValidator(array $data)
      {
          return Validator::make($data, [
-             'decryptpassword' => 'required|confirmed|min:6',
+             'decryptpassword' => 'required|confirmed|min:12',
              'decryptpassword_confirmation' => 'required'
          ], $this->repository->getValitationMessages());
      }
