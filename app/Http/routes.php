@@ -84,7 +84,7 @@ Route::post('auth/login',['as' => 'postLogin', 'uses' => 'Auth\AuthController@po
 
 
 //Route::get('auth/register', 'Auth\AuthController@getRegister');
-//Route::post('admin/user/new/register', ['as' => 'doRegistration', 'uses' => 'Admin\UserAdministrationController@register']);
+Route::post('admin/user/new/register', ['as' => 'doRegistration', 'uses' => 'Admin\UserAdministrationController@register']);
 
 
 

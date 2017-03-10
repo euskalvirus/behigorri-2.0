@@ -163,9 +163,9 @@ class UserAdministrationController extends Controller
     	$user->setActivationCode($activationCode);
     	$user->setCreatedAt($mysqltime = date("Y-m-d H:i:s"));
     	$user->setUpdatedAt($mysqltime = date("Y-m-d H:i:s"));
-    	$salt = $this->repository->saltGenerator();
+      $salt = $this->repository->saltGenerator();
     	$user->setSalt($salt);
-      $user->setDecryptPassword(bcrypt($data['decryptPassword']));
+      $user->setDecryptPassword(bcrypt($data['decryptPassword'] . $salt));
     	return $user;
     }
 
@@ -347,7 +347,7 @@ class UserAdministrationController extends Controller
     			$this->em->flush();
           if($loggedUser->getGod() && $loggedUser->getId()!= $user->getId())
           {
-            $this->sendPasswordUpdateReminder($loggedUser,$user,$pass);
+            $this->sendPasswordUpdateReminder($loggedUser,$user,$request->input('password'));
           }
     			return redirect('/admin/user');
     	}
