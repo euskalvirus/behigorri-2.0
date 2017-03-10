@@ -53,15 +53,15 @@
 						</div>
 						<div class="form-group">
 							<label for="GROUP">{{trans('translations.groups')}}</label>
-							<select class="form-control" name="group">
+							<select class="form-control" name="group" onchange="showHide(this)">
 								@if ($data->getGroup())
-									<option  onClick="hideDiv()" selected="selected" value="{{$data->getGroup()->getId()}}">{{$data->getGroup()->getName()}}</option>
-									<option value=null onClick="showDiv()">{{trans('translations.none')}}</option>
+									<option selected="selected" value="{{$data->getGroup()->getId()}}">{{$data->getGroup()->getName()}}</option>
+									<option value=null >{{trans('translations.none')}}</option>
 								@else
-									<option selected onClick="hideDiv()" value=null>{{trans('translations.none')}}</option>
+									<option selected value=null>{{trans('translations.none')}}</option>
 								@endif
 								@foreach ($groups as $id => $group) :
-										<option value={{$id}} onClick="showDiv()">{{$group['name']}}</option>
+										<option value={{$id}}>{{$group['name']}}</option>
 								@endforeach
 							</select>
 						</div>
@@ -133,15 +133,17 @@
 				}
 			}
 
-			function showDiv(){
-				$('#newPass').prop('style', 'display: none;');
-				$('#newPass').prop('required', true);
-				$('#hidden_div').show();
-			}
 
-			function hideDiv(){
-				$('#newPass').prop('required', false);
-				$('#hidden_div').hide();
+			function showHide(sel){
+				if(sel.selectedIndex>0){
+					//$('#newPass').attr('style', 'display: block !important');
+					$('#newPass').prop('required', true);
+					$('#hidden_div').show();
+				}else{
+					//$('#newPass').prop('style', 'display: none !important;');
+					$('#newPass').prop('required', false);
+					$('#hidden_div').hide();
+				}
 			}
 
 			</script>

@@ -59,10 +59,10 @@
               </td>
               <td>
                       <button type="button" data-toggle="modal" data-button-action="view" data-data-id="{{$data->getId()}}"  class="btn btn-success"
-                      form-action="show" onclick="decryptionPass(this)" title={{trans('translations.view')}}><span class="glyphicon glyphicon-search"></button>
+                      onclick="decryptionPass(this)" title={{trans('translations.view')}}><span class="glyphicon glyphicon-search"></button>
                       @if ($data->getUser()->getId()==$user->getId())
-                      <button type="button" onclick="decryptionPass(this)" data-button-action="edit" data-data-id="{{$data->getId()}}" data-toggle="modal" class="btn btn-primary"  data-id=""
-                      data-title="" title={{trans('translations.edit')}}>
+                      <button type="button" onclick="decryptionPass(this)" data-button-action="edit" data-data-id="{{$data->getId()}}" data-toggle="modal" class="btn btn-primary"
+                      title={{trans('translations.edit')}}>
                       <span class="glyphicon glyphicon-pencil"></button>
                         <button onclick="decryptionPass(this)" data-button-action="delete" data-data-id="{{$data->getId()}}" class="btn btn-danger" value="Delete" type="submit" data-toggle="modal" title={{trans('translations.delete')}}>
                           @else
@@ -129,7 +129,6 @@
 function decryptionPass(identifier) {
     id = $(identifier).data('data-id');
     action = $(identifier).data('button-action');
-    console.log(action);
     $('#passModal').find('input[name="id"]').val(id);
     if(action == "edit")
     {

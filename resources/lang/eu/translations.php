@@ -42,7 +42,7 @@ return [
     'ownerGroup' => 'JABEA/TALDEA',
     'text' => 'TEXTUA',
     'groups' => 'TALDEA',
-    'none' => '-- Aukeratu talde bat --',
+    'none' => '-- Talderik Gabe --',
     'editdata' => 'INFORMAZIOA ALDATU',
     'viewdata' => 'INFORMAZIOA IKUSI',
     'newdatafile' => 'FITXATEGI BERRIA',

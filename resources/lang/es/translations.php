@@ -42,7 +42,7 @@ return [
     'ownerGroup' => 'DUEÑO/GRUPO',
     'text' => 'TEXTO',
     'groups' => 'GRUPO',
-    'none' => '-- Seleccione un grupo --',
+    'none' => '-- Sin Grupo --',
     'editdata' => 'MODIFICAR IFORMACIÓN',
     'viewdata' => 'VER INFORMACIÓN',
     'newdatafile' => 'NUEVO FICHERO',
