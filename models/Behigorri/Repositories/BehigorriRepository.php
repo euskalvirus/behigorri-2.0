@@ -5,9 +5,15 @@ use Doctrine\ORM\EntityRepository;
 use Illuminate\Pagination\LengthAwarePaginator as LengthAwarePaginator;
 use Illuminate\Pagination\Paginator as Paginator;
 use Validator;
+use ParagonIE\Halite\File;
+use ParagonIE\Halite\KeyFactory;
+use ParagonIE\Halite\Symmetric\Crypto as Symmetric;
 
 class BehigorriRepository extends EntityRepository
 {
+  protected $path;
+  protected $filePath;
+  protected $fileName;
 
       public function search($criteria)
       {
@@ -107,6 +113,122 @@ class BehigorriRepository extends EntityRepository
           $validator = $this->saltValidator($salt);
         }
   	  	return $salt['salt'];
+      }
+
+      private function setPaths($id){
+          $this->path = storage_path() . '/' . $this->idToPath($id);
+          $this->filePath = $this->path . '/' . substr($id,-1);
+      }
+
+      private function idToPath($id) {
+          if ($id < 10) {
+          	$this->fileName = $id;
+              return "0/" . $id;
+          }
+          $idArray = str_split((string)$id);
+          $this->fileName = end($idArray);
+          array_pop($idArray);
+          return implode('/', $idArray);
+      }
+
+      public function getEncryptionKey($data, $password)
+      {
+        $encryptionKey;
+        if($data->getGroup()!==null){
+          $salt = $data->getGroup()->getSalt();
+          $encryptionKey = KeyFactory::deriveEncryptionKey($password, $salt);
+        }else{
+          $salt = $loggedUser->getSalt();
+          $encryptionKey = KeyFactory::deriveEncryptionKey($password, $salt);
+        }
+        return $encryptionKey;
+      }
+
+      public function decryptText($encryptionKey)
+      {
+        $sensitiveDataText = file_get_contents($this->filePath);
+        $decrypted = Symmetric::decrypt($sensitiveDataText, $encryptionKey);
+        return $decrypted;
+      }
+
+      public function decryptFile($encryptionKey,$fileName)
+      {
+        File::decrypt($this->path . '/' . $this->fileName .'.0', storage_path() . '/' . $fileName, $encryptionKey);
+      }
+
+      public function encryptFile($data,$oldEncryptionKey, $newEncryptionKey,$file)
+      {
+        if($file!== null)
+        {
+          $realFilePath = ''.$this->filePath . '.0';
+          $fileName= $file->getClientOriginalName();
+          $file->move($this->path, $fileName);
+          $outputFile = $this->openFile($realFilePath);
+          File::encrypt($this->path . '/' . $fileName, $outputFile, $newEncryptionKey);
+          $this->closeFile($outputFile);
+          unlink($this->path . '/' . $fileName);
+          $data->setHasFile(true);
+          $data->setFileName(pathinfo($fileName, PATHINFO_FILENAME));
+          $data->setFileExtension(pathinfo($fileName, PATHINFO_EXTENSION));
+        }else if($data->getHasFile()){
+          $realFilePath = $this->filePath . '.0';
+          $fileName= $data->getFileName() .'.'. $data->getFileExtension();
+          $this->decryptFile($oldEncryptionKey,$fileName);
+          $realFilePath = $this->filePath . '.0';
+          $outputFile = $this->openFile($realFilePath);
+          File::encrypt(storage_path() . '/' . $fileName, $outputFile, $newEncryptionKey);
+          fclose($outputFile);
+          unlink(storage_path() . '/' . $fileName);
+        }
+      }
+
+      public function encrypText($encryptionKey, $text)
+      {
+        if (!file_exists($this->path)) {
+            mkdir($this->path, 0777, true);
+        }
+        $sensitiveDataText  = $this->openFile($this->filePath);
+        $ciphertext = Symmetric::encrypt($text, $encryptionKey);
+        fwrite($sensitiveDataText , $ciphertext);
+        $this->closeFile($sensitiveDataText);
+      }
+
+      public function openFile($filepath)
+      {
+        $openedFile = fopen($filepath , "w+") or die("Unable to open file!");
+
+        return $openedFile;
+      }
+
+      public function closeFile($openedFile)
+      {
+        return fclose($openedFile);
+      }
+
+      public function encryptSensitiveData($data, $oldEncryptionKey, $newEncryptionKey,$text,$file)
+      {
+        $this->setPaths($data->getId());
+        if (!file_exists($this->path)) {
+          mkdir($this->path, 0777, true);
+        }
+        if($text === null){
+          $text=$this->decryptText($oldEncryptionKey);
+        }
+        $this->encrypText($newEncryptionKey, $text);
+        $this->encryptFile($data,$oldEncryptionKey, $newEncryptionKey,$file);
+      }
+
+      public function changeEncryption($data,$oldPassword,$oldSalt,$newPassword,$newSalt,$newText, $newFile)
+      {
+        $this->setPaths($data->getId());
+        $oldEncryptionKey = KeyFactory::deriveEncryptionKey($oldPassword,$oldSalt);
+        $newEncryptionKey = KeyFactory::deriveEncryptionKey($newPassword,$newSalt);
+        if($newText === null)
+        {
+          $newText = $this->decryptText($oldEncryptionKey);
+        }
+
+        $this->encryptSensitiveData($data,$oldEncryptionKey, $newEncryptionKey,$newText,$newFile);
       }
 
 

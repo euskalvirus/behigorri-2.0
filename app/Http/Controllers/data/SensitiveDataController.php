@@ -26,6 +26,7 @@ class SensitiveDataController extends Controller
   protected $filePath;
   protected $fileName;
   protected $userRepo;
+  protected $repository;
 
   public function __construct(EntityManager $EntityManager, Request $request)
   {
@@ -131,33 +132,7 @@ class SensitiveDataController extends Controller
         $data->setGroup($group);
         $this->em->persist($data);
         $this->em->flush();
-
-        $this->setPaths($data->getId());
-        if (!file_exists($this->path)) {
-            mkdir($this->path, 0777, true);
-        }
-
-        $sensitiveDataText  = fopen($this->filePath , "w") or die("Unable to open file!");
-        $ciphertext = Symmetric::encrypt($request->input('text'), $encryptionKey);
-        fwrite($sensitiveDataText , $ciphertext);
-        fclose($sensitiveDataText );
-
-        if($request->file('dataFile')){
-
-          $file = $request->file('dataFile');
-    		  $fileName= $file->getClientOriginalName();
-          $file->move($this->path, $fileName);
-          $outputFile  = fopen($this->filePath . '.0' , "w") or die("Unable to open file!");
-          File::encrypt($this->path . '/' . $fileName, $outputFile, $encryptionKey);
-          fclose($outputFile);
-          unlink($this->path . '/' . $fileName);
-          $data->setHasFile(true);
-          $data->setFileName(pathinfo($fileName, PATHINFO_FILENAME));
-          $data->setFileExtension(pathinfo($fileName, PATHINFO_EXTENSION));
-          $this->em->persist($data);
-	        $this->em->flush();
-
-        }
+        $this->repository->encryptSensitiveData($data, $encryptionKey, $encryptionKey,$request->input('text'),$request->file('dataFile'));
         $dataWithTags = $this->splitAndCreateTags($request->input('tags'),$data);
         $this->em->persist($dataWithTags);
         $this->em->flush();
@@ -287,38 +262,7 @@ class SensitiveDataController extends Controller
       $newEncryptionKey = KeyFactory::deriveEncryptionKey($newPassword, $newSalt);
       $oldEncryptionKey = KeyFactory::deriveEncryptionKey($oldPassword, $oldSalt);
       $data = $this->updateTags($request->input('tags'),$data);
-      $this->setPaths($request->input('id'));
-      if (!file_exists($this->path)) {
-        mkdir($this->path, 0777, true);
-      }
-      $sensitiveDataText  = fopen($this->filePath , "w") or die("Unable to open file!");
-      $ciphertext = Symmetric::encrypt($request->input('text'), $newEncryptionKey);
-      fwrite($sensitiveDataText , $ciphertext);
-      fclose($sensitiveDataText );
-      if($request->file('dataFile')){
-        $file = $request->file('dataFile');
-        $fileName= $file->getClientOriginalName();
-        $file->move($this->path, $fileName);
-        $outputFile  = fopen($this->filePath . '.0' , "w") or die("Unable to open file!");
-        //dd($outputFile);
-        File::encrypt($this->path . '/' . $fileName, $outputFile, $newEncryptionKey);
-        fclose($outputFile);
-        unlink($this->path . '/' . $fileName);
-        $data->setHasFile(true);
-        $data->setFileName(pathinfo($fileName, PATHINFO_FILENAME));
-        $data->setFileExtension(pathinfo($fileName, PATHINFO_EXTENSION));
-      }else if($data->getHasFile())
-      {
-        $fileName= $data->getFileName() .'.'. $data->getFileExtension();
-        $inputFile  = fopen(storage_path() . '/' . $fileName, "w+") or die("Unable to open file!");
-        File::decrypt($this->path . '/' . $this->fileName .'.0', storage_path() . '/' . $fileName, $oldEncryptionKey);
-        fclose($inputFile);
-        $outputFile  = fopen($this->filePath . '.0' , "w") or die("Unable to open file!");
-        File::encrypt(storage_path() . '/' . $fileName, $outputFile, $newEncryptionKey);
-        fclose($outputFile);
-        unlink(storage_path() . '/' . $fileName);
-
-      }
+      $this->repository->changeEncryption($data,$oldPassword,$oldSalt,$newPassword,$newSalt,$request->file('text'), $request->file('dataFile'));
       $this->em->persist($data);
       $this->em->flush();
     }
@@ -413,8 +357,8 @@ class SensitiveDataController extends Controller
   		if(!$this->tagExist($tag, $tagRep)){
   			$newTag = new Tag();
   			$newTag->setName($tag);
-              $newTag->setUpdatedAt($mysqltime = date("Y-m-d H:i:s"));
-              $newTag->setUpdatedAt($mysqltime = date("Y-m-d H:i:s"));
+        $newTag->setUpdatedAt($mysqltime = date("Y-m-d H:i:s"));
+        $newTag->setUpdatedAt($mysqltime = date("Y-m-d H:i:s"));
   			$this->em->persist($newTag);
   			$this->em->flush();
         //dd($newTag->getId());
@@ -546,8 +490,9 @@ class SensitiveDataController extends Controller
        }
        $encryptionKey = KeyFactory::deriveEncryptionKey($password, $salt);
        $fileName= $data->getFileName() .'.'. $data->getFileExtension();
+       $this->repository->decryptFile($encryptionKey,$fileName);
        $outputFile  = fopen(storage_path() . '/' . $fileName, "w+") or die("Unable to open file!");
-       File::decrypt($this->path . '/' . $this->fileName .'.0', storage_path() . '/' . $fileName, $encryptionKey);
+       $this->repository->decryptFile($encryptionKey,$fileName);
        fclose($outputFile);
        return response()->download(storage_path() . '/' . $fileName)->deleteFileAfterSend(true);
       }
@@ -632,7 +577,6 @@ class SensitiveDataController extends Controller
      fwrite($newDecryptedFIle , $decrypted);
      fclose($newDecryptedFIle);
      return 'ok';
-
  }
 
  private function verifyPassword(Array $request)

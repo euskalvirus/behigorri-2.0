@@ -118,7 +118,7 @@ class UserAdministrationController extends Controller
         $dPass = $request['decryptPassword'];
         //$generatedKey = "http://localhost:8000/activation/". sha1(mt_rand(1000000,9999999).time().$loggedUser);
         $key = sha1(mt_rand(1000000,9999999).time().$userEmail);
-        $generatedKey =  Config::get('app.url') . '/activation/' . $key;
+        $generatedKey =  Config::get('app.url') . ':8000/activation/' . $key;
         Mail::send('activation', ['activationCode' => $generatedKey, 'password' => $pass, 'decryptPassword' => $dPass], function ($m) use ($loggedUser, $userName, $userEmail) {
           $m->from($loggedUser->getEmail(),'Behigorri Password Manager');
           $m->to($userEmail, $userName)->subject('Activation Email!');
@@ -350,7 +350,7 @@ class UserAdministrationController extends Controller
                     $request, $validator
                 );
             }
-    			$user->setPassword(bcrypt($pass));
+    			$user->setPassword(bcrypt($request->input('password')));
           $user->setUpdatedAt($mysqltime = date("Y-m-d H:i:s"));
     			$this->em->persist($user);
     			$this->em->flush();
@@ -453,23 +453,7 @@ class UserAdministrationController extends Controller
         {
           if($data->getGroup() === null)
           {
-            $this->setPaths($data->getId());
-            $sensitiveDataText = file_get_contents($this->filePath);
-            $decrypted = Symmetric::decrypt($sensitiveDataText, $oldEncryptionKey);
-            $sensitiveDataText  = fopen($this->filePath , "w") or die("Unable to open file!");
-            $ciphertext = Symmetric::encrypt($decrypted, $newEncryptionKey);
-            fwrite($sensitiveDataText , $ciphertext);
-            fclose($sensitiveDataText );
-            if($request->file('dataFile')){
-              $fileName= $data->getFileName() .'.'. $data->getFileExtension();
-              $inputFile  = fopen(storage_path() . '/' . $fileName, "w+") or die("Unable to open file!");
-              File::decrypt($this->path . '/' . $this->fileName .'.0', storage_path() . '/' . $fileName, $oldEncryptionKey);
-              fclose($inputFile);
-              $outputFile  = fopen($this->filePath . '.0' , "w") or die("Unable to open file!");
-              File::encrypt(storage_path() . '/' . $fileName, $outputFile, $newEncryptionKey);
-              fclose($outputFile);
-              unlink(storage_path() . '/' . $fileName);
-            }
+           $this->repository->encryptSensitiveData($data, $oldEncryptionKey, $newEncryptionKey,null,null);
           }
         }
      		$pass=$request['decryptpassword_confirmation'];
