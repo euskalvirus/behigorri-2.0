@@ -34,7 +34,7 @@ class SensitiveData
 
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="sensitiveDatas")
-     * @ORM\JoinColumn(name="ownerId", referencedColumnName="id")
+     * @ORM\JoinColumn(name="ownerId", referencedColumnName="id", nullable=true)
      */
     private $user;
 
