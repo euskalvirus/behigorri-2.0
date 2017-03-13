@@ -34,7 +34,7 @@ class SensitiveData
 
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="sensitiveDatas")
-     * @ORM\JoinColumn(name="ownerId", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="ownerId", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
     private $user;
 
@@ -78,12 +78,12 @@ class SensitiveData
     private $hasFile;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $fileName;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $fileExtension;
 

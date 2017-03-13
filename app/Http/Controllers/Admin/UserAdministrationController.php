@@ -163,7 +163,7 @@ class UserAdministrationController extends Controller
     	$user->setActivationCode($activationCode);
     	$user->setCreatedAt($mysqltime = date("Y-m-d H:i:s"));
     	$user->setUpdatedAt($mysqltime = date("Y-m-d H:i:s"));
-      $salt = $this->repository->saltGenerator();
+        $salt = $this->repository->saltGenerator();
     	$user->setSalt($salt);
       $user->setDecryptPassword(bcrypt($data['decryptPassword'] . $salt));
     	return $user;
@@ -311,6 +311,11 @@ class UserAdministrationController extends Controller
     			if(in_array($group->getId(),$newGroups)){
     				unset($newGroups[array_search($group->getId(), $newGroups)]);
     			} else {
+                    $datas = $this->em->getRepository('Behigorri\Entities\SensitiveData')->findBy(['user' =>$user->getId(),'group' => $group->getId()]);
+                    foreach($datas as $data)
+                    {
+                        $data->setUser(null);
+                    }
     				$user->removeGroup($group);
     			}
     		}

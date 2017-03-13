@@ -101,7 +101,7 @@ class User implements AuthenticatableContract, CanResetPasswordContract, Authori
 
     /**
      * @var string
-     * @ORM\Column(type="string", length=355, nullable=true)
+     * @ORM\Column(type="binary", length=32, nullable=true)
      */
     private $salt;
 
@@ -424,7 +424,7 @@ class User implements AuthenticatableContract, CanResetPasswordContract, Authori
     /**
      * Set token
      *
-     * @param string $salt
+     * @param binary $salt
      *
      * @return User
      */
@@ -438,11 +438,11 @@ class User implements AuthenticatableContract, CanResetPasswordContract, Authori
     /**
      * Get token
      *
-     * @return string
+     * @return binary
      */
     public function getSalt()
     {
-    	return $this->salt;
+    	return fread($this->salt,32);
     }
 
     /**

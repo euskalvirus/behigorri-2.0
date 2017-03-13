@@ -42,41 +42,44 @@
             </tr>
           </thead>
           <tbody>
-            @foreach ($datas as $data)
-            <tr>
-              <td>{{ $data->getName() }}</td>
-              <td>
-                @if($data->getTags())
-                @foreach($data->getTags() as $tag)
-                <a class="tags" href="/data/searchTag/{{$tag->getName()}}">{{$tag->getName()}},</a>
-                @endforeach
-                @endif
-              </td>
-              <td>
-                {{ $data->getUser()->getName() }}
-                @if($data->getGroup())/{{ $data->getGroup()->getName() }}
-                @endif
-              </td>
-              <td>
-                      <button type="button" data-toggle="modal" data-button-action="view" data-data-id="{{$data->getId()}}"  class="btn btn-success"
-                      onclick="decryptionPass(this)" title={{trans('translations.view')}}><span class="glyphicon glyphicon-search"></button>
-                      @if ($data->getUser()->getId()==$user->getId())
-                      <button type="button" onclick="decryptionPass(this)" data-button-action="edit" data-data-id="{{$data->getId()}}" data-toggle="modal" class="btn btn-primary"
-                      title={{trans('translations.edit')}}>
-                      <span class="glyphicon glyphicon-pencil"></button>
-                        <button onclick="decryptionPass(this)" data-button-action="delete" data-data-id="{{$data->getId()}}" class="btn btn-danger" value="Delete" type="submit" data-toggle="modal" title={{trans('translations.delete')}}>
-                          @else
-                          <button disabled type="button" class="btn btn-primary" title={{trans('translations.edit')}}>
-                            <span class="glyphicon glyphicon-pencil"></button></a>
-                              <button disabled class="btn btn-danger" data-toggle="modal" title={{trans('translations.delete')}}>
-                                @endif
-                                <span class="glyphicon glyphicon-trash"></span>
-                              </button>
+              @if($datas)
+              @foreach ($datas as $data)
+              <tr>
+                <td>{{ $data->getName() }}</td>
+                <td>
+                  @if($data->getTags())
+                  @foreach($data->getTags() as $tag)
+                      <a class="tags" href="/data/searchTag/{{$tag->getName()}}">{{$tag->getName()}},</a>
+                  @endforeach
+                  @endif
+                </td>
+                <td>
+                  @if($data->getUser()){{ $data->getUser()->getName() }}
+                  @endif
+                  @if($data->getGroup())/{{ $data->getGroup()->getName() }}
+                  @endif
+                </td>
+                <td>
+                        <button type="button" data-toggle="modal" data-button-action="view" data-data-id="{{$data->getId()}}"  class="btn btn-success"
+                        onclick="decryptionPass(this)" title={{trans('translations.view')}}><span class="glyphicon glyphicon-search"></button>
+                        @if (($data->getUser() && $data->getUser()->getId()==$user->getId()) || !$data->getGroup())
+                        <button type="button" onclick="decryptionPass(this)" data-button-action="edit" data-data-id="{{$data->getId()}}" data-toggle="modal" class="btn btn-primary"
+                        title={{trans('translations.edit')}}>
+                        <span class="glyphicon glyphicon-pencil"></button>
+                          <button onclick="decryptionPass(this)" data-button-action="delete" data-data-id="{{$data->getId()}}" class="btn btn-danger" value="Delete" type="submit" data-toggle="modal" title={{trans('translations.delete')}}>
+                            @else
+                            <button disabled type="button" class="btn btn-primary" title={{trans('translations.edit')}}>
+                              <span class="glyphicon glyphicon-pencil"></button></a>
+                                <button disabled class="btn btn-danger" data-toggle="modal" title={{trans('translations.delete')}}>
+                                  @endif
+                                  <span class="glyphicon glyphicon-trash"></span>
+                                </button>
 
-                          </a>
-                        </td>
-                      </tr>
-                      @endforeach
+                            </a>
+                          </td>
+                        </tr>
+              @endforeach
+              @endif
                     </tbody>
                     </table>
                     </div>

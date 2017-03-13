@@ -74,7 +74,7 @@ class Group
 
     /**
      * @var string
-     * @ORM\Column(type="string", length=355, nullable=true)
+     * @ORM\Column(type="binary", length=32)
      */
     private $salt;
 
@@ -279,7 +279,7 @@ class Group
     /**
      * Set salt
      *
-     * @param string $salt
+     * @param binary $salt
      *
      * @return Group
      */
@@ -293,11 +293,11 @@ class Group
     /**
      * Get salt
      *
-     * @return string
+     * @return binary
      */
     public function getSalt()
     {
-        return $this->salt;
+        return fread($this->salt,32);
     }
 
 
