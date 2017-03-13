@@ -156,6 +156,12 @@ class BehigorriRepository extends EntityRepository
         File::decrypt($this->path . '/' . $this->fileName .'.0', storage_path() . '/' . $fileName, $encryptionKey);
       }
 
+      public function decryptFileWithId($id,$encryptionKey,$fileName)
+      {
+          $this->setPaths($id);
+          $this->decryptFile($encryptionKey,$fileName);
+      }
+
       public function encryptFile($data,$oldEncryptionKey, $newEncryptionKey,$file)
       {
         if($file!== null)

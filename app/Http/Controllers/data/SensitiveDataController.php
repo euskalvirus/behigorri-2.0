@@ -435,14 +435,12 @@ class SensitiveDataController extends Controller
        }
        $encryptionKey = KeyFactory::deriveEncryptionKey($password, $salt);
        $fileName= $data->getFileName() .'.'. $data->getFileExtension();
-       $this->repository->decryptFile($encryptionKey,$fileName);
+       $this->repository->decryptFileWithId($id,$encryptionKey,$fileName);
        $outputFile  = fopen(storage_path() . '/' . $fileName, "w+") or die("Unable to open file!");
        $this->repository->decryptFile($encryptionKey,$fileName);
        fclose($outputFile);
        return response()->download(storage_path() . '/' . $fileName)->deleteFileAfterSend(true);
       }
-
-
    }else{
      return redirect('/');
    }

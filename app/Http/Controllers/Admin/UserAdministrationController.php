@@ -196,28 +196,26 @@ class UserAdministrationController extends Controller
     		$datas = $user->getSensitiveDatas();
     		foreach ($datas as $data)
     		{
-    			$dataGroups = $data->getGroups();
-    			foreach ($dataGroups as $dGroup)
-    			{
-    				$data->removeGroup($dGroup);
-    			}
     			$user->removeSensitiveData($data);
     			//HAY QUE VER SI TE TIENE QUE ELIMINAR LOS SENSITIVEDATAS EN PROPIEDAD DEL USUARIO O DARLES NUEVOS DUEÑOS
     			$dataId = $data->getId();
     			$this->path = storage_path() . '/' . $this->idToPath($dataId);
     			$this->filePath = $this->path . '/' . substr($dataId,-1);
+                if($data->getGroup()===null)
+                {
+                    if (file_exists($this->filePath)) {
+        				unlink($this->filePath);
+        			}
+                    if($data->getHasFIle()  && file_exists($this->filePath .'.0'))
+                    {
+                        unlink($this->filePath . '.0');
+                    }
+                    $this->em->remove($data);
+                }
 
-    			if (file_exists($this->filePath)) {
-    				unlink($this->filePath);
-    			}
-          if($data->getHasFIle()  && file_exists($this->filePath .'.0'))
-          {
-            unlink($this->filePath . '.0');
-          }
-    			$this->em->remove($data);
     		}
     		$this->em->remove($user);
-        $this->em->flush();
+            $this->em->flush();
     	}
     	return redirect('/admin/user');
     	//return redirect()->back();
