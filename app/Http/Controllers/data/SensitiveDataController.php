@@ -43,7 +43,7 @@ class SensitiveDataController extends Controller
   {
   	$data = $this->em->find("Behigorri\Entities\SensitiveData",$id);
       $loggedUser = Auth::user();
-      if (isset($dataToken) && isset($id) && $data && $data->getUser()->getId()==$loggedUser->getId() && $dataToken == $loggedUser->getDataToken())
+      if ($loggedUser->getSalt() && isset($dataToken) && isset($id) && $data && $data->getUser()->getId()==$loggedUser->getId() && $dataToken == $loggedUser->getDataToken())
       {
           $decrypted;
           if (file_exists(storage_path() . '/' . $dataToken)) {
@@ -83,51 +83,58 @@ class SensitiveDataController extends Controller
   public function newSensitiveData()
   {
       $loggedUser = Auth::user();
+      if($loggedUser->getSalt())
+      {
       $groups = $loggedUser->getGroups();
       return view('data.userNewData')->with([
           'user' => $loggedUser,
           'title' => 'WELLCOME SIMPLE USER',
           'groups' => $groups,
           ]);
+      }else{
+          return redirect('/');
+      }
   }
 
   protected function sensitiveDataSave(Request $request)
   {
         $loggedUser = Auth::user();
-        $data = new SensitiveData();
-        $data->setName($this->repository->avoidSqlInjection($request->input('name')));
-        $data->setUser($loggedUser);
-        $data->setCreatedAt($mysqltime = date("Y-m-d H:i:s"));
-        $data->setUpdatedAt($mysqltime = date("Y-m-d H:i:s"));
-        $data->setHasFile(false);
-        $group = null;
-        $encryptionKey;
-        if($request->input('group') !== null){
-          $group= $this->em->find("Behigorri\Entities\Group", $request->input('group'));
-          if(!password_verify($request->input('password'), $group->getDecryptPassword()))
-          {
-            return redirect()->back()->withErrors(array('error' => trans('translations.groupDecryptPasswordError')));
-          }
-          $salt = $group->getSalt();
-          $encryptionKey = KeyFactory::deriveEncryptionKey($request->input('password'), $salt);
-        }else{
+        if($loggedUser->getSalt())
+        {
+            $data = new SensitiveData();
+            $data->setName($this->repository->avoidSqlInjection($request->input('name')));
+            $data->setUser($loggedUser);
+            $data->setCreatedAt($mysqltime = date("Y-m-d H:i:s"));
+            $data->setUpdatedAt($mysqltime = date("Y-m-d H:i:s"));
+            $data->setHasFile(false);
+            $group = null;
+            $encryptionKey;
+            if($request->input('group') !== null){
+              $group= $this->em->find("Behigorri\Entities\Group", $request->input('group'));
+              if(!password_verify($request->input('password'), $group->getDecryptPassword()))
+              {
+                return redirect()->back()->withErrors(array('error' => trans('translations.groupDecryptPasswordError')));
+              }
+              $salt = $group->getSalt();
+              $encryptionKey = KeyFactory::deriveEncryptionKey($request->input('password'), $salt);
+            }else{
 
-          if(!password_verify($request->input('password'), $loggedUser->getDecryptPassword()))
-          {
-            return redirect()->back()->withErrors(array('error' => trans('translations.userDecryptPasswordError')));
-          }
-          $salt = $loggedUser->getSalt();
-          $encryptionKey = KeyFactory::deriveEncryptionKey($request->input('password'), $salt);
+              if(!password_verify($request->input('password'), $loggedUser->getDecryptPassword()))
+              {
+                return redirect()->back()->withErrors(array('error' => trans('translations.userDecryptPasswordError')));
+              }
+              $salt = $loggedUser->getSalt();
+              $encryptionKey = KeyFactory::deriveEncryptionKey($request->input('password'), $salt);
+            }
+
+            $data->setGroup($group);
+            $this->em->persist($data);
+            $this->em->flush();
+            $this->repository->encryptSensitiveData($data, $encryptionKey, $encryptionKey,$request->input('text'),$request->file('dataFile'));
+            $dataWithTags = $this->splitAndCreateTags($request->input('tags'),$data);
+            $this->em->persist($dataWithTags);
+            $this->em->flush();
         }
-
-        $data->setGroup($group);
-        $this->em->persist($data);
-        $this->em->flush();
-        $this->repository->encryptSensitiveData($data, $encryptionKey, $encryptionKey,$request->input('text'),$request->file('dataFile'));
-        $dataWithTags = $this->splitAndCreateTags($request->input('tags'),$data);
-        $this->em->persist($dataWithTags);
-        $this->em->flush();
-
         return redirect('/');
   }
 
@@ -151,7 +158,7 @@ class SensitiveDataController extends Controller
   {
     $loggedUser = Auth::user();
     $data = $this->em->find("Behigorri\Entities\SensitiveData",$request->input('id'));
-    if ($data && $data->getUser()->getId()==$loggedUser->getId() && $loggedUser->getDataToken()==$request->input('dataToken'))
+    if ($loggedUser->getSalt() && $data && $data->getUser()->getId()==$loggedUser->getId() && $loggedUser->getDataToken()==$request->input('dataToken'))
     {
       $oldPassword=$request->input('oldPassword');
       $oldSalt;
@@ -219,7 +226,7 @@ class SensitiveDataController extends Controller
   {
       $loggedUser = Auth::user();
       $data = $this->em->find("Behigorri\Entities\SensitiveData",$id);
-      if ($data && $loggedUser->canBeViewSenstiveData($id) && $data->getUser()->getId()==$loggedUser->getId())
+      if ($loggedUser->getSalt() && $data && $loggedUser->canBeViewSenstiveData($id) && $data->getUser()->getId()==$loggedUser->getId())
       {
       $this->setPaths($id);
       if (file_exists($this->filePath)) {
@@ -252,7 +259,7 @@ class SensitiveDataController extends Controller
   {
   $loggedUser = Auth::user();
   $data = $this->em->find("Behigorri\Entities\SensitiveData",$id);
-  if (isset($dataToken) && isset($id) && $data && $loggedUser->canBeViewSenstiveData($id) && $dataToken == $loggedUser->getDataToken())
+  if ($loggedUser->getSalt() && isset($dataToken) && isset($id) && $data && $loggedUser->canBeViewSenstiveData($id) && $dataToken == $loggedUser->getDataToken())
   {
       $decrypted;
       if (file_exists(storage_path() . '/' . $dataToken)) {
@@ -272,9 +279,8 @@ class SensitiveDataController extends Controller
             'text'=> $decrypted,
             'tags' => $this->getTagsStrings($data->getTags())
       ]);
-  }else{
-          return redirect('/');
   }
+  return redirect('/');
 }
 
 
@@ -353,7 +359,9 @@ class SensitiveDataController extends Controller
   protected function sensitiveDataSearch(Request $request)
   {
   	$loggedUser = Auth::user();
-  	$datas = $loggedUser->getUniqueSensitiveData();
+    if($loggedUser->getSalt())
+    {
+        $datas = $loggedUser->getUniqueSensitiveData();
     	if($request->input('search')!='')
     	{
     		$splitedWords = explode(' ', $request->input('search'));
@@ -371,6 +379,8 @@ class SensitiveDataController extends Controller
     	}
       $searchDatas = $this->repository->paginate($datas);
     	return $this->returnSearchView($searchDatas);
+    }
+  	return redirect('/');
   }
 
   private function similarInArray($data, $array)
@@ -388,9 +398,13 @@ class SensitiveDataController extends Controller
  public function sensitiveDataSearchByTag($tag)
  {
  		$loggedUser = Auth::user();
- 		$datas = $loggedUser->getSensitiveDataByTag($tag);
+        if($loggedUser->getSalt())
+        {
+            $datas = $loggedUser->getSensitiveDataByTag($tag);
  		$searchDatas = $this->repository->paginate($datas,15);
  		return $this->returnSearchView($searchDatas);
+        }
+ 		return redirect('/');
  }
 
  private function returnSearchView($searchDatas)
@@ -452,7 +466,7 @@ class SensitiveDataController extends Controller
    //dd($request);
    $loggedUser = Auth::user();
 
-   if($loggedUser->canBeViewSenstiveData($request->input('id')))
+   if($loggedUser->getSalt() && $loggedUser->canBeViewSenstiveData($request->input('id')))
    {
      $data = $this->em->find("Behigorri\Entities\SensitiveData",$request->input('id'));
       $verifycation = $this->verifyPassword($request->all());
