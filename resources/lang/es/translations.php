@@ -94,5 +94,10 @@ return [
     'English' => 'Ingles',
     'Basque' => 'Vasco',
     'Spanish' => 'Español',
-    'newDecryptPassword' => 'NUEVA CONTRASEÑA DE DESENCRIPTAR'
+    'newDecryptPassword' => 'NUEVA CONTRASEÑA DE DESENCRIPTAR',
+    'userDecryptPasswordError' => 'Constraseña de encryptación de usuario erronea',
+    'groupDecryptPasswordError' => 'Constraseña de encryptación de grupo erronea',
+    'newUserDecryptPasswordError' => 'Nueva Constraseña de encryptación de usuario erronea',
+    'newGroupDecryptPasswordError' => 'Nueva Constraseña de encryptación de grupo erronea',
+    'fileOpenError' => 'Error al abrir el fichero'
 ];

@@ -49,7 +49,7 @@ class SensitiveDataController extends Controller
           if (file_exists(storage_path() . '/' . $dataToken)) {
               $decrypted = file_get_contents(storage_path() . '/' . $dataToken);
           }else{
-              return redirect()->back()->withErrors(['error'=>'no exite el fitxero']);
+              return redirect()->back()->withErrors(['error'=>trans('translations.fileOpenError')]);
           }
           unlink(storage_path() . '/' . $dataToken);
           $loggedUser->setDataToken($this->createDataToken()['dataToken']);
@@ -106,7 +106,7 @@ class SensitiveDataController extends Controller
           $group= $this->em->find("Behigorri\Entities\Group", $request->input('group'));
           if(!password_verify($request->input('password'), $group->getDecryptPassword()))
           {
-            return redirect()->back()->withErrors(array('error' => 'incorrect group decryption password'));
+            return redirect()->back()->withErrors(array('error' => trans('translations.groupDecryptPasswordError')));
           }
           $salt = $group->getSalt();
           $encryptionKey = KeyFactory::deriveEncryptionKey($request->input('password'), $salt);
@@ -114,7 +114,7 @@ class SensitiveDataController extends Controller
 
           if(!password_verify($request->input('password'), $loggedUser->getDecryptPassword()))
           {
-            return redirect()->back()->withErrors(array('error' => 'incorrect group decryption password'));
+            return redirect()->back()->withErrors(array('error' => trans('translations.userDecryptPasswordError')));
           }
           $salt = $loggedUser->getSalt();
           $encryptionKey = KeyFactory::deriveEncryptionKey($request->input('password'), $salt);
@@ -160,13 +160,13 @@ class SensitiveDataController extends Controller
         if(!password_verify($oldPassword, $data->getGroup()->getDecryptPassword()))
         {
           //return redirect()->back()->withErrors(array('error' => 'incorrect file decryption password'));
-          return redirect('/')->withErrors(array('error' => 'incorrect group file decryption password'));
+          return redirect('/')->withErrors(array('error' => trans('translations.groupDecryptPasswordError')));
         }
         $oldSalt = $data->getGroup()->getSalt();
       }else{
         if(!password_verify($oldPassword, $data->getUser()->getDecryptPassword()))
         {
-            return redirect('/')->withErrors(array('error' => 'incorrect user file decryption password'));
+            return redirect('/')->withErrors(array('error' => trans('translations.userDecryptPasswordError')));
         }
         $oldSalt = $data->getUser()->getSalt();
       }
@@ -183,7 +183,7 @@ class SensitiveDataController extends Controller
         {
           if(!password_verify($request->input('newPassword'), $data->getUser()->getDecryptPassword()))
           {
-            return redirect('/')->withErrors(array('error' => 'incorrect user new file decryption password'));
+            return redirect('/')->withErrors(array('error' => trans('translations.newUserDecryptPasswordError')));
           }
           $data->setGroup(null);
           $newSalt = $data->getUser()->getSalt();
@@ -191,7 +191,7 @@ class SensitiveDataController extends Controller
           $newGroup = $this->em->find("Behigorri\Entities\Group",$request->input('group'));
           if(!password_verify($request->input('newPassword'), $newGroup->getDecryptPassword()))
           {
-            return redirect('/')->withErrors(array('error' => 'incorrect new group decryption password'));
+            return redirect('/')->withErrors(array('error' => trans('translations.newGroupDecryptPasswordError')));
           }
           $data->setGroup($newGroup);
           $newSalt = $newGroup->getSalt();
@@ -258,7 +258,7 @@ class SensitiveDataController extends Controller
       if (file_exists(storage_path() . '/' . $dataToken)) {
           $decrypted = file_get_contents(storage_path() . '/' . $dataToken);
       }else{
-          return redirect()->back()->withErrors(['error'=>'no exite el fitxero']);
+          return redirect()->back()->withErrors(['error'=>trans('translations.fileOpenError')]);
       }
       unlink(storage_path() . '/' . $dataToken);
       $loggedUser->setDataToken($this->createDataToken()['dataToken']);
@@ -436,9 +436,9 @@ class SensitiveDataController extends Controller
        $encryptionKey = KeyFactory::deriveEncryptionKey($password, $salt);
        $fileName= $data->getFileName() .'.'. $data->getFileExtension();
        $this->repository->decryptFileWithId($id,$encryptionKey,$fileName);
-       $outputFile  = fopen(storage_path() . '/' . $fileName, "w+") or die("Unable to open file!");
+       $outputFile  = $this->repository->openFile(storage_path() . '/' . $fileName);
        $this->repository->decryptFile($encryptionKey,$fileName);
-       fclose($outputFile);
+       $this->repository->closeFile($outputFile);
        return response()->download(storage_path() . '/' . $fileName)->deleteFileAfterSend(true);
       }
    }else{
@@ -510,9 +510,9 @@ class SensitiveDataController extends Controller
          $sensitiveDataText = file_get_contents($this->filePath);
          $decrypted = Symmetric::decrypt($sensitiveDataText, $encryptionKey);
      }
-     $newDecryptedFIle  = fopen(storage_path() . '/' . $dataToken, "w") or die("Unable to open file!");
-     fwrite($newDecryptedFIle , $decrypted);
-     fclose($newDecryptedFIle);
+     $newDecryptedFile  = $this->repository->openFile(storage_path() . '/' . $dataToken);
+     fwrite($newDecryptedFile , $decrypted);
+     $this->repository->closeFile($newDecryptedFile);
      return 'ok';
  }
 
@@ -525,12 +525,12 @@ class SensitiveDataController extends Controller
     if($data->getGroup()){
       if(!password_verify( $request['password'],$data->getGroup()->getDecryptPassword()))
       {
-        return array('error' => 'incorrect group decryption password');
+        return array('error' => trans('translations.groupDecryptPasswordError'));
       }
     }else{
       if(!password_verify( $request['password'],$loggedUser->getDecryptPassword()))
       {
-        return array('error' => 'incorrect user decription password');
+        return array('error' => trans('translations.userDecryptPasswordError'));
       }
     }
  }

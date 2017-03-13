@@ -94,5 +94,10 @@ return [
     'English' => 'Ingelera',
     'Basque' => 'Euskara',
     'Spanish' => 'Gaztelania',
-    'newDecryptPassword' => 'DESENKRIPTATZE PASAHITZA BERRIA'
+    'newDecryptPassword' => 'DESENKRIPTATZE PASAHITZA BERRIA',
+    'userDecryptPasswordError' => 'Erabiltzaile encriptazio pasahitz okerra',
+    'groupDecryptPasswordError' => 'Talde encriptazio pasahitz okerra',
+    'newUserDecryptPasswordError' => 'Enkriptazio pasahitz berria, erabiltzailearena, okerra',
+    'newGroupDecryptPasswordError' => 'Enkriptazio pasahitz berria, taldearena, okerra',
+    'fileOpenError' => 'Errorea fitxategia irekitseko garain'
 ];

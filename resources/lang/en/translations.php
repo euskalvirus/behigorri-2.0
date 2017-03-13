@@ -94,5 +94,10 @@ return [
     'English' => 'English',
     'Basque' => 'Basque',
     'Spanish' => 'Spanish',
-    'newDecryptPassword' => 'NEW DECRYPT PASSWORD'
+    'newDecryptPassword' => 'NEW DECRYPT PASSWORD',
+    'userDecryptPasswordError' => 'Incorrect user decryption password',
+    'groupDecryptPasswordError' => 'Incorrect group decryption password',
+    'newUserDecryptPasswordError' => 'Incorrect user decryption password',
+    'newGroupDecryptPasswordError' => 'Incorrect group decryption password',
+    'fileOpenError' => 'Unable to open file!'
 ];

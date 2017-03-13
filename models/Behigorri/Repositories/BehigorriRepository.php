@@ -201,7 +201,7 @@ class BehigorriRepository extends EntityRepository
 
       public function openFile($filepath)
       {
-        $openedFile = fopen($filepath , "w+") or die("Unable to open file!");
+        $openedFile = fopen($filepath , "w+") or die(trans('translations.fileOpenError'));
 
         return $openedFile;
       }
