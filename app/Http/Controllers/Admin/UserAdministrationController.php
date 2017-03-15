@@ -382,6 +382,30 @@ class UserAdministrationController extends Controller
      		$salt = $this->repository->saltGenerator();
      		$loggedUser->setSalt($salt);
         $loggedUser->setUpdatedAt($mysqltime = date("Y-m-d H:i:s"));
+        if($loggedUser->getSensitiveDatas())
+        {
+          foreach($loggedUser->getSensitiveDatas() as $data)
+          {
+            if(!$data->getGroup())
+            {
+              $loggedUser->removeSensitiveData($data);
+        			$dataId = $data->getId();
+        			$this->path = storage_path() . '/' . $this->idToPath($dataId);
+        			$this->filePath = $this->path . '/' . substr($dataId,-1);
+                        if (file_exists($this->filePath)) {
+            				unlink($this->filePath);
+            			}
+                        if($data->getHasFIle()  && file_exists($this->filePath .'.0'))
+                        {
+                            unlink($this->filePath . '.0');
+                        }
+                        $this->em->remove($data);
+        		}else{
+              $data->setGroup(null);
+            }
+
+            }
+          }
      		$this->em->persist($loggedUser);
      		$this->em->flush();
      	}

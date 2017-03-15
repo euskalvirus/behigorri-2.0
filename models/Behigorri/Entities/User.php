@@ -442,7 +442,12 @@ class User implements AuthenticatableContract, CanResetPasswordContract, Authori
      */
     public function getSalt()
     {
-    	return fread($this->salt,32);
+      $salt=fread($this->salt,32);
+      if($this->salt!==null && strlen($salt)==32)
+      {
+        return $salt;
+      }
+    	return null;
     }
 
     /**
