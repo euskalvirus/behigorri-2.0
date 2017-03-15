@@ -442,11 +442,13 @@ class User implements AuthenticatableContract, CanResetPasswordContract, Authori
      */
     public function getSalt()
     {
-      fseek($this->salt, 0);
-      if($this->salt!==null && strlen(fread($this->salt,32))==32)
+      //dd(stream_get_contents($this->salt));
+      if($this->salt!==null && strlen(stream_get_contents($this->salt,32))==32)
       {
-        fseek($this->salt, 0);
-        return fread($this->salt,32);
+        fseek($this->salt,0);
+        $salt = stream_get_contents($this->salt,32);
+        fseek($this->salt,0);
+        return $salt;
       }
     }
 

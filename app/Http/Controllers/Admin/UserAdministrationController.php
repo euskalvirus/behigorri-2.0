@@ -401,7 +401,7 @@ class UserAdministrationController extends Controller
                         }
                         $this->em->remove($data);
         		}else{
-              $data->setGroup(null);
+              $data->setUser(null);
             }
 
             }

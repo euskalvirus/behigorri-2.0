@@ -32,7 +32,11 @@
 					</div>
 					<div class="form-group">
 						<label for="OWNER">{{trans('translations.owner')}}</label>
-						<input type="TEXT" class="form-control" name="owner" readonly value="{{$data->getUser()->getName()}}">
+						@if($data->getUser())
+								<input type="TEXT" class="form-control" name="owner" readonly value="{{$data->getUser()->getName()}}">
+						@else
+							<input type="TEXT" class="form-control" name="owner" readonly value="{{$data->getGroup()->getName()}}">
+						@endif
 					</div>
 					<div class="form-group">
 						<label for="TEXT">{{trans('translations.text')}}</label>
@@ -65,10 +69,6 @@
 						data-role="tagsinput" value="{{$tags}}" readonly disabled/>
 					</div>
 
-					<!--@if ($user->getId() == $data->getUser()->getId())
-					<a href="/data/edit/{{$data->getId()}}/{{$user->getDataToken()}}"><button type="button" class="btn  btn-success">{{trans('translations.edit')}}</button></a>
-					@endif-->
-				<!--<a href="/"><button type="button" class="btn btn-danger">{{trans('translations.return')}}</button></a>-->
 					<a href="/"><button type="button" class="btn btn-danger">{{trans('translations.return')}}</button></a>
 				</div>
 				</div>
