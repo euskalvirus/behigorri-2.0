@@ -25,7 +25,7 @@
             <input type="submit" value={{trans('translations.submit')}}>
           </form>
           @if($tags)
-          {{trans('translations.tagsearch')}}:
+          {{trans('translations.tagsearch')}}
           @foreach ($tags as $tag)
           <a class="tags" href="/data/searchTag/{{$tag->getName()}}">{{$tag->getName()}}</a>,
           @endforeach

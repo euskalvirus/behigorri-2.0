@@ -22,7 +22,7 @@ return [
     'tags' => 'TAGS',
     'action' => 'EKINTZA',
     'tagsearch' => 'TAG BIDEZKO BILAKETA:',
-    'searchplaceholder' => 'Bilatu..',
+    'searchplaceholder' => 'Bilatu...',
     'newgroup' => 'TALDE BERRIA',
     'users' => 'ERABILTZAILEAK',
     'save' => 'GORDE',

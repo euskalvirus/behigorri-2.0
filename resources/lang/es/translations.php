@@ -22,7 +22,7 @@ return [
     'tags' => 'TAGS',
     'action' => 'ACCIÓN',
     'tagsearch' => 'BUSQUEDA POR TAG',
-    'searchplaceholder' => 'Buscar..',
+    'searchplaceholder' => 'Buscar...',
     'newgroup' => 'NUEVO GRUPO',
     'users' => 'USUARIOS',
     'save' => 'GUARDAR',

@@ -22,7 +22,7 @@ return [
     'tags' => 'TAGS',
     'action' => 'ACTION',
     'tagsearch' => 'TAG SEARCH',
-    'searchplaceholder' => 'Search..',
+    'searchplaceholder' => 'Search...',
     'newgroup' => 'NEW GROUP',
     'users' => 'USERS',
     'save' => 'SAVE',
