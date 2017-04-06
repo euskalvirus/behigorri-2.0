@@ -29,7 +29,7 @@
           @if($tags)
           {{trans('translations.tagsearch')}}:
           @foreach ($tags as $tag)
-          <a href="/data/searchTag/{{$tag->getName()}}">{{$tag->getName()}}</a>,
+          <a class="tags" href="/data/searchTag/{{$tag->getName()}}">{{$tag->getName()}}</a>,
           @endforeach
           @endif
         </div ><br>
@@ -50,17 +50,21 @@
               <td>
                 @if($data->getTags())
                 @foreach($data->getTags() as $tag)
-                <a href="/data/searchTag/{{$tag->getName()}}">{{$tag->getName()}},</a>
+                <a class="tags" href="/data/searchTag/{{$tag->getName()}}">{{$tag->getName()}},</a>
                 @endforeach
                 @endif
               </td>
               <td>
+                @if($data->getUser())
                 {{ $data->getUser()->getName() }}
+                @else
+                {{$data->getGroup()->getName()}}
+                @endif
               </td>
               <td>
                       <button type="button" data-toggle="modal" data-button-action="view" data-data-id="{{$data->getId()}}"  class="btn btn-success"
                       form-action="show" onclick="decryptionPass(this)" title={{trans('translations.view')}}><span class="glyphicon glyphicon-search"></button>
-                      @if ($data->getUser()->getId()==$user->getId())
+                      @if ($data->getUser() && $data->getUser()->getId()==$user->getId())
                       <button type="button" onclick="decryptionPass(this)" data-button-action="edit" data-data-id="{{$data->getId()}}" data-toggle="modal" class="btn btn-primary"  data-id=""
                       data-title="" title={{trans('translations.edit')}}>
                       <span class="glyphicon glyphicon-pencil"></button>
