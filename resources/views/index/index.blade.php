@@ -127,24 +127,4 @@
             </div>
           </div>
         </div>
-
-<script>
-function decryptionPass(identifier) {
-    id = $(identifier).data('data-id');
-    action = $(identifier).data('button-action');
-    $('#passModal').find('input[name="id"]').val(id);
-    if(action == "edit")
-    {
-      $('#passModal').find('input[name="action"]').val('edit');
-        //document.getElementById('passForm').action = '/data/edit';
-    }else if (action == "view"){
-      $('#passModal').find('input[name="action"]').val('view');
-        //document.getElementById('passForm').action = '/data/view';
-    }else if (action == "delete"){
-        $('#passModal').find('input[name="action"]').val('delete');
-    }
-    $('#passModal').modal('show')
-}
-
-</script>
 @endsection

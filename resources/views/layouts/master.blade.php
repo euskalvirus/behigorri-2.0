@@ -26,9 +26,12 @@ header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
         <script src="{{ asset('js/jquery.min.js') }}"></script>
         <script src="{{ asset('js/angular.min.js') }}"></script>
         <!--<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>-->
-        <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-route.min.js"></script>
-        <script src="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.min.js"></script>
-      <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.css" />
+        <script src="{{ asset('js/angular-route.min.js') }}"></script>
+        <script src="{{ asset('js/bootstrap-tagsinput.min.js') }}"></script>
+        <!--<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-route.min.js"></script>
+        <script src="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.min.js"></script>-->
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap-tagsinput.css') }}" />
+      <!--<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.css" />-->
 
 
 
@@ -38,14 +41,7 @@ header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
 
       <!-- DataTables Responsive CSS -->
       <link href="{{ asset('datatables-responsive/dataTables.responsive.css') }}" rel="stylesheet">
-      <style type="text/css">
-        .bootstrap-tagsinput {
-          width: 100%;
-        }
-        .label {
-          line-height: 2 !important;
-      }
-      </style>
+
 
 
       <title>SB Admin - Behigorri Password Manager</title>
