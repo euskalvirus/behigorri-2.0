@@ -33,7 +33,7 @@
         </div ><br>
         <div>
           <table width="100%" class="table table-striped table-bordered" id="dataTable">
-            <thead>
+            <thead class="titles">
             <tr>
               <th>{{trans('translations.name')}}</th>
               <th>{{trans('translations.tags')}}</th>
