@@ -6763,3 +6763,7 @@ button.close {
   }
 }
 /*# sourceMappingURL=bootstrap.css.map */
+
+table.dataTable thead {
+  background-color: #EDEDED;
+}
