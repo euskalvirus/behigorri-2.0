@@ -6767,3 +6767,7 @@ button.close {
 table.dataTable thead {
   background-color: #EDEDED;
 }
+
+.tableTitles {
+  background-color: #EDEDED;
+}
