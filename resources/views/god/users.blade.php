@@ -23,9 +23,9 @@
         </div><br>
         <!--<div class="panel panel-default"> -->
         <div>
-          <table width="100%" class="table table-striped table-bordered " id="dataTable">
+          <table width="100%" class="table table-striped table-bordered" id="dataTable">
             <thead>
-            <tr bgcolor="#EDEDED">
+            <tr>
               <th>{{trans('translations.name')}}</th>
               <th>{{trans('translations.email')}}</th>
               <th>{{trans('translations.status')}}</th>

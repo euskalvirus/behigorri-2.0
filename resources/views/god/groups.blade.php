@@ -21,9 +21,9 @@
           </form>
         </div><br>
         <div>
-          <table width="100%" class="table table-striped table-bordered table-hover" id="dataTable">
+          <table width="100%" class="table table-striped table-bordered" id="dataTable">
             <thead>
-          <tr bgcolor="#EDEDED">
+          <tr>
             <th>{{trans('translations.name')}}</th>
             <!--<th>{{trans('translations.action')}}</th>-->
             <th>{{trans('translations.action')}}</th>
