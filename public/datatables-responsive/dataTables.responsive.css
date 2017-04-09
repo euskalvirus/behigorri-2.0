@@ -104,3 +104,6 @@ table.dataTable > tbody > tr.child span.dtr-title {
   min-width: 75px;
   font-weight: bold;
 }
+table.dataTable thead {
+  background-color: #EDEDED;
+}
